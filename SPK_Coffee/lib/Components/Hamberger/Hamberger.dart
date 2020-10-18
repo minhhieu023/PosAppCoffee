@@ -16,12 +16,13 @@ class _HambergerState extends State<Hamberger> {
           DrawerHeader(
             child: Column(
               children: [
+                CircleAvatar(),
                 Text("Võ Minh Hiếu"),
-                ListTile(
-                  leading: Icon(
-                    Icons.play_arrow,
+                Text(
+                  "Đang hoạt động",
+                  style: TextStyle(
+                    color: Colors.green,
                   ),
-                  title: Text("Đang hoạt động"),
                 )
               ],
             ),

@@ -52,22 +52,7 @@ Widget horizonView() {
               return Container(
                 color: listFeature[index].color,
                 child: IconButton(
-                  // child: ListTile(
-                  //   leading: Icon(
-                  //     listFeature[index].icon,
-                  //     size: MediaQuery.of(context).size.height * 0.1,
-                  //   ),
-                  // title: Text(
-                  //   listFeature[index].title,
-                  //   //  maxLines: 1,
-                  //   style: TextStyle(
-                  //     fontSize: MediaQuery.of(context).sizre.height * 0.033,
-                  //     //fontWeight: FontWeight.bold,
-                  //   ),
-                  // ),
-                  // focusColor: Colors.blueAccent,
                   icon: Icon(listFeature[index].icon),
-
                   onPressed: () {
                     Navigator.pushNamed(
                         context, '/${listFeature[index].title}');

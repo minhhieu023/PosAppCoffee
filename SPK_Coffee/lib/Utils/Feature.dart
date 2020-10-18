@@ -5,6 +5,7 @@ class Feature {
   final IconData icon;
   final String title;
   final Color color;
+
   // final String routing;
   Feature(this.title, this.icon, this.color);
   // Feature (this.title, this.icon, this.color, )
