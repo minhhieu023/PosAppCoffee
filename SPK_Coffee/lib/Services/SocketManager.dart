@@ -5,9 +5,12 @@ class SocketManagement {
   IO.Socket socket;
   PlatformHandler _platformHandler = new PlatformHandler();
   createSocketConnection() {
-    socket = IO.io('http://10.0.2.2:8000', <String, dynamic>{
+    socket = IO.io('http://caffeeshopbackend.herokuapp.com', <String, dynamic>{
       'transports': ['websocket'],
     });
+    if (!socket.connected) {
+      print('connect fail');
+    }
     socket.on('connect', (_) {
       print('connect');
     });

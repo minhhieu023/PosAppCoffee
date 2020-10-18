@@ -1,14 +1,24 @@
+import 'dart:io';
+
 import 'package:SPK_Coffee/Components/HomeScreen/MainHomeScreen.dart';
 import 'package:SPK_Coffee/Components/KitchenScreen/MainKitChenScreen.dart';
 import 'package:SPK_Coffee/Components/ServiceScreen/MainServiceScreen.dart';
 import 'package:SPK_Coffee/Components/ServiceScreen/OrderScreen.dart';
-import 'package:SPK_Coffee/Models/Product.dart';
-import 'package:SPK_Coffee/Services/Services.dart';
 import 'package:flutter/material.dart';
-
+// import 'Utils/Config.dart';
 import 'Services/SocketManager.dart';
 
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
+}
+
 void main() {
+  HttpOverrides.global = new MyHttpOverrides();
   runApp(MyApp());
 }
 
