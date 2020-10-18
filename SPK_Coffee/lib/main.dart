@@ -6,6 +6,8 @@ import 'package:SPK_Coffee/Models/Product.dart';
 import 'package:SPK_Coffee/Services/Services.dart';
 import 'package:flutter/material.dart';
 
+import 'Services/SocketManager.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -19,10 +21,21 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final bool ischoose = false;
+  SocketManagement _socketManagement = new SocketManagement();
 
   @override
   void initState() {
     super.initState();
+    _socketManagement.createSocketConnection();
+  }
+
+  void onFloatButtonPressed() {
+    _socketManagement.socket
+        .emit('send notification', 'A1 table have customer!');
+  }
+
+  void onAddButtonPressed() {
+    _socketManagement.socket.emit('notify guest', 'Guest comming at A0 Table');
   }
 
   @override
@@ -32,7 +45,9 @@ class _MyAppState extends State<MyApp> {
       // theme: ThemeData(primaryColor: Colors.blue[100]),
       initialRoute: '/',
       routes: {
-        '/': (context) => mainPage(),
+        '/': (context) => mainPage(
+            onAddButtonPressed: onAddButtonPressed,
+            onFloatButtonPressed: onFloatButtonPressed),
         '/Services': (context) => MainServiceScreen(),
         '/Kitchen': (context) => MainKitchenScreen(),
         '/Order': (context) => OrderScreen()
