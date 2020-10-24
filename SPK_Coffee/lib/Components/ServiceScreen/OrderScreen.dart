@@ -13,10 +13,12 @@ class _OrderScreenState extends State<OrderScreen>
     with SingleTickerProviderStateMixin {
   Future<Category> futureGetCategory;
   TabController tabController;
+  ServiceManager serviceManager;
   @override
   void initState() {
     super.initState();
-    futureGetCategory = getProductWithCategory();
+    serviceManager = ServiceManager();
+    futureGetCategory = serviceManager.getProductWithCategory();
     tabController = new TabController(vsync: this, length: 3);
     print(futureGetCategory.toString());
   }
