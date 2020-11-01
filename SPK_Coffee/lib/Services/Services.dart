@@ -25,7 +25,7 @@ class ServiceManager {
   }
 
   Future<Category> getProductWithCategory() async {
-    final response = await http.get('http://172.16.99.24:8000/category/all');
+    final response = await http.get('$_href/category/all');
 
     if (response.statusCode == 200) {
       // print(response.body);
@@ -40,7 +40,7 @@ class ServiceManager {
   }
 
   Future<List<Area>> getArea() async {
-    final response = await http.get('http://192.168.68.119:8000/area');
+    final response = await http.get('$_href/area');
     if (response.statusCode == 200) {
       List<Area> areas = [];
       jsonDecode(response.body)['data'].forEach((item) {
@@ -53,7 +53,7 @@ class ServiceManager {
   }
 
   Future<List<CoffeeTable>> getTable() async {
-    final response = await http.get('http://192.168.68.119:8000/table');
+    final response = await http.get('$_href/table');
     if (response.statusCode == 200) {
       List<CoffeeTable> tables = [];
       jsonDecode(response.body)['data'].forEach((item) {

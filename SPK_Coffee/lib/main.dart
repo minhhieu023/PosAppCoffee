@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:SPK_Coffee/Components/HomeScreen/MainHomeScreen.dart';
 import 'package:SPK_Coffee/Components/KitchenScreen/MainKitChenScreen.dart';
 import 'package:SPK_Coffee/Components/ServiceScreen/MainServiceScreen.dart';
@@ -52,6 +51,13 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       color: Colors.blueAccent,
+      theme: new ThemeData(
+        backgroundColor: Colors.white12,
+        shadowColor: Colors.black12,
+        brightness: Brightness.light,
+        primaryColor: Colors.white70,
+        //accentColor: Colors.blueAccent,
+      ),
       // theme: ThemeData(primaryColor: Colors.blue[100]),
       initialRoute: '/',
       routes: {

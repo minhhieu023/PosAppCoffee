@@ -30,6 +30,7 @@ class Products {
   String productDescription;
   String price;
   String hot;
+  int amount;
   bool popular;
   String processDuration;
   String mainImage;
@@ -58,6 +59,7 @@ class Products {
     id = json['id'];
     productName = json['productName'];
     productDescription = json['productDescription'];
+
     price = json['price'];
     hot = json['hot'];
     popular = json['popular'];

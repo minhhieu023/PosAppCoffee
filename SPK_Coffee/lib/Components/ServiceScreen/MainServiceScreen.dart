@@ -1,3 +1,4 @@
+import 'package:SPK_Coffee/Components/ServiceScreen/OrderScreen.dart';
 import 'package:SPK_Coffee/Models/Area.dart';
 import 'package:SPK_Coffee/SeedData/Data.dart';
 import 'package:SPK_Coffee/Services/Services.dart';
@@ -126,7 +127,15 @@ Widget listTable(Future<List<CoffeeTable>> tables, int chooseArea) {
             itemBuilder: (BuildContext context, int index) {
               return InkWell(
                   onTap: () {
-                    Navigator.pushNamed(context, '/Order');
+                    Navigator.pushNamed(
+                      context,
+                      '/Order',
+                      arguments: OrderScreen(
+                        tableID: list[index].id.toString(),
+                        areaID: list[index].areaId.toString(),
+                        tableName: list[index].name,
+                      ),
+                    );
                   },
                   child: Card(
                     //shadowColor: Colors.black,
