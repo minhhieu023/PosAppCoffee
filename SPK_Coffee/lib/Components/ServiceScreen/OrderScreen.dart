@@ -1,4 +1,6 @@
+import 'package:SPK_Coffee/Components/ServiceScreen/ProductInCartScreen.dart';
 import 'package:SPK_Coffee/Models/Category.dart';
+import 'package:SPK_Coffee/Models/Product.dart';
 import 'package:SPK_Coffee/Services/Services.dart';
 import 'package:SPK_Coffee/Utils/Config.dart';
 import 'package:SPK_Coffee/Utils/StaticValue.dart';
@@ -6,17 +8,18 @@ import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class OrderScreen extends StatefulWidget {
   final String tableID;
   final String areaID;
   final String tableName;
-  const OrderScreen(
-      {Key key,
-      @required this.tableID,
-      @required this.areaID,
-      @required this.tableName})
-      : super(key: key);
+  OrderScreen({
+    this.tableID,
+    this.areaID,
+    this.tableName,
+    Key key,
+  }) : super(key: key);
   @override
   _OrderScreenState createState() => _OrderScreenState();
 }
@@ -25,6 +28,26 @@ class _OrderScreenState extends State<OrderScreen>
     with SingleTickerProviderStateMixin {
   Future<Category> futureGetCategory;
   TabController tabController;
+  List<Products> listProduct = new List<Products>();
+  void addOrderedProduct(Products product) {
+    print(listProduct.toList());
+    //Nếu amount = 0 thì xoá khỏi list
+    if (product.amount == 0) {
+      listProduct.remove(product);
+      return;
+    }
+    //nếu không có sản phẩm nào thì thêm vào
+    if (listProduct.length == 0) {
+      listProduct.add(product);
+      return;
+    } else {
+      if (!listProduct.contains(product)) {
+        listProduct.add(product);
+        return;
+      }
+    }
+  }
+
   int counter = 0;
   ServiceManager serviceManager;
   void _incrementCounter() {
@@ -35,8 +58,12 @@ class _OrderScreenState extends State<OrderScreen>
 
   void _decrementCounter() {
     setState(() {
-      counter++;
+      counter--;
     });
+  }
+
+  void updateAmountProduct(List<Products> listProduct) {
+    setState(() {});
   }
 
   @override
@@ -58,7 +85,7 @@ class _OrderScreenState extends State<OrderScreen>
             print(snapshot.data);
             return Scaffold(
               appBar: AppBar(
-                title: Text("Order"),
+                title: Text("Order - "),
                 bottom: TabBar(
                   key: Key("Drink"),
                   controller: tabController,
@@ -76,7 +103,7 @@ class _OrderScreenState extends State<OrderScreen>
                       ),
                     );
                   }).toList(),
-                  unselectedLabelColor: Colors.blueAccent,
+                  unselectedLabelColor: Colors.black,
                   isScrollable: true,
                   indicatorSize: TabBarIndicatorSize.tab,
                   indicator: new BubbleTabIndicator(
@@ -106,6 +133,7 @@ class _OrderScreenState extends State<OrderScreen>
                             products: e.products[index],
                             incrementCounter: _incrementCounter,
                             decrementCounter: _decrementCounter,
+                            addProductToCart: addOrderedProduct,
                           );
                         },
                       );
@@ -115,7 +143,21 @@ class _OrderScreenState extends State<OrderScreen>
               ),
               floatingActionButton: FloatingActionButton(
                 onPressed: () {
-                  // Add your onPressed code here!
+                  // showMaterialModalBottomSheet(
+                  //   context: context,
+                  //   builder: (context, scrollController) => ProductInCartScreen(
+                  //     listProduct: listProduct,
+                  //     addProductToCart: addOrderedProduct,
+                  //   ),
+                  // );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ProductInCartScreen(
+                              listProduct: listProduct,
+                              addProductToCart: addOrderedProduct,
+                            )),
+                  );
                 },
                 child:
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -138,24 +180,17 @@ class _OrderScreenState extends State<OrderScreen>
   }
 }
 
-// Widget productView(AsyncSnapshot<Category> snapshot) {
-//   return null;
-// }
-
-// List<Widget> categoryInView(AsyncSnapshot<Category> snapshot) {
-//   var listCategory = snapshot.data.data;
-//   List<Widget> listCategoryInView;
-//   listCategory.forEach((element) {
-//     listCategoryInView.add(Text(element.name));
-//     return listCategory;
-//   });
-// }
 class ProductComponent extends StatefulWidget {
   final Products products;
   final Function incrementCounter;
   final Function decrementCounter;
+  final Function addProductToCart;
   ProductComponent(
-      {this.products, this.incrementCounter, this.decrementCounter, Key key})
+      {this.products,
+      this.incrementCounter,
+      this.decrementCounter,
+      this.addProductToCart,
+      key})
       : super(key: key);
 
   @override
@@ -164,55 +199,108 @@ class ProductComponent extends StatefulWidget {
 
 class _ProductComponentState extends State<ProductComponent> {
   int productCounter = 0;
-  final formatter = new NumberFormat("#,###");
+  Products product = new Products();
+
+  final formatter = new NumberFormat("#.###");
   @override
   Widget build(BuildContext context) {
     //  print(StaticValue.path + '${widget.products.mainImage}');
     return Builder(
       builder: (context) {
         return Card(
+          color: Colors.white70,
           shadowColor: Colors.black,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),
-          elevation: 5,
           child: Stack(
             children: [
-              InkWell(
-                onTap: () {
-                  widget.incrementCounter(); //tăng số trong floating
-                  setState(() {
-                    //   print(productCounter);
-                    productCounter++;
-                  });
-                },
-                child: GridTile(
-                  header: Card(
-                    //shadowColor: Colors.black,
-                    child: Center(
-                      child: Text(
-                        widget.products.productName,
-                        style: TextStyle(
-                            fontSize:
-                                MediaQuery.of(context).size.height * 0.024),
-                      ),
-                    ),
+              GridTile(
+                header: Center(
+                  child: Text(
+                    widget.products.productName,
+                    style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.height * 0.024),
                   ),
-                  footer: Card(
-                    child: Center(
-                      child: Text(
-                        formatter.format(int.parse(widget.products.price)),
-                        style: TextStyle(
-                            fontSize:
-                                MediaQuery.of(context).size.height * 0.023),
-                      ),
-                    ),
+                ),
+                footer: Container(
+                  child: Stack(
+                    //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      productCounter != 0
+                          ? SizedBox(
+                              height: 50,
+                              width: 50,
+                              child: Card(
+                                shadowColor: Colors.blue,
+                                color: Colors.white,
+                                child: IconButton(
+                                    iconSize: 20,
+                                    padding: EdgeInsets.all(0.0),
+                                    color: Colors.red,
+                                    icon: FaIcon(FontAwesomeIcons.minus),
+                                    onPressed: () {
+                                      print('OK');
+                                      widget.decrementCounter();
+
+                                      setState(
+                                        () {
+                                          productCounter--;
+                                          widget.products.amount =
+                                              productCounter;
+                                          widget.addProductToCart(
+                                              widget.products);
+                                        }, //Decrement product
+                                      );
+                                    }),
+                              ),
+                            )
+                          : Container(),
+                      // Padding(
+                      //   padding: EdgeInsets.all(10),
+                      //   child: Text(
+                      //     formatter
+                      //         .format(int.parse(widget.products.price)),
+                      //     style: TextStyle(
+                      //         fontSize:
+                      //             MediaQuery.of(context).size.height *
+                      //                 0.026),
+                      //   ),
+                      // ),
+                      // SizedBox(
+                      //     width: MediaQuery.of(context).size.width / 15)
+                      Padding(
+                        child: Center(
+                          child: Text(
+                            formatter.format(int.parse(widget.products.price)),
+                            style: TextStyle(
+                                fontSize:
+                                    MediaQuery.of(context).size.height * 0.026),
+                          ),
+                        ),
+                        padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
+                      )
+                    ],
                   ),
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(10, 24, 10, 24),
-                    child: Image.network(
-                        StaticValue.path + '${widget.products.mainImage}',
-                        fit: BoxFit.fill),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(10, 20, 10, 20),
+                  child: InkWell(
+                    child: Card(
+                      shadowColor: Colors.black,
+                      child: Image.network(
+                          StaticValue.path + '${widget.products.mainImage}',
+                          fit: BoxFit.fill),
+                    ),
+                    onTap: () {
+                      widget.incrementCounter(); //tăng số trong floating
+                      setState(() {
+                        //   print(productCounter);
+                        productCounter++;
+                        widget.products.amount = productCounter;
+                        widget.addProductToCart(widget.products);
+                      });
+                    },
                   ),
                 ),
               ),
@@ -234,59 +322,3 @@ class _ProductComponentState extends State<ProductComponent> {
     );
   }
 }
-
-// Widget product(Products products,
-//     {Function decreaseCouting, Function increaseCouting}) {
-//   return null;
-
-//   var listCategoryWithProducts = snapshot.data.data.;
-//  // listCategoryWithProducts.map((e) => null).toList();
-//   //print(listCategory[1].name);
-//   return Builder(
-//     builder: (context) {
-//       return GridView.builder(
-//         itemCount: listCategoryWithProducts.products.lenght,
-//         padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
-//         gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-//             crossAxisCount:
-//                 (MediaQuery.of(context).orientation == Orientation.portrait)
-//                     ? 3
-//                     : 3),
-//         itemBuilder: (BuildContext context, int index) {
-//           return Card(
-//             //shadowColor: Colors.black,
-//             child: Text(listCategory[index].name),
-//           );
-//         },
-//       );
-//     },
-//   );
-// }
-
-//Counting product
-int countingProduct(int counter, bool isPlus) {
-  return isPlus == true ? counter++ : counter--;
-}
-
-//Minus and plus for card
-// Container(
-//               child: Row(
-//                 mainAxisAlignment: MainAxisAlignment.end,
-//                 children: [
-//                   IconButton(
-//                     icon: FaIcon(FontAwesomeIcons.minus),
-//                     onPressed: () => countingProduct(counter, false),
-//                     color: Colors.blueAccent,
-//                   ),
-//                   Padding(
-//                     padding: EdgeInsets.all(20),
-//                     child: Text('0'),
-//                   ),
-//                   IconButton(
-//                     icon: FaIcon(FontAwesomeIcons.plus),
-//                     onPressed: () => countingProduct(counter, true),
-//                     color: Colors.blueAccent,
-//                   ),
-//                 ],
-//               ),
-//             ),

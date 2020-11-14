@@ -1,3 +1,5 @@
+import 'package:SPK_Coffee/Models/Product.dart';
+
 class Category {
   String status;
   List<Data> data;
@@ -55,63 +57,6 @@ class Data {
     if (this.products != null) {
       data['products'] = this.products.map((v) => v.toJson()).toList();
     }
-    return data;
-  }
-}
-
-class Products {
-  String id;
-  String productName;
-  String productDescription;
-  String price;
-  String hot;
-  Null popular;
-  String processDuration;
-  String mainImage;
-  String createdAt;
-  String updatedAt;
-  String categoryId;
-
-  Products(
-      {this.id,
-      this.productName,
-      this.productDescription,
-      this.price,
-      this.hot,
-      this.popular,
-      this.processDuration,
-      this.mainImage,
-      this.createdAt,
-      this.updatedAt,
-      this.categoryId});
-
-  Products.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    productName = json['productName'];
-    productDescription = json['productDescription'];
-    price = json['price'];
-    hot = json['hot'];
-    popular = json['popular'];
-    processDuration = json['processDuration'];
-    mainImage = json['mainImage'];
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
-    categoryId = json['categoryId'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['productName'] = this.productName;
-    data['productDescription'] = this.productDescription;
-    data['price'] = this.price;
-    data['hot'] = this.hot;
-    data['popular'] = this.popular;
-    data['processDuration'] = this.processDuration;
-    data['mainImage'] = this.mainImage;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    data['categoryId'] = this.categoryId;
     return data;
   }
 }

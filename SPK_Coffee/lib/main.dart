@@ -3,6 +3,7 @@ import 'package:SPK_Coffee/Components/HomeScreen/MainHomeScreen.dart';
 import 'package:SPK_Coffee/Components/KitchenScreen/MainKitChenScreen.dart';
 import 'package:SPK_Coffee/Components/ServiceScreen/MainServiceScreen.dart';
 import 'package:SPK_Coffee/Components/ServiceScreen/OrderScreen.dart';
+import 'package:SPK_Coffee/Components/ServiceScreen/ProductInCartScreen.dart';
 import 'package:flutter/material.dart';
 // import 'Utils/Config.dart';
 import 'Services/SocketManager.dart';
@@ -66,7 +67,8 @@ class _MyAppState extends State<MyApp> {
             onFloatButtonPressed: onFloatButtonPressed),
         '/Services': (context) => MainServiceScreen(),
         '/Kitchen': (context) => MainKitchenScreen(),
-        '/Order': (context) => OrderScreen()
+        '/Order': (context) => OrderScreen(),
+        '/Cart': (context) => ProductInCartScreen(),
       },
     );
   }

@@ -64,36 +64,61 @@ Widget areaWidget(Future<List<Area>> areas, int chooseArea,
       if (snapshot.hasData) {
         List<Area> list = snapshot.data;
         return SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: list
-                .map<Widget>(
-                  (data) => Container(
-                    width: MediaQuery.of(context).size.width * 0.22,
-                    height:
-                        (MediaQuery.of(context).size.height - kToolbarHeight) /
-                            12,
-                    //padding: EdgeInsets.all((10)),
-                    child: InkWell(
-                      splashColor: Colors.amberAccent,
-                      onTap: () => setStateArea(data.id),
-                      child: Card(
-                        color: data.id == chooseArea
-                            ? Colors.deepOrangeAccent[100]
-                            : null,
-                        child: Center(
-                            child: AutoSizeText(
-                          data.name,
-                          maxLines: 1,
-                        )),
-                      ),
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.22,
+                  height:
+                      (MediaQuery.of(context).size.height - kToolbarHeight) /
+                          12,
+                  //padding: EdgeInsets.all((10)),
+                  child: InkWell(
+                    splashColor: Colors.amberAccent,
+                    onTap: () => setStateArea(0),
+                    child: Card(
+                      shadowColor: Colors.black,
+                      color:
+                          chooseArea == 0 ? Colors.deepOrangeAccent[100] : null,
+                      child: Center(
+                          child: AutoSizeText(
+                        "All",
+                        maxLines: 1,
+                      )),
                     ),
                   ),
-                )
-                .toList(),
-          ),
-        );
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: list
+                      .map<Widget>(
+                        (data) => Container(
+                          width: MediaQuery.of(context).size.width * 0.22,
+                          height: (MediaQuery.of(context).size.height -
+                                  kToolbarHeight) /
+                              12,
+                          //padding: EdgeInsets.all((10)),
+                          child: InkWell(
+                            splashColor: Colors.amberAccent,
+                            onTap: () => setStateArea(data.id),
+                            child: Card(
+                              shadowColor: Colors.black,
+                              color: data.id == chooseArea
+                                  ? Colors.deepOrangeAccent[100]
+                                  : null,
+                              child: Center(
+                                  child: AutoSizeText(
+                                data.name,
+                                maxLines: 1,
+                              )),
+                            ),
+                          ),
+                        ),
+                      )
+                      .toList(),
+                ),
+              ],
+            ));
       }
       //loading
       return SpinKitCircle(
@@ -113,7 +138,7 @@ Widget listTable(Future<List<CoffeeTable>> tables, int chooseArea) {
           list = snapshot.data;
         } else {
           snapshot.data.forEach((element) {
-            if (element.id == chooseArea) list.add(element);
+            if (element.areaId == chooseArea) list.add(element);
           });
         }
         final orientation = MediaQuery.of(context).orientation;
@@ -138,24 +163,32 @@ Widget listTable(Future<List<CoffeeTable>> tables, int chooseArea) {
                     );
                   },
                   child: Card(
-                    //shadowColor: Colors.black,
-                    child: new GridTile(
-                        header: Center(
-                          child: Text(list[index].id.toString()),
+                      //shadowColor: Colors.black,
+                      child: new GridTile(
+                    header: Center(
+                      child: Padding(
+                          padding: EdgeInsets.all((10)),
+                          child: Text(list[index].areaId.toString())),
+                    ),
+                    footer: Padding(
+                        padding: EdgeInsets.all((10)),
+                        child: Center(child: Text(list[index].name))),
+                    child: Card(
+                        shadowColor: Colors.blueAccent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
                         ),
-                        footer: Center(child: Text(list[index].name)),
+                        elevation: 2,
                         child: list[index].isEmpty
                             ? Image.asset("assets/img/inactive-table.png")
                             : Image.asset("assets/img/active-table.png")),
-                  ));
+                  )));
             },
           ),
         );
       }
       //loading
-      return SpinKitCircle(
-        color: Colors.green,
-      );
+      return Container();
     },
   );
 }

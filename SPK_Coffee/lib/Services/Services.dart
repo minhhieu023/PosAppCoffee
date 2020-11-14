@@ -7,7 +7,7 @@ import 'package:SPK_Coffee/Models/Table.dart';
 import 'package:http/http.dart' as http;
 
 class ServiceManager {
-  final _href = 'https://caffeeshopbackend.herokuapp.com';
+  final _href = 'http://192.168.1.2:8000';
   ServiceManager();
   Future<ListProduct> getProduct() async {
     final response = await http.get(_href + '/products/all');
@@ -40,12 +40,15 @@ class ServiceManager {
   }
 
   Future<List<Area>> getArea() async {
+    print('$_href/area');
     final response = await http.get('$_href/area');
+    print(response);
     if (response.statusCode == 200) {
       List<Area> areas = [];
       jsonDecode(response.body)['data'].forEach((item) {
         areas.add(new Area.fromJson(item));
       });
+      print(areas.toList());
       return areas;
     } else {
       return null;
@@ -59,7 +62,6 @@ class ServiceManager {
       jsonDecode(response.body)['data'].forEach((item) {
         tables.add(new CoffeeTable.fromJson(item));
       });
-
       return tables;
     } else {
       return null;
