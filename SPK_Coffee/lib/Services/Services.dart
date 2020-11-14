@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:SPK_Coffee/Models/OrderList.dart';
 import 'package:SPK_Coffee/Models/Area.dart';
 import 'package:SPK_Coffee/Models/Category.dart';
 import 'package:SPK_Coffee/Models/Product.dart';
@@ -66,5 +67,28 @@ class ServiceManager {
     } else {
       return null;
     }
+  }
+
+  Future<OrderList> getAllOrders() async {
+    final response = await http.get('$_href/kitchen');
+    // print(response.body);
+    if (response.statusCode == 200) {
+      OrderList orderList = OrderList.fromJson(jsonDecode(response.body));
+      return orderList;
+    }
+    return null;
+  }
+
+  Future<OrderList> updateOrder(String id, String state) async {
+    final res = await http.post("$_href/kitchen",
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: jsonEncode(<String, String>{'id': id, 'state': state}));
+    if (res.statusCode == 200) {
+      OrderList orderList = OrderList.fromJson(jsonDecode(res.body));
+      return orderList;
+    }
+    return null;
   }
 }
