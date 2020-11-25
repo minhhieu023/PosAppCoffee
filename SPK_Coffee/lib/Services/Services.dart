@@ -11,6 +11,7 @@ import 'package:http/http.dart' as http;
 
 class ServiceManager {
   final _href = 'http://103.153.73.107:8000';
+  // final _href = 'https://caffeeshopbackend.herokuapp.com
   ServiceManager();
   Future<ListProduct> getProduct() async {
     final response = await http.get(_href + '/products/all');
@@ -42,6 +43,15 @@ class ServiceManager {
     }
   }
 
+  Future<OrderList> getActiveProducts() async {
+    final response = await http.get('$_href/kitchen');
+    if (response.statusCode == 200) {
+      OrderList orderList = OrderList.fromJson(jsonDecode(response.body));
+      return orderList;
+    }
+    return null;
+  }
+
   Future<List<Area>> getArea() async {
     print('$_href/area');
     final response = await http.get('$_href/area');
@@ -69,6 +79,18 @@ class ServiceManager {
     } else {
       return null;
     }
+  }
+
+  Future<bool> updateOrderDetailsState(String id, String state) async {
+    final response = await http.put('$_href/kitchen/detail/$id',
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: jsonEncode(<String, String>{'state': state}));
+    if (response.statusCode == 200) {
+      return true;
+    }
+    return false;
   }
 
   Future<OrderList> getAllOrders() async {

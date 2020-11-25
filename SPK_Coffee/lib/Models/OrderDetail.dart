@@ -6,6 +6,8 @@ class OrderDetail {
   String createdAt;
   String updatedAt;
   String orderId;
+  String state;
+  String note;
 
   OrderDetail(
       {this.id,
@@ -14,7 +16,9 @@ class OrderDetail {
       this.price,
       this.createdAt,
       this.updatedAt,
-      this.orderId});
+      this.orderId,
+      this.state,
+      this.note});
 
   OrderDetail.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -24,6 +28,8 @@ class OrderDetail {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     orderId = json['orderId'];
+    state = json['state'];
+    note = json['note'];
   }
 
   Map<String, dynamic> toJson() {
@@ -31,7 +37,13 @@ class OrderDetail {
     data['id'] = this.id;
     data['productId'] = this.productId;
     data['amount'] = this.amount;
-    data['price'] = this.price * this.amount;
+
+    data['price'] = this.price;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    data['orderId'] = this.orderId;
+    data['state'] = this.state;
+    data['note'] = this.note;
     return data;
   }
 }

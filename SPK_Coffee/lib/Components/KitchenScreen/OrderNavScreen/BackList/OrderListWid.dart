@@ -1,27 +1,43 @@
-import 'package:SPK_Coffee/Components/KitchenScreen/BackList/OrderDetail.dart';
-import 'package:SPK_Coffee/Components/KitchenScreen/BackList/OrderItem.dart';
-import 'package:SPK_Coffee/Components/KitchenScreen/OnCompleteList/CompleteList.dart';
-import 'package:SPK_Coffee/Components/KitchenScreen/OnProcessList/ProcessList.dart';
+import 'package:SPK_Coffee/Components/KitchenScreen/OrderNavScreen/OnCompleteList/CompleteList.dart';
+import 'package:SPK_Coffee/Components/KitchenScreen/OrderNavScreen/OnProcessList/ProcessList.dart';
 import 'package:SPK_Coffee/Models/Order.dart';
 import 'package:SPK_Coffee/Models/OrderDetail.dart';
 import 'package:SPK_Coffee/Models/OrderList.dart';
+import 'package:SPK_Coffee/Services/DataBaseManagement.dart';
 import 'package:SPK_Coffee/Services/Services.dart';
 import 'package:SPK_Coffee/Services/SocketManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:screen_loader/screen_loader.dart';
+
+import 'OrderDetail.dart';
+import 'OrderItem.dart';
+
+GlobalKey<_OrderListWidState> orderListWid = GlobalKey();
 
 class OrderListWid extends StatefulWidget {
+  OrderListWid({Key key}) : super(key: key);
   @override
   _OrderListWidState createState() => _OrderListWidState();
 }
 
-class _OrderListWidState extends State<OrderListWid> {
+class _OrderListWidState extends State<OrderListWid>
+    with ScreenLoader<OrderListWid> {
   Future<OrderList> orderList;
+  Future<OrderList> filterList;
+  DataBaseManagement _db = DataBaseManagement();
   int _currentTab = 0;
   @override
   void initState() {
     super.initState();
     getOrders();
+  }
+
+  @override
+  loader() {
+    return AlertDialog(
+      title: Text('Wait.. Loading data..'),
+    );
   }
 
   setStateIfMounted(f) {
@@ -31,8 +47,18 @@ class _OrderListWidState extends State<OrderListWid> {
   }
 
   getOrders() {
-    setStateIfMounted(() {
-      orderList = ServiceManager().getAllOrders();
+    this.performFuture(() {
+      setStateIfMounted(() {
+        orderList = ServiceManager().getAllOrders();
+        filterList = orderList;
+      });
+      orderList.then((value) async {
+        await _db.initDB();
+        value.data.forEach((element) {
+          _db.saveOrderTables(element);
+        });
+      });
+      return orderList;
     });
   }
 
@@ -47,21 +73,45 @@ class _OrderListWidState extends State<OrderListWid> {
     );
   }
 
+  void searchOrder(String id) async {
+    // print("run!");
+    List<Order> list = await filterList.then(
+        (value) => value.data.where((element) => element.id == id).toList());
+
+    setState(() {
+      filterList.then((value) {
+        value.data = list;
+      });
+    });
+  }
+
+  void resetSearch() async {
+    filterList = ServiceManager().getAllOrders();
+  }
+
   void getTabIndex(int tab) {
     _currentTab = tab;
   }
 
-  updateOrder(String orderId) {
-    setState(() {
-      orderList = ServiceManager()
-          .updateOrder(orderId, _currentTab == 0 ? "processing" : "ready");
+  updateOrder(String orderId) async {
+    await this.performFuture(() {
+      setState(() {
+        orderList = ServiceManager()
+            .updateOrder(orderId, _currentTab == 0 ? "processing" : "ready");
+        filterList = orderList;
+      });
+      return orderList;
     });
     SocketManagement().makeMessage("makeUpdateOrderScreen");
   }
 
-  updateOrderByState(String orderId, String stateToChange) {
-    setState(() {
-      orderList = ServiceManager().updateOrder(orderId, stateToChange);
+  updateOrderByState(String orderId, String stateToChange) async {
+    await this.performFuture(() {
+      setState(() {
+        orderList = ServiceManager().updateOrder(orderId, stateToChange);
+        filterList = orderList;
+      });
+      return orderList;
     });
     SocketManagement().makeMessage("makeUpdateOrderScreen");
   }
@@ -108,10 +158,16 @@ class _OrderListWidState extends State<OrderListWid> {
     );
   }
 
+  // @override
+  // Widget build(BuildContext context) {
+
+  // }
+
   @override
-  Widget build(BuildContext context) {
+  Widget screen(BuildContext context) {
+    // TODO: implement screen
     return FutureBuilder<OrderList>(
-      future: orderList,
+      future: filterList,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return Scrollbar(
@@ -224,7 +280,7 @@ class _BottomItemState extends State<BottomItem> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.orderList.data);
+    // print(widget.orderList.data);
     return Builder(
       builder: (context) {
         return DefaultTabController(
@@ -240,10 +296,10 @@ class _BottomItemState extends State<BottomItem> {
                   },
                   tabs: [
                     Tab(
-                      icon: Icon(Icons.room),
+                      icon: Icon(Icons.work),
                     ),
                     Tab(
-                      icon: Icon(Icons.android),
+                      icon: Icon(Icons.done_outline),
                     )
                   ],
                 ),

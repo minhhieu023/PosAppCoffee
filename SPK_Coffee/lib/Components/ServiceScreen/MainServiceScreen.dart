@@ -1,6 +1,9 @@
+import 'dart:ffi';
+
 import 'package:SPK_Coffee/Components/ServiceScreen/OrderScreen.dart';
 import 'package:SPK_Coffee/Models/Area.dart';
 import 'package:SPK_Coffee/SeedData/Data.dart';
+import 'package:SPK_Coffee/Services/DataBaseManagement.dart';
 import 'package:SPK_Coffee/Services/Services.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +28,23 @@ class _MainServiceScreenState extends State<MainServiceScreen> {
     _serviceManager = ServiceManager();
     _areas = _serviceManager.getArea();
     _tables = _serviceManager.getTable();
+    getTable();
+  }
+
+  Future<void> getTable() async {
+    DataBaseManagement db = DataBaseManagement();
+    await db.initDB();
+    await db.getTable("Products");
+    // await updatePropTable();
+  }
+
+  Future<void> updatePropTable() async {
+    DataBaseManagement db = DataBaseManagement();
+    await db.initDB();
+    await db.updateRecord(
+        "Products", "productDescription = 'Example'", "id = 1");
+    // await db.dropTableIfExists("Products");
+    await getTable();
   }
 
   void setStateArea(int _chooseArea) {
