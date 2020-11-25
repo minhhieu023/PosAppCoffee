@@ -39,6 +39,7 @@ class Products {
   String categoryId;
   List<Sizes> sizes;
   List<Images> images;
+  String productId;
 
   Products(
       {this.id,
@@ -53,7 +54,9 @@ class Products {
       this.updatedAt,
       this.categoryId,
       this.sizes,
-      this.images});
+      this.images,
+      this.amount,
+      this.productId});
 
   Products.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -101,6 +104,8 @@ class Products {
     if (this.images != null) {
       data['images'] = this.images.map((v) => v.toJson()).toList();
     }
+    data['amount'] = this.amount;
+    data['productId'] = this.productId;
     return data;
   }
 }

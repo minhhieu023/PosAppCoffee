@@ -2,19 +2,68 @@ import 'package:SPK_Coffee/Utils/Feature.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-Widget dashBoard() {
+class DashBoard extends StatefulWidget {
+  DashBoard({Key key}) : super(key: key);
+
+  @override
+  _DashBoardState createState() => _DashBoardState();
+}
+
+class _DashBoardState extends State<DashBoard> {
+  Future<List<Feature>> getRole() async {
+    List<Feature> listFeature = new List<Feature>();
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    if (preferences.getString("role") == 'admin') {
+      featureForAdmin.forEach((element) {
+        listFeature.add(element);
+      });
+    } else if (preferences.getString("role") == 'bartender') {
+      featureForBartender.forEach((element) {
+        listFeature.add(element);
+      });
+    } else if (preferences.getString("role") == "waiter") {
+      featureForWaiter.forEach((element) {
+        listFeature.add(element);
+      });
+    }
+    return listFeature;
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    // getRole();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<Feature>>(
+      future: getRole(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData)
+          return dashBoard(snapshot.data);
+        else
+          return Container(child: CircularProgressIndicator());
+      },
+    );
+  }
+}
+
+Widget dashBoard(List<Feature> listFeature) {
   return LayoutBuilder(
     builder: (context, constraints) {
       if (constraints.maxWidth < constraints.maxHeight)
-        return verticalView();
+        return verticalView(listFeature);
       else //tablet
-        return horizonView();
+        return horizonView(listFeature);
     },
   );
 }
 
-Widget verticalView() {
+Widget verticalView(List<Feature> listFeature) {
   return Builder(
     builder: (context) {
       return Center(
@@ -37,7 +86,7 @@ Widget verticalView() {
   );
 }
 
-Widget horizonView() {
+Widget horizonView(List<Feature> listFeature) {
   return Builder(builder: (context) {
     // double size = (MediaQuery.of(context).size.width - kToolbarHeight) / 3;
     return Row(
@@ -75,8 +124,14 @@ Widget childFeature(Feature feature) {
 
       color: feature.color,
       child: InkWell(
-        onTap: () {
-          Navigator.pushNamed(context, '/${feature.title}');
+        onTap: () async {
+          if (feature.title == "Logout") {
+            SharedPreferences preferences =
+                await SharedPreferences.getInstance();
+            await preferences.clear();
+            Navigator.pushNamed(context, '/');
+          } else
+            Navigator.pushNamed(context, '/${feature.title}');
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

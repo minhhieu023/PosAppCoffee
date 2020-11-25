@@ -31,10 +31,7 @@ class OrderDetail {
     data['id'] = this.id;
     data['productId'] = this.productId;
     data['amount'] = this.amount;
-    data['price'] = this.price;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    data['orderId'] = this.orderId;
+    data['price'] = this.price * this.amount;
     return data;
   }
 }

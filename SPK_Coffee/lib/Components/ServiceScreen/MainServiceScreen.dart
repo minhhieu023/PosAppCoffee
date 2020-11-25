@@ -4,7 +4,7 @@ import 'package:SPK_Coffee/SeedData/Data.dart';
 import 'package:SPK_Coffee/Services/Services.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:SPK_Coffee/Models/Table.dart';
+import 'package:SPK_Coffee/Models/CoffeeTable.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class MainServiceScreen extends StatefulWidget {
@@ -39,6 +39,16 @@ class _MainServiceScreenState extends State<MainServiceScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Service"),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            color: Colors.blueAccent,
+            icon: Icon(Icons.home),
+            onPressed: () {
+              Navigator.pushReplacementNamed(context, "/Dashboard");
+            },
+          )
+        ],
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -152,13 +162,12 @@ Widget listTable(Future<List<CoffeeTable>> tables, int chooseArea) {
             itemBuilder: (BuildContext context, int index) {
               return InkWell(
                   onTap: () {
+                    CoffeeTable currentTable = list[index];
                     Navigator.pushNamed(
                       context,
                       '/Order',
                       arguments: OrderScreen(
-                        tableID: list[index].id.toString(),
-                        areaID: list[index].areaId.toString(),
-                        tableName: list[index].name,
+                        table: currentTable,
                       ),
                     );
                   },

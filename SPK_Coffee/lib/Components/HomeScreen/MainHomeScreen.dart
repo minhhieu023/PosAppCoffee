@@ -1,13 +1,17 @@
 import 'package:SPK_Coffee/Components/Hamberger/Hamberger.dart';
 import 'package:SPK_Coffee/Components/HomeScreen/DashBoard.dart';
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/material.dart';
+import 'package:SPK_Coffee/Utils/Feature.dart';
 
-import '../../Services/SocketManager.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'AppBarCus.dart';
 
 class MainHomeScreen extends StatefulWidget {
-  MainHomeScreen({Key key}) : super(key: key);
+  Function onFloatButtonPressed;
+  Function onAddButtonPressed;
+  MainHomeScreen({this.onAddButtonPressed, this.onFloatButtonPressed, key})
+      : super(key: key);
   @override
   _MainHomeScreenState createState() => _MainHomeScreenState();
 }
@@ -23,16 +27,21 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return mainPage();
+    return mainPage(
+      onAddButtonPressed: widget.onAddButtonPressed,
+      onFloatButtonPressed: widget.onFloatButtonPressed,
+    );
   }
 }
 
-Widget mainPage(
-    {Function() onAddButtonPressed, Function() onFloatButtonPressed}) {
+Widget mainPage({
+  Function onAddButtonPressed,
+  Function onFloatButtonPressed,
+}) {
   return Builder(builder: (context) {
     return Scaffold(
       appBar: appBar(),
-      body: dashBoard(),
+      body: DashBoard(),
       // drawerScrimColor: Colors.blueAccent,
       drawer: Hamberger(),
       floatingActionButton: FloatingActionButton(

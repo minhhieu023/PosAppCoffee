@@ -1,5 +1,7 @@
 import 'package:SPK_Coffee/Components/ServiceScreen/ProductInCartScreen.dart';
 import 'package:SPK_Coffee/Models/Category.dart';
+import 'package:SPK_Coffee/Models/CoffeeTable.dart';
+import 'package:SPK_Coffee/Models/OrderDetail.dart';
 import 'package:SPK_Coffee/Models/Product.dart';
 import 'package:SPK_Coffee/Services/Services.dart';
 import 'package:SPK_Coffee/Utils/Config.dart';
@@ -11,13 +13,10 @@ import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class OrderScreen extends StatefulWidget {
-  final String tableID;
-  final String areaID;
-  final String tableName;
+  final CoffeeTable table;
+
   OrderScreen({
-    this.tableID,
-    this.areaID,
-    this.tableName,
+    this.table,
     Key key,
   }) : super(key: key);
   @override
@@ -26,6 +25,7 @@ class OrderScreen extends StatefulWidget {
 
 class _OrderScreenState extends State<OrderScreen>
     with SingleTickerProviderStateMixin {
+  bool isUpdateInCart = false;
   Future<Category> futureGetCategory;
   TabController tabController;
   List<Products> listProduct = new List<Products>();
@@ -62,8 +62,17 @@ class _OrderScreenState extends State<OrderScreen>
     });
   }
 
-  void updateAmountProduct(List<Products> listProduct) {
-    setState(() {});
+  void updateAmountProduct() {
+    setState(() {
+      counter = 0;
+      isUpdateInCart = true;
+      listProduct.removeWhere((element) => element.amount == 0);
+      listProduct.forEach((element) {
+        counter += element.amount;
+      });
+    });
+    isUpdateInCart = true;
+    print(counter);
   }
 
   @override
@@ -78,6 +87,7 @@ class _OrderScreenState extends State<OrderScreen>
 
   @override
   Widget build(BuildContext context) {
+    final OrderScreen args = ModalRoute.of(context).settings.arguments;
     return FutureBuilder<Category>(
         future: futureGetCategory,
         builder: (context, snapshot) {
@@ -85,7 +95,7 @@ class _OrderScreenState extends State<OrderScreen>
             print(snapshot.data);
             return Scaffold(
               appBar: AppBar(
-                title: Text("Order - "),
+                title: Text("${args.table.name}-Order"),
                 bottom: TabBar(
                   key: Key("Drink"),
                   controller: tabController,
@@ -134,6 +144,7 @@ class _OrderScreenState extends State<OrderScreen>
                             incrementCounter: _incrementCounter,
                             decrementCounter: _decrementCounter,
                             addProductToCart: addOrderedProduct,
+                            isUpdateInCart: isUpdateInCart,
                           );
                         },
                       );
@@ -141,30 +152,76 @@ class _OrderScreenState extends State<OrderScreen>
                   },
                 ).toList(),
               ),
-              floatingActionButton: FloatingActionButton(
-                onPressed: () {
-                  // showMaterialModalBottomSheet(
-                  //   context: context,
-                  //   builder: (context, scrollController) => ProductInCartScreen(
-                  //     listProduct: listProduct,
-                  //     addProductToCart: addOrderedProduct,
-                  //   ),
-                  // );
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ProductInCartScreen(
-                              listProduct: listProduct,
-                              addProductToCart: addOrderedProduct,
-                            )),
-                  );
-                },
-                child:
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Icon(Icons.shopping_cart),
-                  Text(counter.toString(), style: TextStyle(fontSize: 20)),
-                ]),
-                backgroundColor: Colors.blue,
+              floatingActionButton: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  FloatingActionButton(
+                    onPressed: () {
+                      // showMaterialModalBottomSheet(
+                      //   context: context,
+                      //   builder: (context, scrollController) => ProductInCartScreen(
+                      //     listProduct: listProduct,
+                      //     addProductToCart: addOrderedProduct,
+                      //   ),
+                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ProductInCartScreen(
+                                  listProduct: listProduct,
+                                  addProductToCart: updateAmountProduct,
+                                )),
+                      );
+                    },
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.shopping_cart),
+                          Text(counter.toString(),
+                              style: TextStyle(fontSize: 20)),
+                        ]),
+                    backgroundColor: Colors.blue,
+                  ),
+                  listProduct.isNotEmpty
+                      ? Container(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.3,
+                                child: RaisedButton(
+                                  color: Colors.amberAccent,
+                                  onPressed: () {
+                                    createOrder(listProduct, 'admin', 'open',
+                                        (args.table.id).toString(), "0");
+                                    print("Lưu");
+                                  },
+                                  child: Text("Lưu"),
+                                ),
+                              ),
+                              SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.03),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.3,
+                                child: RaisedButton(
+                                  color: Colors.pinkAccent,
+                                  onPressed: () {
+                                    print("thanh toán");
+                                  },
+                                  child: Text(
+                                    "Thanh toán",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      : Container(),
+                ],
               ),
             );
           } else
@@ -185,11 +242,13 @@ class ProductComponent extends StatefulWidget {
   final Function incrementCounter;
   final Function decrementCounter;
   final Function addProductToCart;
+  final isUpdateInCart;
   ProductComponent(
       {this.products,
       this.incrementCounter,
       this.decrementCounter,
       this.addProductToCart,
+      this.isUpdateInCart,
       key})
       : super(key: key);
 
@@ -204,7 +263,13 @@ class _ProductComponentState extends State<ProductComponent> {
   final formatter = new NumberFormat("#.###");
   @override
   Widget build(BuildContext context) {
-    //  print(StaticValue.path + '${widget.products.mainImage}');
+    if (widget.isUpdateInCart == true) {
+      if (widget.products.amount == null)
+        productCounter = 0;
+      else
+        productCounter = widget.products.amount;
+    }
+
     return Builder(
       builder: (context) {
         return Card(
@@ -321,4 +386,23 @@ class _ProductComponentState extends State<ProductComponent> {
       },
     );
   }
+}
+
+Future<void> createOrder(List<Products> listProduct, String employeeId,
+    String state, String tableId, String discount) async {
+  ServiceManager serviceManager = new ServiceManager();
+  // List<OrderDetail> listOrderdetail;
+  // listProduct.forEach((element) {
+  //   OrderDetail orderDetail = new OrderDetail(
+  //       productId: element.id,
+  //       amount: element.amount,
+  //       price: (int.parse(element.price) * element.amount).toString());
+  //   listOrderdetail.add(orderDetail);
+  // });
+  listProduct.forEach((element) {
+    element.productId = element.id;
+    element.price = (int.parse(element.price) * element.amount).toString();
+  });
+  await serviceManager.createOrder(
+      listProduct, employeeId, state, tableId, discount);
 }

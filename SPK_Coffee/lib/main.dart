@@ -1,11 +1,13 @@
 import 'dart:io';
 import 'package:SPK_Coffee/Components/HomeScreen/MainHomeScreen.dart';
 import 'package:SPK_Coffee/Components/KitchenScreen/MainKitChenScreen.dart';
+import 'package:SPK_Coffee/Components/LoginScreen/LoginScreen.dart';
 import 'package:SPK_Coffee/Components/ServiceScreen/MainServiceScreen.dart';
 import 'package:SPK_Coffee/Components/ServiceScreen/OrderScreen.dart';
 import 'package:SPK_Coffee/Components/ServiceScreen/ProductInCartScreen.dart';
 import 'package:flutter/material.dart';
 // import 'Utils/Config.dart';
+import 'Components/LoginScreen/LoginUi.dart';
 import 'Services/SocketManager.dart';
 
 class MyHttpOverrides extends HttpOverrides {
@@ -62,9 +64,11 @@ class _MyAppState extends State<MyApp> {
       // theme: ThemeData(primaryColor: Colors.blue[100]),
       initialRoute: '/',
       routes: {
-        '/': (context) => mainPage(
-            onAddButtonPressed: onAddButtonPressed,
-            onFloatButtonPressed: onFloatButtonPressed),
+        '/': (context) => LoginScreen(),
+        '/Dashboard': (context) => MainHomeScreen(
+              onAddButtonPressed: onAddButtonPressed,
+              onFloatButtonPressed: onFloatButtonPressed,
+            ),
         '/Services': (context) => MainServiceScreen(),
         '/Kitchen': (context) => MainKitchenScreen(),
         '/Order': (context) => OrderScreen(),

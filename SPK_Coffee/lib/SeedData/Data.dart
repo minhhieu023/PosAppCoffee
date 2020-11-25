@@ -1,5 +1,5 @@
 import 'package:SPK_Coffee/Models/Area.dart';
-import 'package:SPK_Coffee/Models/Table.dart';
+import 'package:SPK_Coffee/Models/CoffeeTable.dart';
 
 class SeedData {
   List<Area> listArea = [

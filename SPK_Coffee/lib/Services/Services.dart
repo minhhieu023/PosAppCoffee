@@ -1,14 +1,16 @@
 import 'dart:convert';
 
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:SPK_Coffee/Models/OrderList.dart';
 import 'package:SPK_Coffee/Models/Area.dart';
 import 'package:SPK_Coffee/Models/Category.dart';
 import 'package:SPK_Coffee/Models/Product.dart';
-import 'package:SPK_Coffee/Models/Table.dart';
+import 'package:SPK_Coffee/Models/CoffeeTable.dart';
+import 'package:SPK_Coffee/Services/SocketManager.dart';
 import 'package:http/http.dart' as http;
 
 class ServiceManager {
-  final _href = 'http://192.168.1.2:8000';
+  final _href = 'http://103.153.73.107:8000';
   ServiceManager();
   Future<ListProduct> getProduct() async {
     final response = await http.get(_href + '/products/all');
@@ -90,5 +92,65 @@ class ServiceManager {
       return orderList;
     }
     return null;
+  }
+
+  //Add a order with action: Open or Closed or Somethingelse
+  Future<dynamic> createOrder(List<Products> listOrderDetail, String employeeId,
+      String state, String tableId, String discount) async {
+    //Map<String, dynamic> orderDetails = new Map<String, dynamic>();
+    // Map<String, dynamic> listOrderDetailJson = new Map<String, dynamic>();
+    List<Map<String, dynamic>> listOrderDetailJson =
+        new List<Map<String, dynamic>>();
+    listOrderDetail.forEach((element) {
+      Map<String, dynamic> orderDetails = new Map<String, dynamic>();
+      orderDetails['productId'] = element.id;
+      orderDetails['amount'] = element.amount;
+      orderDetails['price'] = element.price;
+      listOrderDetailJson.add(orderDetails);
+    });
+
+    final response = await http
+        .post(
+          "$_href/order",
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8'
+          },
+          body: jsonEncode(<String, dynamic>{
+            'employeeId': employeeId,
+            'state': state,
+            'discount': discount,
+            'tableId': tableId,
+            'orderProducts': listOrderDetailJson.toList(),
+          }),
+        )
+        .then(
+            (value) => SocketManagement().makeMessage("makeUpdateOrderScreen"))
+        .catchError((error) => print("fail"));
+  }
+
+  Future<int> loginEmployee(String userName, String passWord) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final response = await http
+        .post(
+          "$_href/login/employee",
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8'
+          },
+          body: jsonEncode(
+              <String, dynamic>{'userName': userName, "password": passWord}),
+        )
+        .catchError((error) => print("fail"));
+    if (response.statusCode == 200) {
+      Map<String, dynamic> json = new Map<String, dynamic>();
+      json = jsonDecode(response.body);
+      if (json['status'] == 'Success') {
+        String name = json['name'];
+        await prefs.setString('name', name);
+        String role = json['role'];
+        await prefs.setString('role', role);
+      }
+      return 0;
+    }
+    return 0;
   }
 }

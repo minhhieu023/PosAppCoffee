@@ -13,7 +13,14 @@ class ProductInCartScreen extends StatefulWidget {
 }
 
 class _ProductInCartScreenState extends State<ProductInCartScreen> {
-  void updateProductAmout(Products product) {}
+  bool isRemoveProduct = false;
+
+  void updateListProductWhenRemove() {
+    setState(() {
+      isRemoveProduct = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,16 +28,36 @@ class _ProductInCartScreenState extends State<ProductInCartScreen> {
         title: Text("Ordered Product List"),
         centerTitle: true,
       ),
-      body: Builder(
-        builder: (context) {
-          return ListView.builder(
-              itemCount: widget.listProduct.length,
-              itemBuilder: (BuildContext context, int index) {
-                return ProductListView(
-                    product: widget.listProduct[index],
-                    updateProductAmount: widget.addProductToCart);
-              });
-        },
+      body: Column(
+        children: [
+          Container(
+            height:
+                (MediaQuery.of(context).size.height - kToolbarHeight) * 0.88,
+            // width: MediaQuery.of(context).size.width,
+            child: Builder(
+              builder: (context) {
+                return ListView.builder(
+                    itemCount: widget.listProduct.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return ProductListView(
+                          product: widget.listProduct[index],
+                          updateProductAmount: widget.addProductToCart,
+                          updateListProductWhenRemove:
+                              updateListProductWhenRemove);
+                    });
+              },
+            ),
+          ),
+          SizedBox(
+              width: MediaQuery.of(context).size.width * 0.7,
+              child: RaisedButton(
+                color: Colors.amber,
+                onPressed: () {
+                  print("OK");
+                },
+                child: Text("Thanh Toán"),
+              ))
+        ],
       ),
     );
   }
@@ -39,7 +66,12 @@ class _ProductInCartScreenState extends State<ProductInCartScreen> {
 class ProductListView extends StatefulWidget {
   final Products product;
   final Function updateProductAmount;
-  ProductListView({this.product, this.updateProductAmount, key})
+  final Function updateListProductWhenRemove;
+  ProductListView(
+      {this.product,
+      this.updateProductAmount,
+      this.updateListProductWhenRemove,
+      key})
       : super(key: key);
 
   @override
@@ -74,49 +106,52 @@ class _ProductListViewState extends State<ProductListView> {
             ),
           ), //Stack Product
           Padding(
-              padding: EdgeInsets.only(top: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      widget.product.amount--;
-                      productAmount.text = widget.product.amount.toString();
-                      widget.updateProductAmount;
-                      print(widget.product.amount.toString());
-                    },
-                    color: Colors.red,
-                    icon: FaIcon(FontAwesomeIcons.minus),
-                  ),
-                  SizedBox(
-                    height: 30,
-                    width: 30,
-                    child: TextFormField(
-                      controller: productAmount,
-                      keyboardType: TextInputType.number,
-                      //  / initialValue: widget.product.amount.toString(),
-                      textAlign: TextAlign.center,
-                      onEditingComplete: () => {
-                        setState(() {
-                          widget.product.amount = int.parse(productAmount.text);
-                        })
-                      },
-                    ),
-                  ),
-                  IconButton(
-                    color: Colors.green,
-                    icon: FaIcon(FontAwesomeIcons.plus),
-                    onPressed: () {
+            padding: EdgeInsets.only(top: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    widget.product.amount--;
+                    productAmount.text = widget.product.amount.toString();
+                    print(widget.product.amount.toString());
+                    widget.updateProductAmount.call();
+                    widget.updateListProductWhenRemove.call();
+                  },
+                  color: Colors.red,
+                  icon: FaIcon(FontAwesomeIcons.minus),
+                ),
+                SizedBox(
+                  height: 30,
+                  width: 30,
+                  child: TextFormField(
+                    controller: productAmount,
+                    keyboardType: TextInputType.number,
+                    //  / initialValue: widget.product.amount.toString(),
+                    textAlign: TextAlign.center,
+                    onEditingComplete: () => {
                       setState(() {
-                        widget.product.amount++;
-                        productAmount.text = widget.product.amount.toString();
-                        print(widget.product.amount.toString());
-                      });
+                        widget.product.amount = int.parse(productAmount.text);
+                      })
                     },
-                  )
-                ],
-              )),
+                  ),
+                ),
+                IconButton(
+                  color: Colors.green,
+                  icon: FaIcon(FontAwesomeIcons.plus),
+                  onPressed: () {
+                    setState(() {
+                      widget.product.amount++;
+                      productAmount.text = widget.product.amount.toString();
+                      print(widget.product.amount.toString());
+                      widget.updateProductAmount.call();
+                    });
+                  },
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
