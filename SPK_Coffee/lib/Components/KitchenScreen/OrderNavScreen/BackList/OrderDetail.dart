@@ -33,12 +33,12 @@ class OrderDetailWid extends StatelessWidget {
           leading: CircleAvatar(
             backgroundImage: AssetImage("assets/img/juice.png"),
           ),
-          title: Text(getProductInfo(detail.orderId, 'name')),
+          title: Text(getProductInfo(detail.productId, 'name')),
           subtitle: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                  "Time to make: ${getProductInfo(detail.orderId, 'duration')}"),
+                  "Time to make: ${getProductInfo(detail.productId, 'duration')}"),
               Text("Số lượng: ${detail.amount}")
             ],
           ),

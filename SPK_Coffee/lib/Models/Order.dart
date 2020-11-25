@@ -8,6 +8,8 @@ class Order {
   String state;
   String total;
   String discount;
+  String voucherId;
+  String note;
   List<OrderDetail> details;
   List<ProductsInfo> productsInfo;
   Order(
@@ -17,7 +19,9 @@ class Order {
       this.state,
       this.total,
       this.discount,
-      this.details});
+      this.details,
+      this.voucherId = 'null',
+      this.note = 'null'});
 
   Order.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -72,13 +76,15 @@ class ProductsInfo {
   String id;
   String productName;
   String processDuration;
-
-  ProductsInfo({this.id, this.productName, this.processDuration});
+  String mainImage;
+  ProductsInfo(
+      {this.id, this.productName, this.processDuration, this.mainImage});
 
   ProductsInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     productName = json['productName'];
     processDuration = json['processDuration'];
+    mainImage = json['mainImage'];
   }
 
   Map<String, dynamic> toJson() {
@@ -86,6 +92,7 @@ class ProductsInfo {
     data['id'] = this.id;
     data['productName'] = this.productName;
     data['processDuration'] = this.processDuration;
+    data['mainImage'] = this.mainImage;
     return data;
   }
 }
