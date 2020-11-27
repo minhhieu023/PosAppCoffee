@@ -100,9 +100,7 @@ class _MyAppState extends State<MyApp> {
 
     // await _db.getTable("Products");
     return Future.value(
-      mainPage(
-          onAddButtonPressed: onAddButtonPressed,
-          onFloatButtonPressed: onFloatButtonPressed),
+      LoginScreen(),
     );
   }
 
@@ -121,7 +119,7 @@ class _MyAppState extends State<MyApp> {
       // theme: ThemeData(primaryColor: Colors.blue[100]),
       initialRoute: '/',
       routes: {
-        //'/': (context) => LoginScreen(),
+        '/Login': (context) => LoginScreen(),
         '/Dashboard': (context) => MainHomeScreen(
               onAddButtonPressed: onAddButtonPressed,
               onFloatButtonPressed: onFloatButtonPressed,

@@ -40,7 +40,6 @@ dependencies:
   sqflite: ^1.3.0
   splashscreen: ^1.3.3
   flutter_slidable: ^0.5.7
-  shared_preferences: ^0.5.12+4
   unicons: 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
