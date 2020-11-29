@@ -10,7 +10,8 @@ import 'package:SPK_Coffee/Services/SocketManager.dart';
 import 'package:http/http.dart' as http;
 
 class ServiceManager {
-  final _href = 'http://103.153.73.107:8000';
+  //final _href = 'http://hieuvm.xyz:8000';
+  final _href = 'http://192.168.1.8:8000';
   // final _href = 'https://caffeeshopbackend.herokuapp.com
   ServiceManager();
   Future<ListProduct> getProduct() async {
@@ -159,7 +160,7 @@ class ServiceManager {
             'Content-Type': 'application/json; charset=UTF-8'
           },
           body: jsonEncode(
-              <String, dynamic>{'userName': userName, "password": passWord}),
+              <String, dynamic>{"userName": userName, "password": passWord}),
         )
         .catchError((error) => print("fail"));
     if (response.statusCode == 200) {
@@ -174,5 +175,27 @@ class ServiceManager {
       return 0;
     }
     return 0;
+  }
+
+  Future<String> mergeOrder(List<int> listTableToMerge) async {
+    final response = await http
+        .post(
+          "$_href/table/merge",
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8'
+          },
+          body: jsonEncode(<String, dynamic>{
+            'id1': listTableToMerge[0],
+            "id2": listTableToMerge[1]
+          }),
+        )
+        .catchError((error) => print("fail"));
+    if (response.statusCode == 200) {
+      Map<String, dynamic> json = new Map<String, dynamic>();
+      json = jsonDecode(response.body);
+      print(json);
+      return "Merge has been successful";
+    } else
+      return "Failed! Try again!";
   }
 }

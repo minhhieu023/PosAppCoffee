@@ -5,8 +5,8 @@ class SocketManagement {
   IO.Socket socket;
   PlatformHandler _platformHandler = new PlatformHandler();
   createSocketConnection() {
-    // http://103.153.73.107:8000
-    socket = IO.io('http://103.153.73.107:8000', <String, dynamic>{
+    // http://192.168.1.8:8000
+    socket = IO.io('http://192.168.1.8:8000', <String, dynamic>{
       'transports': ['websocket'],
     });
     if (!socket.connected) {
@@ -25,7 +25,7 @@ class SocketManagement {
 
   //TODO: make call socket function
   makeMessage(String event) {
-    socket = IO.io('http://103.153.73.107:8000', <String, dynamic>{
+    socket = IO.io('http://192.168.1.8:8000', <String, dynamic>{
       'transports': ['websocket'],
     });
     if (!socket.connected) {
@@ -35,7 +35,7 @@ class SocketManagement {
   }
 
   addListener(String evenName, {Function() extensionFunc}) {
-    socket = IO.io('http://103.153.73.107:8000', <String, dynamic>{
+    socket = IO.io('http://192.168.1.8:8000', <String, dynamic>{
       'transports': ['websocket'],
     });
     if (!socket.connected) {

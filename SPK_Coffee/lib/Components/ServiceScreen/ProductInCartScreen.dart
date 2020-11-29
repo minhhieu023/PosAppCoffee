@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class ProductInCartScreen extends StatefulWidget {
   final List<Products> listProduct;
   final Function addProductToCart;
+//  String totalMoney;
   ProductInCartScreen({this.listProduct, this.addProductToCart, key})
       : super(key: key);
 
@@ -19,6 +20,27 @@ class _ProductInCartScreenState extends State<ProductInCartScreen> {
     setState(() {
       isRemoveProduct = true;
     });
+  }
+
+  void setStateCalMoney() {
+    setState(() {
+      callMoney();
+    });
+  }
+
+  String callMoney() {
+    int total = 0;
+    widget.listProduct.forEach((element) {
+      total += (element.amount * int.parse(element.price));
+    });
+    return total.toString();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    callMoney();
   }
 
   @override
@@ -40,10 +62,12 @@ class _ProductInCartScreenState extends State<ProductInCartScreen> {
                     itemCount: widget.listProduct.length,
                     itemBuilder: (BuildContext context, int index) {
                       return ProductListView(
-                          product: widget.listProduct[index],
-                          updateProductAmount: widget.addProductToCart,
-                          updateListProductWhenRemove:
-                              updateListProductWhenRemove);
+                        product: widget.listProduct[index],
+                        updateProductAmount: widget.addProductToCart,
+                        updateListProductWhenRemove:
+                            updateListProductWhenRemove,
+                        updateTotalMoney: setStateCalMoney,
+                      );
                     });
               },
             ),
@@ -55,7 +79,7 @@ class _ProductInCartScreenState extends State<ProductInCartScreen> {
                 onPressed: () {
                   print("OK");
                 },
-                child: Text("Thanh Toán"),
+                child: Text(callMoney()),
               ))
         ],
       ),
@@ -67,10 +91,12 @@ class ProductListView extends StatefulWidget {
   final Products product;
   final Function updateProductAmount;
   final Function updateListProductWhenRemove;
+  final Function updateTotalMoney;
   ProductListView(
       {this.product,
       this.updateProductAmount,
       this.updateListProductWhenRemove,
+      this.updateTotalMoney,
       key})
       : super(key: key);
 
@@ -117,6 +143,7 @@ class _ProductListViewState extends State<ProductListView> {
                     productAmount.text = widget.product.amount.toString();
                     print(widget.product.amount.toString());
                     widget.updateProductAmount.call();
+                    widget.updateTotalMoney.call();
                     widget.updateListProductWhenRemove.call();
                   },
                   color: Colors.red,
@@ -145,6 +172,7 @@ class _ProductListViewState extends State<ProductListView> {
                       widget.product.amount++;
                       productAmount.text = widget.product.amount.toString();
                       print(widget.product.amount.toString());
+                      widget.updateTotalMoney.call();
                       widget.updateProductAmount.call();
                     });
                   },

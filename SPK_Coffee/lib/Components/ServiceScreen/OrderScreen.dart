@@ -28,6 +28,8 @@ class _OrderScreenState extends State<OrderScreen>
   Future<Category> futureGetCategory;
   TabController tabController;
   List<Products> listProduct = new List<Products>();
+  bool isEmpty = true;
+
   void addOrderedProduct(Products product) {
     print(listProduct.toList());
     //Nếu amount = 0 thì xoá khỏi list
@@ -95,67 +97,88 @@ class _OrderScreenState extends State<OrderScreen>
             return Scaffold(
               appBar: AppBar(
                 title: Text("${args.table.name}-Order"),
-                bottom: TabBar(
-                  key: Key("Drink"),
-                  controller: tabController,
-                  tabs: snapshot.data.data.map((e) {
-                    print(e.name);
-                    return Container(
-                      width: MediaQuery.of(context).size.width /
-                              (snapshot.data.data.length) -
-                          40,
-                      child: Tab(
-                        child: Text(
-                          "${e.name}",
-                          style: TextStyle(color: Colors.black87),
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                  unselectedLabelColor: Colors.black,
-                  isScrollable: true,
-                  indicatorSize: TabBarIndicatorSize.tab,
-                  indicator: new BubbleTabIndicator(
-                    indicatorHeight: 30.0,
-                    indicatorColor: Colors.blueAccent,
-                    tabBarIndicatorSize: TabBarIndicatorSize.tab,
-                  ),
-                ),
               ),
-              body: TabBarView(
-                controller: tabController,
-                children: snapshot.data.data.map(
-                  (e) {
-                    {
-                      final orientation = MediaQuery.of(context).orientation;
-                      return GridView.builder(
-                        gridDelegate:
-                            new SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount:
-                                    (orientation == Orientation.portrait)
-                                        ? 2
-                                        : 3),
-                        itemCount: e.products.length,
-                        padding: EdgeInsets.all(10),
-                        itemBuilder: (BuildContext context, int index) {
-                          return ProductComponent(
-                            products: e.products[index],
-                            incrementCounter: _incrementCounter,
-                            decrementCounter: _decrementCounter,
-                            addProductToCart: addOrderedProduct,
-                            isUpdateInCart: isUpdateInCart,
-                          );
+              body: Column(
+                children: [
+                  Container(
+                    child: TabBar(
+                      key: Key("Drink"),
+                      controller: tabController,
+                      tabs: snapshot.data.data.map((e) {
+                        print(e.name);
+                        return Container(
+                          width: MediaQuery.of(context).size.width /
+                                  (snapshot.data.data.length) -
+                              40,
+                          child: Tab(
+                            child: Text(
+                              "${e.name}",
+                              style: TextStyle(color: Colors.black87),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                      unselectedLabelColor: Colors.black,
+                      isScrollable: true,
+                      indicatorSize: TabBarIndicatorSize.tab,
+                      indicator: new BubbleTabIndicator(
+                        indicatorHeight: 30.0,
+                        indicatorColor: Colors.blueAccent,
+                        tabBarIndicatorSize: TabBarIndicatorSize.tab,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height:
+                        (MediaQuery.of(context).size.height - kToolbarHeight) *
+                            0.89,
+                    child: TabBarView(
+                      controller: tabController,
+                      children: snapshot.data.data.map(
+                        (e) {
+                          {
+                            final orientation =
+                                MediaQuery.of(context).orientation;
+                            return GridView.builder(
+                              gridDelegate:
+                                  new SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount:
+                                          (orientation == Orientation.portrait)
+                                              ? 2
+                                              : 3),
+                              itemCount: e.products.length,
+                              padding: EdgeInsets.all(10),
+                              itemBuilder: (BuildContext context, int index) {
+                                return ProductComponent(
+                                  products: e.products[index],
+                                  incrementCounter: _incrementCounter,
+                                  decrementCounter: _decrementCounter,
+                                  addProductToCart: addOrderedProduct,
+                                  isUpdateInCart: isUpdateInCart,
+                                );
+                              },
+                            );
+                          }
                         },
-                      );
-                    }
-                  },
-                ).toList(),
+                      ).toList(),
+                    ),
+                  ),
+                ],
               ),
               floatingActionButton: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   FloatingActionButton(
+                      heroTag: "btn1",
+                      child: FaIcon(FontAwesomeIcons.exchangeAlt),
+                      backgroundColor: Colors.red,
+                      onPressed: () {
+                        print("OK");
+                      }),
+                  SizedBox(height: 10),
+                  FloatingActionButton(
+                    heroTag: "btn2",
                     onPressed: () {
                       // showMaterialModalBottomSheet(
                       //   context: context,
@@ -196,6 +219,7 @@ class _OrderScreenState extends State<OrderScreen>
                                     createOrder(listProduct, 'admin', 'open',
                                         (args.table.id).toString(), "0");
                                     print("Lưu");
+                                    Navigator.pop(context);
                                   },
                                   child: Text("Lưu"),
                                 ),
