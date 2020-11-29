@@ -10,8 +10,8 @@ import 'package:SPK_Coffee/Services/SocketManager.dart';
 import 'package:http/http.dart' as http;
 
 class ServiceManager {
-  final _href = 'http://103.153.73.107:8000';
-  // final _href = 'https://caffeeshopbackend.herokuapp.com
+  // final _href = 'http://103.153.73.107:8000';
+  final _href = 'http://192.168.43.185:8000';
   ServiceManager();
   Future<ListProduct> getProduct() async {
     final response = await http.get(_href + '/products/all');
@@ -98,6 +98,7 @@ class ServiceManager {
     // print(response.body);
     if (response.statusCode == 200) {
       OrderList orderList = OrderList.fromJson(jsonDecode(response.body));
+      orderList.saveJson = jsonDecode(response.body);
       return orderList;
     }
     return null;

@@ -243,7 +243,7 @@ class _OrderDtProWidState extends State<OrderDtProWid> {
                               children: [
                                 TableRow(children: [
                                   Text(
-                                      "Process duration: $widget.totalProcessTime"),
+                                      "Process duration: ${widget.totalProcessTime}"),
                                   Text(
                                       "Order time: ${formatDateToString(widget.order.details[widget.index].createdAt)}")
                                 ])

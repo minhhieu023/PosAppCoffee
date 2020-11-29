@@ -114,7 +114,8 @@ class _MainKitchenScreenState extends State<MainKitchenScreen>
                                 onPressed: () {
                                   setState(() {
                                     isSearch = false;
-                                    orderListWid.currentState.getOrders();
+                                    // orderListWid.currentState.getOrders();
+                                    orderListWid.currentState.resetSearch();
                                   });
                                 }),
                       ]
