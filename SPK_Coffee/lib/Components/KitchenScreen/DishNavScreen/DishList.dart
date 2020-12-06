@@ -21,7 +21,9 @@ class _DishListState extends State<DishList> with ScreenLoader<DishList> {
   final SlidableController slidableController = SlidableController();
   bool isSort = false;
   Future<OrderList> orderList;
+  int popUpValue = 0;
   OrderList saveInstanceOrderList;
+  List<Widget> title = [Text("Dish"), Text("Sort by duration")];
   void setProcessState() async {}
   void getAllOrder() {
     this.performFuture(() {
@@ -65,6 +67,12 @@ class _DishListState extends State<DishList> with ScreenLoader<DishList> {
     }
   }
 
+  @override
+  didChangeDependencies() {
+    super.didChangeDependencies();
+    SocketManagement().addListener("updateSort");
+  }
+
   Map<String, String> getProductNameAndDuration(
       OrderList list, String productId) {
     Map<String, String> result = {};
@@ -95,6 +103,28 @@ class _DishListState extends State<DishList> with ScreenLoader<DishList> {
     );
   }
 
+  Widget customPopMenuBtn() {
+    return PopupMenuButton(
+      onSelected: (value) {
+        setState(() {
+          isSort = value == 0 ? true : false;
+        });
+      },
+      itemBuilder: (context) {
+        return <PopupMenuItem>[
+          new PopupMenuItem(
+            child: Text("Sort by duration"),
+            value: 0,
+          ),
+          new PopupMenuItem(
+            child: Text("Sort by dish"),
+            value: 1,
+          )
+        ];
+      },
+    );
+  }
+
   onSortPressed() {}
   @override
   Widget screen(BuildContext context) {
@@ -105,17 +135,15 @@ class _DishListState extends State<DishList> with ScreenLoader<DishList> {
           saveInstanceOrderList = snapshot.data;
           List<Order> orderList = snapshot.data.data;
           return Scaffold(
+            floatingActionButton: FloatingActionButton(
+              child: Icon(Icons.search),
+              onPressed: () {
+                print("floatting action button");
+              },
+            ),
             appBar: AppBar(
-              actions: [
-                IconButton(
-                    icon: Icon(Icons.sort),
-                    onPressed: () {
-                      setState(() {
-                        isSort = isSort ? false : true;
-                      });
-                    })
-              ],
-              title: Text("Dish"),
+              actions: [customPopMenuBtn()],
+              title: !isSort ? title[0] : title[1],
             ),
             body: !isSort
                 ? ListView(
@@ -145,7 +173,10 @@ class _DishListState extends State<DishList> with ScreenLoader<DishList> {
                     }).toList(),
                   )
                 : DurationSortWid(
-                    orderList: orderList,
+                    orders: orderList,
+                    orderList: snapshot.data,
+                    getProductNameAndDuration: getProductNameAndDuration,
+                    changeStateOrderDetails: changeStateOrderDetails,
                   ),
           );
         }

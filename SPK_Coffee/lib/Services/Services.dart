@@ -11,7 +11,7 @@ import 'package:http/http.dart' as http;
 
 class ServiceManager {
   // final _href = 'http://103.153.73.107:8000';
-  final _href = 'http://192.168.43.185:8000';
+  final _href = 'http://192.168.68.107:8000';
   ServiceManager();
   Future<ListProduct> getProduct() async {
     final response = await http.get(_href + '/products/all');
@@ -149,6 +149,22 @@ class ServiceManager {
         .then(
             (value) => SocketManagement().makeMessage("makeUpdateOrderScreen"))
         .catchError((error) => print("fail"));
+  }
+
+  Future<OrderList> getReadyOrders() async {
+    final response = await http.post(
+      "$_href/cash",
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8'
+      },
+      body: jsonEncode(<String, dynamic>{'state': 'ready'}),
+    );
+    if (response.statusCode == 200) {
+      OrderList orderList = OrderList.fromJson(jsonDecode(response.body));
+      orderList.saveJson = jsonDecode(response.body);
+      return orderList;
+    }
+    return null;
   }
 
   Future<int> loginEmployee(String userName, String passWord) async {
