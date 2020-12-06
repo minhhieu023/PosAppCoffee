@@ -16,27 +16,25 @@ class _MainStatisticsScreenState extends State<MainStatisticsScreen>
     with SingleTickerProviderStateMixin, ScreenLoader<MainStatisticsScreen> {
   bool initFloattingBtn = true;
   int currentTitle = 0;
-  OrderList orderList;
+  Future<OrderList> orderList;
   Animation<double> _animation;
   AnimationController _animationController;
   bool isPressed = true;
   Widget _page = MainCashNav();
   void getReadyOrders() async {
     await this.performFuture(() async {
-      orderList = await ServiceManager().getReadyOrders();
-      print(orderList);
+      Future<OrderList> result = ServiceManager().getReadyOrders();
+      setState(() {
+        orderList = result;
+        _page = MainCashNav(
+          orderList: orderList,
+        );
+      });
       return orderList;
     });
     // setState(() {
     //   orderList = await ServiceManager().getReadyOrders();
     // });
-  }
-
-  getFullOrder() async {
-    await this.performFuture(() async {
-      orderList = await ServiceManager().getAllOrders();
-      return orderList;
-    });
   }
 
   @override
