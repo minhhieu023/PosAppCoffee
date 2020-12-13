@@ -1,6 +1,8 @@
 import 'package:SPK_Coffee/Components/StatisticScreen/CashScreen/MainCashNav.dart';
 import 'package:SPK_Coffee/Components/StatisticScreen/Statistic/MainStatisticNav.dart';
+import 'package:SPK_Coffee/Models/Order.dart';
 import 'package:SPK_Coffee/Models/OrderList.dart';
+import 'package:SPK_Coffee/Models/Voucher.dart';
 import 'package:SPK_Coffee/Services/Services.dart';
 import 'package:floating_action_bubble/floating_action_bubble.dart';
 import 'package:fluid_bottom_nav_bar/fluid_bottom_nav_bar.dart';
@@ -17,6 +19,7 @@ class _MainStatisticsScreenState extends State<MainStatisticsScreen>
   bool initFloattingBtn = true;
   int currentTitle = 0;
   Future<OrderList> orderList;
+  Future<OrderList> closedList;
   Animation<double> _animation;
   AnimationController _animationController;
   bool isPressed = true;
@@ -24,6 +27,7 @@ class _MainStatisticsScreenState extends State<MainStatisticsScreen>
   void getReadyOrders() async {
     await this.performFuture(() async {
       Future<OrderList> result = ServiceManager().getReadyOrders();
+      // Future<OrderList> closed = ServiceManager()
       setState(() {
         orderList = result;
         _page = MainCashNav(
@@ -72,6 +76,9 @@ class _MainStatisticsScreenState extends State<MainStatisticsScreen>
         case 1:
           currentTitle = 1;
           _page = Visibility(child: MainStatisticsNav());
+          break;
+        case 2:
+          Navigator.of(context).pop();
           break;
       }
       _page = AnimatedSwitcher(
@@ -149,6 +156,15 @@ class _MainStatisticsScreenState extends State<MainStatisticsScreen>
               navTapped(1);
             },
           ),
+          Bubble(
+              title: "Home",
+              titleStyle: TextStyle(fontSize: 16, color: Colors.white),
+              iconColor: Colors.white,
+              bubbleColor: Colors.blue,
+              icon: Icons.home,
+              onPress: () {
+                navTapped(2);
+              })
         ],
       ),
       body: _page,
