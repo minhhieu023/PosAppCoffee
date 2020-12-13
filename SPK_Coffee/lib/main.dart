@@ -2,9 +2,6 @@ import 'dart:io';
 import 'package:SPK_Coffee/Components/HomeScreen/MainHomeScreen.dart';
 import 'package:SPK_Coffee/Components/KitchenScreen/MainKitChenScreen.dart';
 import 'package:SPK_Coffee/Components/LoginScreen/LoginScreen.dart';
-import 'package:SPK_Coffee/Components/ServiceScreen/MainServiceScreen.dart';
-import 'package:SPK_Coffee/Components/ServiceScreen/OrderScreen.dart';
-import 'package:SPK_Coffee/Components/ServiceScreen/ProductInCartScreen.dart';
 import 'package:SPK_Coffee/Components/StatisticScreen/MainStatisticsScreen.dart';
 import 'package:SPK_Coffee/Models/Category.dart';
 import 'package:SPK_Coffee/Models/Product.dart';
@@ -16,6 +13,7 @@ import 'package:splashscreen/splashscreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // import 'Utils/Config.dart';
+import 'Components/ServiceScreen/AreaScreen/AreaScreen.dart';
 import 'Components/ServiceScreen/OrderScreen/OrderScreen.dart';
 import 'Components/ServiceScreen/OrderScreen/ProductInCartScreen.dart';
 
