@@ -1,4 +1,5 @@
 import 'package:SPK_Coffee/Services/Services.dart';
+import 'package:SPK_Coffee/Services/SocketManager.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -87,6 +88,8 @@ Widget roundedRectButton(
                 Navigator.pushReplacementNamed(mContext, "/Services");
               } else if (prefs.getString('role') == 'bartender')
                 Navigator.pushReplacementNamed(mContext, "/Kitchen");
+              SocketManagement().makeMessage("login",
+                  data: {"id": userName.text}, isHaveData: true);
             },
             child: Container(
               alignment: Alignment.center,

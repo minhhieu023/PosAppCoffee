@@ -4,10 +4,12 @@ class OrderList {
   List<Order> data;
   List<OrderTable> tables;
   List<ProductsInfo> productsInfo;
-
+  Map<String, dynamic> saveJson;
   OrderList({this.data, this.tables, this.productsInfo});
 
   OrderList.fromJson(Map<String, dynamic> json) {
+    // saveJson = json;
+    // print(saveJson);
     if (json['data'] != null) {
       data = new List<Order>();
       json['data'].forEach((v) {

@@ -1,6 +1,9 @@
 import 'dart:convert';
 
 import 'package:SPK_Coffee/Models/Order.dart';
+
+import 'package:SPK_Coffee/Models/Voucher.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:SPK_Coffee/Models/OrderList.dart';
 import 'package:SPK_Coffee/Models/Area.dart';
@@ -14,6 +17,7 @@ class ServiceManager {
   //final _href = 'http://hieuvm.xyz:8000';
   final _href = 'http://192.168.0.199:8000';
   // final _href = 'https://caffeeshopbackend.herokuapp.com
+
   ServiceManager();
   Future<ListProduct> getProduct() async {
     final response = await http.get(_href + '/products/all');
@@ -100,6 +104,7 @@ class ServiceManager {
     // print(response.body);
     if (response.statusCode == 200) {
       OrderList orderList = OrderList.fromJson(jsonDecode(response.body));
+      orderList.saveJson = jsonDecode(response.body);
       return orderList;
     }
     return null;
@@ -150,6 +155,57 @@ class ServiceManager {
         .then(
             (value) => SocketManagement().makeMessage("makeUpdateOrderScreen"))
         .catchError((error) => print("fail"));
+  }
+
+  Future<OrderList> getReadyOrders() async {
+    final response = await http.post(
+      "$_href/cash",
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8'
+      },
+      body: jsonEncode(<String, dynamic>{'state': 'ready'}),
+    );
+    if (response.statusCode == 200) {
+      OrderList orderList = OrderList.fromJson(jsonDecode(response.body));
+      orderList.saveJson = jsonDecode(response.body);
+      return orderList;
+    }
+    return null;
+  }
+
+  Future<OrderList> getClosedOrders() async {
+    final response = await http.post(
+      "$_href/cash",
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8'
+      },
+      body: jsonEncode(<String, dynamic>{'state': 'closed'}),
+    );
+    if (response.statusCode == 200) {
+      OrderList orderList = OrderList.fromJson(jsonDecode(response.body));
+      orderList.saveJson = jsonDecode(response.body);
+      return orderList;
+    }
+    return null;
+  }
+
+  Future<OrderList> getReadyAndClosedOrders() async {
+    final response = await http.get("$_href/cash");
+    if (response.statusCode == 200) {
+      OrderList orderList = OrderList.fromJson(jsonDecode(response.body));
+      orderList.saveJson = jsonDecode(response.body);
+      return orderList;
+    }
+    return null;
+  }
+
+  Future<VoucherList> getAllVoucher() async {
+    final response = await http.get("$_href/voucher");
+    if (response.statusCode == 200) {
+      VoucherList voucherList = VoucherList.fromJson(jsonDecode(response.body));
+      return voucherList;
+    }
+    return null;
   }
 
   Future<int> loginEmployee(String userName, String passWord) async {

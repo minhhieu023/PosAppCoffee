@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 
 class CompleteListWid extends StatefulWidget {
   final OrderList list;
+  final List<Order> orders;
   final Function(String, String) updateOrderState;
-  CompleteListWid({this.list, this.updateOrderState});
+  CompleteListWid({this.list, this.updateOrderState, this.orders});
 
   @override
   _CompleteListWidState createState() => _CompleteListWidState();
@@ -17,7 +18,10 @@ class _CompleteListWidState extends State<CompleteListWid> {
   List<Order> orderList = [];
   void filterList() {
     orderList.clear();
-    widget.list.data.forEach((item) {
+    if (widget.orders == null) {
+      return;
+    }
+    widget.orders.forEach((item) {
       if (item.state == "ready") {
         orderList.add(item);
       }

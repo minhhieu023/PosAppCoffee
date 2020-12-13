@@ -2,9 +2,10 @@ import 'dart:io';
 import 'package:SPK_Coffee/Components/HomeScreen/MainHomeScreen.dart';
 import 'package:SPK_Coffee/Components/KitchenScreen/MainKitChenScreen.dart';
 import 'package:SPK_Coffee/Components/LoginScreen/LoginScreen.dart';
-import 'package:SPK_Coffee/Components/ServiceScreen/AreaScreen/AreaScreen.dart';
-
-import 'package:SPK_Coffee/Components/ServiceScreen/PaymentScreen.dart';
+import 'package:SPK_Coffee/Components/ServiceScreen/MainServiceScreen.dart';
+import 'package:SPK_Coffee/Components/ServiceScreen/OrderScreen.dart';
+import 'package:SPK_Coffee/Components/ServiceScreen/ProductInCartScreen.dart';
+import 'package:SPK_Coffee/Components/StatisticScreen/MainStatisticsScreen.dart';
 import 'package:SPK_Coffee/Models/Category.dart';
 import 'package:SPK_Coffee/Models/Product.dart';
 import 'package:SPK_Coffee/Services/DataBaseManagement.dart';
@@ -144,7 +145,7 @@ class _MyAppState extends State<MyApp> {
         '/Kitchen': (context) => MainKitchenScreen(),
         '/Order': (context) => OrderScreen(),
         '/Cart': (context) => ProductInCartScreen(),
-        '/Payment': (context) => PaymentScreen(),
+        '/Statistics': (context) => MainStatisticsScreen(),
       },
     ));
   }

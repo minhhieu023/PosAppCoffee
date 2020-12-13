@@ -26,6 +26,7 @@ var featureForAdmin = [
     Icons.storage,
     Colors.brown[200],
   ),
+  Feature("Statistics", Icons.bubble_chart, Colors.green),
   Feature(
     "Setting",
     Icons.settings,

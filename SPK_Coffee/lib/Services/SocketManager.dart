@@ -2,11 +2,15 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'PlatformHandler.dart';
 
 class SocketManagement {
+  String _href = "http://192.168.68.107:8000";
   IO.Socket socket;
   PlatformHandler _platformHandler = new PlatformHandler();
   createSocketConnection() {
     // http://192.168.0.199:8000
-    socket = IO.io('http://192.168.0.199:8000', <String, dynamic>{
+    // socket = IO.io('http://192.168.0.199:8000', <String, dynamic>{
+
+    // http://103.153.73.107:8000
+    socket = IO.io(_href, <String, dynamic>{
       'transports': ['websocket'],
     });
     if (!socket.connected) {
@@ -24,18 +28,23 @@ class SocketManagement {
   }
 
   //TODO: make call socket function
-  makeMessage(String event) {
-    socket = IO.io('http://192.168.0.199:8000', <String, dynamic>{
+
+  makeMessage(String event, {dynamic data, bool isHaveData = false}) {
+    socket = IO.io(_href, <String, dynamic>{
       'transports': ['websocket'],
     });
     if (!socket.connected) {
       print('connect fail');
     }
-    socket.emit(event);
+    if (isHaveData) {
+      socket.emit(event, [data]);
+    } else {
+      socket.emit(event);
+    }
   }
 
   addListener(String evenName, {Function() extensionFunc}) {
-    socket = IO.io('http://192.168.0.199:8000', <String, dynamic>{
+    socket = IO.io(_href, <String, dynamic>{
       'transports': ['websocket'],
     });
     if (!socket.connected) {

@@ -24,9 +24,14 @@ class OrderListWid extends StatefulWidget {
 class _OrderListWidState extends State<OrderListWid>
     with ScreenLoader<OrderListWid> {
   Future<OrderList> orderList;
+  List<Order> sub;
+  List<Order> filterSub = [];
   Future<OrderList> filterList;
+  Map<String, dynamic> object;
   DataBaseManagement _db = DataBaseManagement();
+  bool isSearch = false;
   int _currentTab = 0;
+  bool isUpdate = false;
   @override
   void initState() {
     super.initState();
@@ -46,17 +51,11 @@ class _OrderListWidState extends State<OrderListWid>
     }
   }
 
-  getOrders() {
+  getOrders() async {
     this.performFuture(() {
       setStateIfMounted(() {
         orderList = ServiceManager().getAllOrders();
         filterList = orderList;
-      });
-      orderList.then((value) async {
-        await _db.initDB();
-        value.data.forEach((element) {
-          _db.saveOrderTables(element);
-        });
       });
       return orderList;
     });
@@ -73,20 +72,31 @@ class _OrderListWidState extends State<OrderListWid>
     );
   }
 
-  void searchOrder(String id) async {
-    // print("run!");
-    List<Order> list = await filterList.then(
-        (value) => value.data.where((element) => element.id == id).toList());
-
-    setState(() {
-      filterList.then((value) {
-        value.data = list;
+  void searchOrder(String id) {
+    List<Order> tempSearch = [];
+    if (id.isEmpty) {
+      setState(() {
+        filterSub = sub;
       });
+      return;
+    }
+    sub.forEach((element) {
+      if (element.id.contains(id)) {
+        tempSearch.add(element);
+      }
     });
+    setState(() {
+      isSearch = true;
+      filterSub = tempSearch;
+    });
+    // print(filterList);
   }
 
-  void resetSearch() async {
-    filterList = ServiceManager().getAllOrders();
+  void resetSearch() {
+    setState(() {
+      isSearch = false;
+      filterSub = sub;
+    });
   }
 
   void getTabIndex(int tab) {
@@ -98,7 +108,7 @@ class _OrderListWidState extends State<OrderListWid>
       setState(() {
         orderList = ServiceManager()
             .updateOrder(orderId, _currentTab == 0 ? "processing" : "ready");
-        filterList = orderList;
+        isUpdate = true;
       });
       return orderList;
     });
@@ -110,6 +120,7 @@ class _OrderListWidState extends State<OrderListWid>
       setState(() {
         orderList = ServiceManager().updateOrder(orderId, stateToChange);
         filterList = orderList;
+        isUpdate = true;
       });
       return orderList;
     });
@@ -166,10 +177,14 @@ class _OrderListWidState extends State<OrderListWid>
   @override
   Widget screen(BuildContext context) {
     // TODO: implement screen
+
     return FutureBuilder<OrderList>(
-      future: filterList,
+      future: orderList,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
+          // object = snapshot.data.saveJson;
+          sub = snapshot.data.data;
+          filterSub = !isSearch ? sub : filterSub;
           return Scrollbar(
               thickness: 15,
               child: Column(
@@ -183,6 +198,7 @@ class _OrderListWidState extends State<OrderListWid>
                       snapshot.data,
                       popDetails: onClickOrder,
                       getRemoveItem: getRemoveItem,
+                      orders: filterSub,
                     ),
                     height: (MediaQuery.of(context).size.height * 0.4) - 56,
                     width: (MediaQuery.of(context).size.width * 0.8) - 0.5,
@@ -194,6 +210,7 @@ class _OrderListWidState extends State<OrderListWid>
                       getTabIndex: getTabIndex,
                       orderList: snapshot.data,
                       updateOrderState: updateOrderByState,
+                      orders: filterSub,
                     ),
                   ))
                 ],
@@ -209,13 +226,10 @@ class _OrderListWidState extends State<OrderListWid>
 
 class TopItems extends StatefulWidget {
   final OrderList list;
+  final List<Order> orders;
   final Function(Order) getRemoveItem;
   final Function(List<OrderDetail>, List<ProductsInfo>) popDetails;
-  TopItems(
-    this.list, {
-    this.popDetails,
-    this.getRemoveItem,
-  });
+  TopItems(this.list, {this.popDetails, this.getRemoveItem, this.orders});
   @override
   _TopItemsState createState() => _TopItemsState();
 }
@@ -229,7 +243,7 @@ class _TopItemsState extends State<TopItems> {
 
   void filterList() {
     orderList.clear();
-    widget.list.data.forEach((item) {
+    widget.orders.forEach((item) {
       if (item.state == "open") {
         orderList.add(item);
       }
@@ -265,22 +279,31 @@ class _TopItemsState extends State<TopItems> {
 class BottomItem extends StatefulWidget {
   final Function(int) getTabIndex;
   final OrderList orderList;
+  final List<Order> orders;
   final Function(String, String) updateOrderState;
-  BottomItem({this.getTabIndex, this.orderList, this.updateOrderState});
+  BottomItem(
+      {this.getTabIndex, this.orderList, this.updateOrderState, this.orders});
   @override
   _BottomItemState createState() => _BottomItemState();
 }
 
 class _BottomItemState extends State<BottomItem> {
   String data = "";
+  List<Order> orders = [];
   @override
   void initState() {
     super.initState();
   }
 
+  updateList() {
+    orders = widget.orders;
+  }
+
   @override
   Widget build(BuildContext context) {
     // print(widget.orderList.data);
+    updateList();
+
     return Builder(
       builder: (context) {
         return DefaultTabController(
@@ -309,10 +332,12 @@ class _BottomItemState extends State<BottomItem> {
               ProcessListWid(
                 list: widget.orderList,
                 updateOrderState: widget.updateOrderState,
+                orders: orders,
               ),
               CompleteListWid(
                 list: widget.orderList,
                 updateOrderState: widget.updateOrderState,
+                orders: orders,
               )
             ]),
           ),

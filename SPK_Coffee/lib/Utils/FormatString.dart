@@ -20,3 +20,8 @@ String formatDateToString(String day) {
 
   // return DateFormat.d().parse(DateTime.parse(day).toString()).toString();
 }
+
+String formatMoney(String money) {
+  NumberFormat oCcy = new NumberFormat("#,##0", "en_US");
+  return oCcy.format(int.parse(money));
+}
