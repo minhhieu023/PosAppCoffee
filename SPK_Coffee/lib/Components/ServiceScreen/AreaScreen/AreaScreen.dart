@@ -1,8 +1,6 @@
-import 'dart:ffi';
-
 import 'package:SPK_Coffee/Components/ServiceScreen/AreaScreen/TableComponent.dart';
-import 'package:SPK_Coffee/Components/ServiceScreen/OrderScreen.dart';
 import 'package:SPK_Coffee/Models/Area.dart';
+import 'package:SPK_Coffee/Models/Order.dart';
 import 'package:SPK_Coffee/SeedData/Data.dart';
 import 'package:SPK_Coffee/Services/DataBaseManagement.dart';
 import 'package:SPK_Coffee/Services/Services.dart';
@@ -20,10 +18,11 @@ class MainServiceScreen extends StatefulWidget {
 
 class _MainServiceScreenState extends State<MainServiceScreen>
     with SingleTickerProviderStateMixin {
-  ServiceManager _serviceManager;
+  ServiceManager _serviceManager = new ServiceManager();
   SeedData seedData = new SeedData();
   Future<List<CoffeeTable>> _tables;
   Future<List<Area>> _areas;
+  Future<Order> _order;
   Animation<double> _animation;
   AnimationController _animationController;
   int seleteProductToMerge = 0;
@@ -31,9 +30,11 @@ class _MainServiceScreenState extends State<MainServiceScreen>
   bool isMerge = false;
   bool isSplit = false;
   List<int> listTableToMerge;
+  List<String> getOrderOnTableCore;
   int tableCounter = 0;
-
+  bool isChange = false;
   int chooseArea;
+
   @override
   void initState() {
     _animationController = AnimationController(
@@ -45,13 +46,14 @@ class _MainServiceScreenState extends State<MainServiceScreen>
         CurvedAnimation(curve: Curves.easeInOut, parent: _animationController);
     _animation = Tween<double>(begin: 0, end: 1).animate(curvedAnimation);
     chooseArea = 0;
-
-    super.initState();
-    _serviceManager = ServiceManager();
+    // _serviceManager = ServiceManager();
     _areas = _serviceManager.getArea();
     _tables = _serviceManager.getTable();
+
     getTable();
     listTableToMerge = new List<int>();
+    getOrderOnTableCore = new List<String>();
+
     super.initState();
   }
 
@@ -71,6 +73,14 @@ class _MainServiceScreenState extends State<MainServiceScreen>
     await getTable();
   }
 
+  void setStateWhenHaveOrder() {
+    setState(() {
+      // _serviceManager = ServiceManager();
+      _areas = _serviceManager.getArea();
+      _tables = _serviceManager.getTable();
+    });
+  }
+
   void setStateArea(int _chooseArea) {
     setState(() {
       print(_chooseArea);
@@ -86,7 +96,7 @@ class _MainServiceScreenState extends State<MainServiceScreen>
         centerTitle: true,
         actions: [
           IconButton(
-            color: Colors.blueAccent,
+            color: Colors.white,
             icon: Icon(Icons.home),
             onPressed: () {
               Navigator.pushReplacementNamed(context, "/Dashboard");
@@ -111,8 +121,11 @@ class _MainServiceScreenState extends State<MainServiceScreen>
             tables: _tables,
             chooseArea: chooseArea,
             isMerge: isMerge,
+            isSplit: isSplit,
             listTableToMerge: listTableToMerge,
             tableCounter: tableCounter,
+            setStateWhenHaveOrder: setStateWhenHaveOrder,
+            getOrderOnTableCore: getOrderOnTableCore,
           ),
         ],
       ),
@@ -123,12 +136,20 @@ class _MainServiceScreenState extends State<MainServiceScreen>
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                   FloatingActionButton(
-                      heroTag: "btn1",
+                      heroTag: "btn-check",
                       backgroundColor: Colors.green,
                       child: FaIcon(FontAwesomeIcons.check),
                       onPressed: () async {
-                        String result =
-                            await _serviceManager.mergeOrder(listTableToMerge);
+                        String result;
+                        if (isMerge)
+                          result = await _serviceManager
+                              .mergeOrder(listTableToMerge);
+                        else if (isSplit) {
+                          print("Area Screen: " + getOrderOnTableCore[0]);
+                          String getString = getOrderOnTableCore[0];
+                          result = await _serviceManager.splitTable(getString);
+                        }
+
                         print(result);
                         showDialog(
                             context: context,
@@ -142,11 +163,20 @@ class _MainServiceScreenState extends State<MainServiceScreen>
                                       onPressed: () {
                                         setState(() {
                                           if (result ==
-                                              "Merge has been successful")
+                                              "Merge has been successful") {
                                             isMerge = false;
-                                          isSplit = false;
-                                          isClickMenu = false;
-                                          listTableToMerge.clear();
+                                            isSplit = false;
+                                            isClickMenu = false;
+                                            listTableToMerge.clear();
+                                            getOrderOnTableCore.clear();
+                                          } else if (result ==
+                                              "Split has been successful") {
+                                            isMerge = false;
+                                            isSplit = false;
+                                            isClickMenu = false;
+                                            listTableToMerge.clear();
+                                            getOrderOnTableCore.clear();
+                                          } else {}
                                         });
                                         Navigator.of(context).pop();
                                       },
@@ -157,11 +187,11 @@ class _MainServiceScreenState extends State<MainServiceScreen>
                       }),
                   SizedBox(height: 15),
                   FloatingActionButton(
-                      heroTag: "btn2",
+                      heroTag: "btn-close",
                       backgroundColor: isMerge
                           ? Colors.amber
                           : isSplit
-                              ? Colors.green
+                              ? Colors.yellow
                               : Colors.white,
                       child: Icon(
                         Icons.close,
@@ -225,7 +255,6 @@ class _MainServiceScreenState extends State<MainServiceScreen>
 
               // Floating Action button Icon color
               iconColor: Colors.white,
-
               // Flaoting Action button Icon
               iconData: isClickMenu ? Icons.close : Icons.menu,
               backGroundColor: Colors.blue,

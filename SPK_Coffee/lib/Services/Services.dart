@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:SPK_Coffee/Models/Order.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:SPK_Coffee/Models/OrderList.dart';
 import 'package:SPK_Coffee/Models/Area.dart';
@@ -11,7 +12,7 @@ import 'package:http/http.dart' as http;
 
 class ServiceManager {
   //final _href = 'http://hieuvm.xyz:8000';
-  final _href = 'http://192.168.1.8:8000';
+  final _href = 'http://192.168.0.199:8000';
   // final _href = 'https://caffeeshopbackend.herokuapp.com
   ServiceManager();
   Future<ListProduct> getProduct() async {
@@ -169,6 +170,9 @@ class ServiceManager {
       if (json['status'] == 'Success') {
         String name = json['name'];
         await prefs.setString('name', name);
+        String userNameGetRole = json['userName'];
+        print(userNameGetRole);
+        await prefs.setString('userName', userNameGetRole);
         String role = json['role'];
         await prefs.setString('role', role);
       }
@@ -195,6 +199,77 @@ class ServiceManager {
       json = jsonDecode(response.body);
       print(json);
       return "Merge has been successful";
+    } else
+      return "Failed! Try again!";
+  }
+
+  Future<String> payment(int id) async {
+    final response = await http.post(
+      "$_href/cash/$id",
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8'
+      },
+    ).catchError((error) => print("fail"));
+    if (response.statusCode == 200) {
+      Map<String, dynamic> json = new Map<String, dynamic>();
+      json = jsonDecode(response.body);
+      print(json);
+      return "Merge has been successful";
+    } else
+      return "Failed! Try again!";
+  }
+
+  Future<ListProduct> getOrderByTableId(String tableId) async {
+    // http: //localhost:8000/order/getById/1
+    final respone = await http.get(
+      "$_href/order/getById/$tableId",
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8'
+      },
+    ).catchError((error) => print("fail"));
+    if (respone.statusCode == 200) {
+      ListProduct listProduct = ListProduct.fromJson(jsonDecode(respone.body));
+      return listProduct;
+    }
+    return null;
+  }
+
+  Future<Order> getOrderBasedTableId(String tableId) async {
+    Order order;
+    final respone = await http.get(
+      "$_href/order/table-order/$tableId",
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8'
+      },
+    ).catchError((error) => print("fail"));
+    if (respone.statusCode == 200) {
+      Map<String, dynamic> json = new Map<String, dynamic>();
+      json = jsonDecode(respone.body);
+      //print(json);
+      order = Order.fromJson(jsonDecode(respone.body));
+      print("Vo " + order.note);
+    }
+    return order;
+  }
+
+  Future<String> splitTable(String orderId) async {
+    print("OrderId: " + orderId);
+    final response = await http
+        .post(
+          "$_href/table/split",
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8'
+          },
+          body: jsonEncode(<String, dynamic>{
+            'orderId': orderId,
+          }),
+        )
+        .catchError((error) => print(error));
+    if (response.statusCode == 200) {
+      Map<String, dynamic> json = new Map<String, dynamic>();
+      json = jsonDecode(response.body);
+      print(json);
+      return "Split has been successful";
     } else
       return "Failed! Try again!";
   }

@@ -1,3 +1,4 @@
+import 'package:SPK_Coffee/Components/Common/LoadingScreenCustom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'Background.dart';
@@ -19,6 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
         backgroundColor: Colors.white,
         body: Stack(
           children: <Widget>[
+            //  loadingScreen(),
             Background(),
             Login(),
           ],

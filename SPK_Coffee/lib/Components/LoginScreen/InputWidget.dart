@@ -39,6 +39,9 @@ Widget inputWiget(
                       EdgeInsets.only(left: 40, right: 20, top: 10, bottom: 10),
                   child: TextField(
                     controller: passWord,
+                    enableSuggestions: false,
+                    obscureText: true,
+                    autocorrect: false,
                     decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: "Enter your password",

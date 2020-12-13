@@ -31,6 +31,7 @@ class Products {
   String price;
   String hot;
   int amount;
+  String state;
   bool popular;
   String processDuration;
   String mainImage;
@@ -56,7 +57,8 @@ class Products {
       this.sizes,
       this.images,
       this.amount,
-      this.productId});
+      this.productId,
+      this.state});
 
   Products.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -67,10 +69,12 @@ class Products {
     hot = json['hot'];
     popular = json['popular'];
     processDuration = json['processDuration'];
+    amount = json['amount'];
     mainImage = json['mainImage'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     categoryId = json['categoryId'];
+    state = json['state'];
     if (json['sizes'] != null) {
       sizes = new List<Sizes>();
       json['sizes'].forEach((v) {
@@ -90,6 +94,7 @@ class Products {
     data['id'] = this.id;
     data['productName'] = this.productName;
     data['productDescription'] = this.productDescription;
+
     data['price'] = this.price;
     data['hot'] = this.hot;
     data['popular'] = this.popular;

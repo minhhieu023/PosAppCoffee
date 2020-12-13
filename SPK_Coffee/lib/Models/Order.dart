@@ -20,13 +20,15 @@ class Order {
       this.total,
       this.discount,
       this.details,
-      this.voucherId = 'null',
-      this.note = 'null'});
+      this.voucherId,
+      this.note});
 
   Order.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     employeeId = json['employeeId'];
+    voucherId = json['voucherId'] ?? " ";
     date = json['date'];
+    note = json['note'] ?? " ";
     state = json['state'];
     total = json['total'];
     discount = json['discount'];

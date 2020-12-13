@@ -3,8 +3,8 @@ import 'package:SPK_Coffee/Components/HomeScreen/MainHomeScreen.dart';
 import 'package:SPK_Coffee/Components/KitchenScreen/MainKitChenScreen.dart';
 import 'package:SPK_Coffee/Components/LoginScreen/LoginScreen.dart';
 import 'package:SPK_Coffee/Components/ServiceScreen/AreaScreen/AreaScreen.dart';
-import 'package:SPK_Coffee/Components/ServiceScreen/OrderScreen.dart';
-import 'package:SPK_Coffee/Components/ServiceScreen/ProductInCartScreen.dart';
+
+import 'package:SPK_Coffee/Components/ServiceScreen/PaymentScreen.dart';
 import 'package:SPK_Coffee/Models/Category.dart';
 import 'package:SPK_Coffee/Models/Product.dart';
 import 'package:SPK_Coffee/Services/DataBaseManagement.dart';
@@ -15,6 +15,9 @@ import 'package:splashscreen/splashscreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // import 'Utils/Config.dart';
+import 'Components/ServiceScreen/OrderScreen/OrderScreen.dart';
+import 'Components/ServiceScreen/OrderScreen/ProductInCartScreen.dart';
+
 import 'Services/SocketManager.dart';
 
 class MyHttpOverrides extends HttpOverrides {
@@ -109,10 +112,10 @@ class _MyAppState extends State<MyApp> {
         app: MaterialApp(
       color: Colors.blueAccent,
       theme: new ThemeData(
-        backgroundColor: Colors.white12,
+        backgroundColor: Colors.white,
         shadowColor: Colors.black12,
         brightness: Brightness.light,
-        primaryColor: Colors.white70,
+        // primaryColor: Colors.white,
         //accentColor: Colors.blueAccent,
       ),
       // theme: ThemeData(primaryColor: Colors.blue[100]),
@@ -141,6 +144,7 @@ class _MyAppState extends State<MyApp> {
         '/Kitchen': (context) => MainKitchenScreen(),
         '/Order': (context) => OrderScreen(),
         '/Cart': (context) => ProductInCartScreen(),
+        '/Payment': (context) => PaymentScreen(),
       },
     ));
   }
