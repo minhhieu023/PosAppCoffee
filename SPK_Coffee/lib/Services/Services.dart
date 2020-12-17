@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:SPK_Coffee/Models/ImployeeInformation.dart';
 import 'package:SPK_Coffee/Models/Order.dart';
+import 'package:SPK_Coffee/Models/ProviderModels/EmployeeInformationProvider.dart';
 
 import 'package:SPK_Coffee/Models/Voucher.dart';
 
@@ -15,7 +17,7 @@ import 'package:http/http.dart' as http;
 
 class ServiceManager {
   //final _href = 'http://hieuvm.xyz:8000';
-  final _href = 'http://hieuit.tech:8000';
+  final _href = 'http://192.168.0.170:8000';
   // final _href = 'https://caffeeshopbackend.herokuapp.com
 
   ServiceManager();
@@ -328,5 +330,85 @@ class ServiceManager {
       return "Split has been successful";
     } else
       return "Failed! Try again!";
+  }
+
+  Future<String> takeAnAttendance() async {
+    Future<SharedPreferences> _share = SharedPreferences.getInstance();
+    SharedPreferences pref = await _share;
+    final response = await http
+        .post(
+          "$_href/login/attendance",
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8'
+          },
+          body: jsonEncode(<String, dynamic>{
+            'userName': pref.getString("userName"),
+          }),
+        )
+        .catchError((error) => print(error));
+  }
+
+  Future getAllEmployeeInformation() async {
+    final response = await http.get(
+      "$_href/employee",
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8'
+      },
+    );
+    if (response.statusCode == 200) {
+      EmployeeInformation employeeInformationProvider =
+          EmployeeInformation.fromJson(jsonDecode(response.body));
+      //    if (employeeInformationProvider.status == "Ok")
+      return employeeInformationProvider;
+    } else {
+      EmployeeInformation employeeInformationProvider =
+          new EmployeeInformation(status: "fail");
+      return employeeInformationProvider;
+    }
+  }
+
+  Future createEmployee(String userName, String fullName, bool sex, String role,
+      String age, String phoneNumber) async {
+    final response = await http
+        .post(
+          "$_href/employee",
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8'
+          },
+          body: jsonEncode(<String, dynamic>{
+            "userName": userName,
+            "fullName": fullName,
+            "sex": sex,
+            "role": role,
+            "age": age,
+            "phoneNumber": phoneNumber,
+          }),
+        )
+        .catchError((error) => print("fail"));
+  }
+
+  Future addMoreProductIntoOrder(
+      List<Products> listProduct, String orderId) async {
+    List<Map<String, dynamic>> listOrderDetailJson =
+        new List<Map<String, dynamic>>();
+    listProduct.forEach((element) {
+      Map<String, dynamic> orderDetails = new Map<String, dynamic>();
+      orderDetails['productId'] = element.id;
+      orderDetails['amount'] = element.amount;
+      orderDetails['price'] = element.price;
+      listOrderDetailJson.add(orderDetails);
+    });
+    final response = await http
+        .post(
+          "$_href/order/update",
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8'
+          },
+          body: jsonEncode(<String, dynamic>{
+            'orderProducts': listOrderDetailJson.toList(),
+            'orderId': orderId,
+          }),
+        )
+        .catchError((error) => print("fail"));
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Feature {
   final IconData icon;
@@ -27,6 +28,7 @@ var featureForAdmin = [
     Colors.brown[200],
   ),
   Feature("Statistics", Icons.bubble_chart, Colors.green),
+  Feature("Manage", FontAwesomeIcons.user, Colors.deepOrange[300]),
   Feature(
     "Setting",
     Icons.settings,

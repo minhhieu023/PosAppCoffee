@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:SPK_Coffee/Components/HomeScreen/MainHomeScreen.dart';
 import 'package:SPK_Coffee/Components/KitchenScreen/MainKitChenScreen.dart';
 import 'package:SPK_Coffee/Components/LoginScreen/LoginScreen.dart';
+import 'package:SPK_Coffee/Components/Manage/ManageUserScreen.dart';
 import 'package:SPK_Coffee/Components/StatisticScreen/MainStatisticsScreen.dart';
 import 'package:SPK_Coffee/Models/Category.dart';
 import 'package:SPK_Coffee/Models/Product.dart';
@@ -62,7 +63,7 @@ class _MyAppState extends State<MyApp> {
 
   void onFloatButtonPressed() {
     _socketManagement.socket
-        .emit('send notification', 'A1 table have customer!');
+        .emit('send notification', 'HIHIHIH table have customer!');
   }
 
   void onAddButtonPressed() {
@@ -144,6 +145,7 @@ class _MyAppState extends State<MyApp> {
         '/Order': (context) => OrderScreen(),
         '/Cart': (context) => ProductInCartScreen(),
         '/Statistics': (context) => MainStatisticsScreen(),
+        '/Manage': (context) => ManageUserScreen(),
       },
     ));
   }

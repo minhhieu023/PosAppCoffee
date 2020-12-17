@@ -1,4 +1,3 @@
-import 'package:SPK_Coffee/Components/ServiceScreen/PaymentScreen.dart';
 import 'package:SPK_Coffee/Models/Category.dart';
 import 'package:SPK_Coffee/Models/CoffeeTable.dart';
 import 'package:SPK_Coffee/Models/Product.dart';
@@ -15,10 +14,12 @@ import 'ProductComponent.dart';
 import 'ProductInCartScreen.dart';
 
 class OrderScreen extends StatefulWidget {
+  final String orderId;
   final CoffeeTable table;
   final Function setStateWhenHaveOrder;
 
   OrderScreen({
+    this.orderId,
     this.table,
     this.setStateWhenHaveOrder,
     Key key,
@@ -33,14 +34,18 @@ class _OrderScreenState extends State<OrderScreen>
   bool isUpdateInCart = false;
   Future<Category> futureGetCategory;
   Future<ListProduct> listProductJson;
+  // String orderId = '';
   TabController tabController;
   List<Products> listProduct = new List<Products>();
   bool haveOrder = false;
   bool isOpenCart = false;
+  bool isSearch = false;
   //ListProduct listProductJson;
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  TextEditingController searchProduct = new TextEditingController();
   bool isEmpty = true;
   bool isAddMoreProduct;
+
   void addOrderedProduct(Products product) {
     print(listProduct.toList());
     //Nếu amount = 0 thì xoá khỏi list
@@ -84,7 +89,6 @@ class _OrderScreenState extends State<OrderScreen>
       });
     });
     isUpdateInCart = true;
-
     print(counter);
   }
 
@@ -114,7 +118,30 @@ class _OrderScreenState extends State<OrderScreen>
             print(snapshot.data);
             return Scaffold(
               appBar: AppBar(
-                title: Text("${args.table.name}-${args.table.id}-Order"),
+                title: isSearch
+                    ? TextFormField(
+                        controller: searchProduct,
+                        onChanged: (searchProduct) {
+                          setState(() {
+                            var product = listProduct
+                                .where((t) => t.productName
+                                    .toLowerCase()
+                                    .contains(searchProduct.toLowerCase()))
+                                .toList();
+                            print(product);
+                          });
+                        },
+                      )
+                    : Text("${args.table.name}-Order"),
+                actions: [
+                  IconButton(
+                      icon: Icon(isSearch ? Icons.close : Icons.search),
+                      onPressed: () {
+                        setState(() {
+                          isSearch ? isSearch = false : isSearch = true;
+                        });
+                      })
+                ],
               ),
               body: haveOrder == false
                   ? Column(
@@ -261,11 +288,15 @@ class _OrderScreenState extends State<OrderScreen>
                               listProduct = snapshopHaveOrder.data.listProduct;
                               print(listProduct[0].id);
                               return ProductInCartScreen(
+                                table: args.table,
                                 listProduct: listProduct,
                                 haveOrder: true,
+                                setStateWhenHaveOrder:
+                                    widget.setStateWhenHaveOrder,
                               );
                             } else {
                               return ProductInCartScreen(
+                                table: args.table,
                                 listProduct: listProduct,
                                 haveOrder: false,
                               );
@@ -296,20 +327,12 @@ class _OrderScreenState extends State<OrderScreen>
                             showMaterialModalBottomSheet(
                               context: context,
                               builder: (context) => ProductInCartScreen(
+                                table: args.table,
                                 listProduct: listProduct,
                                 addProductToCart: updateAmountProduct,
                                 haveOrder: false,
                               ),
                             );
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //       builder: (context) => ProductInCartScreen(
-                            //             listProduct: listProduct,
-                            //             addProductToCart: updateAmountProduct,
-                            //             haveOrder: false,
-                            //           )),
-                            // );
                           },
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -327,9 +350,10 @@ class _OrderScreenState extends State<OrderScreen>
                                 showMaterialModalBottomSheet(
                                   context: context,
                                   builder: (context) => ProductInCartScreen(
+                                    table: args.table,
                                     listProduct: listProduct,
                                     addProductToCart: updateAmountProduct,
-                                    haveOrder: false,
+                                    haveOrder: true,
                                   ),
                                 );
                                 // Navigator.push(
@@ -366,34 +390,40 @@ class _OrderScreenState extends State<OrderScreen>
                                 child: RaisedButton(
                                   color: Colors.pinkAccent,
                                   onPressed: () async {
+                                    ServiceManager serviceManager =
+                                        new ServiceManager();
                                     SharedPreferences prefs = await _prefs;
-                                    await createOrder(
-                                        listProduct,
-                                        prefs.getString("role"),
-                                        'open',
-                                        (args.table.id).toString(),
-                                        "0");
-                                    print("Lưu");
-                                    args.setStateWhenHaveOrder.call();
-                                    Navigator.pop(context);
+                                    listProduct.forEach((element) {
+                                      print(element.state);
+                                    });
+                                    print(isAddMoreProduct);
+                                    if (isAddMoreProduct) {
+                                      List<Products> listCustom =
+                                          new List<Products>();
+                                      listProduct.forEach((element) {
+                                        print(element.state);
+                                        if (element.state == null) {
+                                          listCustom.add(element);
+                                        }
+                                      });
+                                      print(listCustom.length);
+                                      await serviceManager
+                                          .addMoreProductIntoOrder(
+                                              listCustom, widget.orderId);
+                                      Navigator.pop(context);
+                                    } else {
+                                      await createOrder(
+                                          listProduct,
+                                          prefs.getString("role"),
+                                          'open',
+                                          (args.table.id).toString(),
+                                          "0");
+                                      print("Lưu");
+                                      await args.setStateWhenHaveOrder.call();
+                                      Navigator.pop(context);
+                                    }
                                   },
                                   child: Text("Save"),
-                                ),
-                              ),
-                              SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.01),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.35,
-                                child: RaisedButton(
-                                  color: Colors.amberAccent,
-                                  onPressed: () {
-                                    print("thanh toán");
-                                  },
-                                  child: Text(
-                                    "Notify Casher",
-                                    style: TextStyle(color: Colors.black),
-                                  ),
                                 ),
                               ),
                             ],

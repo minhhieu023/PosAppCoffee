@@ -63,7 +63,7 @@ class _TableComponentState extends State<TableComponent> {
               padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
               gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount:
-                      (orientation == Orientation.portrait) ? 3 : 3),
+                      (orientation == Orientation.portrait) ? 3 : 5),
               // ignore: missing_return
               itemBuilder: (BuildContext context, int index) {
                 return TableWiget(
@@ -276,6 +276,7 @@ class _TableWigetState extends State<TableWiget> {
                             context,
                             '/Order',
                             arguments: OrderScreen(
+                              orderId: snapshot.data.id,
                               table: currentTable,
                               setStateWhenHaveOrder:
                                   widget.setStateWhenHaveOrder,
@@ -286,6 +287,7 @@ class _TableWigetState extends State<TableWiget> {
                             context,
                             '/Order',
                             arguments: OrderScreen(
+                              orderId: snapshot.data.id,
                               table: currentTable,
                             ),
                           );

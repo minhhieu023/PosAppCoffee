@@ -58,7 +58,7 @@ Widget dashBoard(List<Feature> listFeature) {
       if (constraints.maxWidth < constraints.maxHeight)
         return verticalView(listFeature);
       else //tablet
-        return horizonView(listFeature);
+        return verticalView(listFeature);
     },
   );
 }
@@ -66,6 +66,7 @@ Widget dashBoard(List<Feature> listFeature) {
 Widget verticalView(List<Feature> listFeature) {
   return Builder(
     builder: (context) {
+      final orientation = MediaQuery.of(context).orientation;
       return Center(
         child: GridView.builder(
           itemCount: listFeature.length,
@@ -74,7 +75,7 @@ Widget verticalView(List<Feature> listFeature) {
               childAspectRatio: ((MediaQuery.of(context).size.width - 20) / 2) /
                   ((MediaQuery.of(context).size.width - 20 - kToolbarHeight) /
                       2),
-              crossAxisCount: 2,
+              crossAxisCount: ((orientation == Orientation.portrait) ? 2 : 4),
               mainAxisSpacing: 10,
               crossAxisSpacing: 10),
           itemBuilder: (BuildContext context, int index) {
@@ -121,7 +122,6 @@ Widget childFeature(Feature feature) {
   return Builder(builder: (context) {
     return Card(
       // margin: EdgeInsets.all(10),
-
       color: feature.color,
       child: InkWell(
         onTap: () async {

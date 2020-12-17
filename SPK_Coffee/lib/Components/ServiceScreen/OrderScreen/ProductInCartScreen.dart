@@ -1,6 +1,7 @@
 import 'package:SPK_Coffee/Components/ServiceScreen/PaymentScreen.dart';
 import 'package:SPK_Coffee/Models/CoffeeTable.dart';
 import 'package:SPK_Coffee/Models/Product.dart';
+import 'package:SPK_Coffee/Services/SocketManager.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -8,10 +9,12 @@ class ProductInCartScreen extends StatefulWidget {
   CoffeeTable table;
   List<Products> listProduct;
   Function addProductToCart;
+  Function setStateWhenHaveOrder;
   bool haveOrder;
 //  String totalMoney;
   ProductInCartScreen(
       {this.haveOrder,
+      this.setStateWhenHaveOrder,
       this.table,
       this.listProduct,
       this.addProductToCart,
@@ -65,6 +68,16 @@ class _ProductInCartScreenState extends State<ProductInCartScreen> {
         height: (MediaQuery.of(context).size.height - kToolbarHeight) * 0.97,
         child: Column(
           children: [
+            // Expanded(
+            //   flex: 2,
+            //   // height:
+            //   //(MediaQuery.of(context).size.height - kToolbarHeight) * 0.017,
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+            //     crossAxisAlignment: CrossAxisAlignment.baseline,
+            //     children: [Text("Name"), Text("Amount"), Text("State")],
+            //   ),
+            // ),
             Container(
               height:
                   (MediaQuery.of(context).size.height - kToolbarHeight) * 0.88,
@@ -90,14 +103,20 @@ class _ProductInCartScreenState extends State<ProductInCartScreen> {
                 child: RaisedButton(
                   color: Colors.amber,
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => PaymentScreen(
-                                  listProduct: widget.listProduct,
-                                  //  addProductToCart:
-                                  //   updateAmountProduct,
-                                )));
+                    SocketManagement _socketManagement = new SocketManagement();
+
+                    _socketManagement.makeMessage("NotifyCashier",
+                        isHaveData: true,
+                        data: "Order ${widget.table.name} need to pay!");
+
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => PaymentScreen(
+                    //               listProduct: widget.listProduct,
+                    //               //  addProductToCart:
+                    //               //   updateAmountProduct,
+                    //             )));
                   },
                   child: Text(callMoney()),
                 ))
@@ -151,9 +170,15 @@ class _ProductListViewState extends State<ProductListView> {
       child: Stack(
         children: [
           ListTile(
-            title: Text(widget.product.productName),
+            leading: Icon(FontAwesomeIcons.productHunt),
+            title: Text(
+              widget.product.productName +
+                  "   x" +
+                  widget.product.amount.toString(),
+              style: TextStyle(fontSize: 18),
+            ),
             subtitle: Text(
-              "Giá tiền: " + (widget.product.price),
+              "Product's total: " + (widget.product.price),
             ),
             trailing: Text(widget.product.state != null
                 ? widget.product.state.toString()

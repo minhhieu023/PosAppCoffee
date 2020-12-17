@@ -113,7 +113,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           ],
                         ),
                       ),
-
                       // footer: Text("Cash"),
                     ),
                   ),
