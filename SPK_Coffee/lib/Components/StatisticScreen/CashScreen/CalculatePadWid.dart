@@ -1,13 +1,16 @@
 import 'package:SPK_Coffee/Models/ProviderModels/Calculate.dart';
+import 'package:SPK_Coffee/Models/ProviderModels/CashScreenProvider.dart';
 import 'package:SPK_Coffee/Models/ProviderModels/VoucherProvider.dart';
 import 'package:SPK_Coffee/Models/Voucher.dart';
+import 'package:SPK_Coffee/Services/Services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'DisyplayScreen/DisplayDetailWid.dart';
 
 class CalculatePadWid extends StatefulWidget {
-  CalculatePadWid();
+  final Function() getReadyOrders;
+  CalculatePadWid({this.getReadyOrders});
   @override
   _CalculatePadWidState createState() => _CalculatePadWidState();
 }
@@ -39,14 +42,39 @@ class _CalculatePadWidState extends State<CalculatePadWid> {
                   children: [
                     Expanded(
                         child: Center(
-                      child: PayWid(),
+                      child: PayWid(
+                        getReadyOrders: widget.getReadyOrders,
+                      ),
                     )),
                     Expanded(
                         flex: 2,
-                        child: Container(
-                          decoration:
-                              BoxDecoration(border: Border.all(width: 0.5)),
-                          child: NumPadWid(),
+                        child: Stack(
+                          overflow: Overflow.clip,
+                          alignment: Alignment.center,
+                          children: [
+                            LayoutBuilder(
+                              builder: (context, constraints) {
+                                return Container(
+                                  width: constraints.maxWidth * 0.95,
+                                  height: constraints.maxHeight * 0.95,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(width: 0.5),
+                                      borderRadius: BorderRadius.circular(45),
+                                      boxShadow: [
+                                        BoxShadow(
+                                            offset: Offset(1, 2),
+                                            spreadRadius: 0.2,
+                                            color:
+                                                Colors.black87.withOpacity(0.2),
+                                            blurRadius: 0.8)
+                                      ]),
+                                );
+                              },
+                            ),
+                            Container(
+                              child: NumPadWid(),
+                            )
+                          ],
                         ))
                   ],
                 ),
@@ -186,16 +214,38 @@ class _NumPadWidState extends State<NumPadWid> {
 //Sub button, pay button:
 
 class PayWid extends StatefulWidget {
+  final Function() getReadyOrders;
+  PayWid({this.getReadyOrders});
   @override
   _PayWidState createState() => _PayWidState();
 }
 
 class _PayWidState extends State<PayWid> {
   String dropDownValue = "None";
+  int currentDrop = 0;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  Voucher getCurrentVoucher(List<Voucher> vouchers, String des) {
+    Voucher target;
+    vouchers.forEach((item) {
+      if (item.description.contains(des)) {
+        target = item;
+      }
+    });
+
+    return target;
+  }
+
   @override
   Widget build(BuildContext context) {
     VoucherProvider vouchers = Provider.of<VoucherProvider>(context);
     Future<VoucherList> fVoucher = vouchers.getFVoucher();
+    Calculate calculate = Provider.of<Calculate>(context);
+    CashProvider cashProvider = Provider.of<CashProvider>(context);
     return Container(
       child: Column(
         children: [
@@ -204,40 +254,98 @@ class _PayWidState extends State<PayWid> {
             child: Column(
               children: [
                 Text("Voucher:"),
-                // Expanded(
-                //     child: FutureBuilder<VoucherList>(
-                //   future: fVoucher,
-                //   builder: (context, snapshot) {
-                //     if (snapshot.hasData) {
-                //       return DropdownButton(
-                //         items: snapshot.data.vouchers.map((voucher) {
-                //           return new DropdownMenuItem<String>(
-                //             key: Key(voucher.id),
-                //             value: voucher.id,
-                //             child: Text(voucher.description),
-                //           );
-                //         }).toList(),
-                //         onChanged: (value) {
-                //           setState(() {
-                //             dropDownValue = value;
-                //           });
-                //         },
-                //         value: dropDownValue,
-                //       );
-                //     }
-                //     return CircularProgressIndicator(
-                //       backgroundColor: Colors.green,
-                //     );
-                //   },
-                // ))
+                Expanded(
+                    child: FutureBuilder<VoucherList>(
+                  future: fVoucher,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      List<String> desList = [];
+                      snapshot.data.vouchers.forEach((element) {
+                        desList.add(element.description);
+                      });
+                      desList.add("None");
+                      List<String> idList = [];
+                      snapshot.data.vouchers.forEach((element) {
+                        idList.add(element.id);
+                      });
+                      return Stack(
+                        overflow: Overflow.clip,
+                        alignment: AlignmentDirectional.center,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(width: 0.5),
+                            ),
+                          ),
+                          Positioned(
+                              child: DropdownButton<String>(
+                            value: dropDownValue,
+                            icon: Icon(Icons.arrow_downward),
+                            iconSize: 24,
+                            elevation: 16,
+                            style: TextStyle(color: Colors.deepPurple),
+                            underline: Container(
+                              height: 2,
+                              color: Colors.deepPurpleAccent,
+                            ),
+                            onChanged: (String newValue) {
+                              setState(() {
+                                dropDownValue = newValue;
+                              });
+                              if (newValue != "None") {
+                                vouchers.setCurrentVoucher(getCurrentVoucher(
+                                    snapshot.data.vouchers, newValue));
+                                calculate.setDiscount(double.parse(
+                                    getCurrentVoucher(
+                                            snapshot.data.vouchers, newValue)
+                                        .discount));
+                              } else {
+                                vouchers.setCurrentVoucher(null);
+                                calculate.setDiscount(0);
+                              }
+                              print(dropDownValue);
+                              // vouchers.setCurrentVoucher()
+                            },
+                            items: desList
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                          ))
+                        ],
+                      );
+                    }
+                    return CircularProgressIndicator(
+                      backgroundColor: Colors.green,
+                    );
+                  },
+                ))
               ],
             ),
           )),
           Expanded(
               child: FlatButton(
             child: Text("Pay"),
-            onPressed: () {
+            onPressed: () async {
               print("pay");
+              int isSuccess = await ServiceManager().payOrder(
+                  cashProvider.getCurrentOrder().id,
+                  calculate.getSecondNum(),
+                  double.parse(vouchers.getVoucher() == null
+                      ? "0"
+                      : vouchers.getVoucher().discount));
+              if (isSuccess == 1) {
+                Scaffold.of(context).showSnackBar(SnackBar(
+                  content: Text("Payment successfully!"),
+                ));
+                widget.getReadyOrders.call();
+              } else {
+                Scaffold.of(context).showSnackBar(SnackBar(
+                  content: Text("Payment fail!"),
+                ));
+              }
             },
           ))
         ],

@@ -100,7 +100,7 @@ class _MyAppState extends State<MyApp> {
           ]);
     });
 
-    // await _db.getTable("Products");
+    await _db.getTable("Products");
     return Future.value(
       LoginScreen(),
     );

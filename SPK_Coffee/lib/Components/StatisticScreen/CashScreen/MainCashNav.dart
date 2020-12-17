@@ -13,7 +13,8 @@ import 'package:provider/provider.dart';
 
 class MainCashNav extends StatefulWidget {
   final Future<OrderList> orderList;
-  MainCashNav({this.orderList});
+  final Function() getReadyOrders;
+  MainCashNav({this.orderList, this.getReadyOrders});
   @override
   _MainCashNavState createState() => _MainCashNavState();
 }
@@ -45,6 +46,7 @@ class _MainCashNavState extends State<MainCashNav> {
 
   @override
   Widget build(BuildContext context) {
+    setup();
     return FutureBuilder<OrderList>(
       future: list,
       builder: (context, snapshot) {
@@ -54,6 +56,7 @@ class _MainCashNavState extends State<MainCashNav> {
             return LandScapeCashScreen(
               orderList: snapshot.data,
               orders: orders,
+              getReadyOrders: widget.getReadyOrders,
             );
           } else {
             return Center(
@@ -74,7 +77,9 @@ class LandScapeCashScreen extends StatefulWidget {
   final Future<VoucherList> fVoucher;
   final OrderList orderList;
   final List<Order> orders;
-  LandScapeCashScreen({this.orderList, this.orders, this.fVoucher});
+  final Function() getReadyOrders;
+  LandScapeCashScreen(
+      {this.orderList, this.orders, this.fVoucher, this.getReadyOrders});
   @override
   _LandScapeCashScreenState createState() => _LandScapeCashScreenState();
 }
@@ -108,7 +113,10 @@ class _LandScapeCashScreenState extends State<LandScapeCashScreen> {
       ],
       child: Row(
         children: [
-          Expanded(child: CalculatePadWid()),
+          Expanded(
+              child: CalculatePadWid(
+            getReadyOrders: widget.getReadyOrders,
+          )),
           Expanded(
               child: PendingListWid(
             orderList: widget.orderList,

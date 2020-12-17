@@ -1,6 +1,7 @@
 import 'package:SPK_Coffee/Models/Order.dart';
 import 'package:SPK_Coffee/Models/ProviderModels/Calculate.dart';
 import 'package:SPK_Coffee/Models/ProviderModels/CashScreenProvider.dart';
+import 'package:SPK_Coffee/Models/ProviderModels/VoucherProvider.dart';
 import 'package:SPK_Coffee/Utils/FormatString.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -84,10 +85,22 @@ class CalResultWid extends StatefulWidget {
 
 class _CalResultWidState extends State<CalResultWid> {
   double fontSize = 15;
+  String calTotalWithDiscount(double total, double discount) {
+    double percentRemain = (1 - discount / 100);
+    return (total * percentRemain).toString();
+  }
+
   @override
   Widget build(BuildContext context) {
     Calculate calculate = Provider.of<Calculate>(context);
     CashProvider cashProvider = Provider.of<CashProvider>(context);
+    VoucherProvider voucherProvider = Provider.of<VoucherProvider>(context);
+    String sum = calTotalWithDiscount(
+      cashProvider.getTotal(),
+      voucherProvider.getVoucher() == null
+          ? 0
+          : double.parse(voucherProvider.getVoucher().discount),
+    );
     return LayoutBuilder(
       builder: (context, constraints) {
         return Row(
@@ -159,7 +172,9 @@ class _CalResultWidState extends State<CalResultWid> {
                                 border: Border.all(width: 0.5),
                               ),
                               child: Center(
-                                child: Text("output"),
+                                child: Text(voucherProvider.getVoucher() == null
+                                    ? "0"
+                                    : "${voucherProvider.getVoucher().discount}%"),
                               ),
                             ),
                             flex: 6,
@@ -193,8 +208,7 @@ class _CalResultWidState extends State<CalResultWid> {
                             border: Border.all(width: 0.5),
                           ),
                           child: Center(
-                            child: Text(
-                                "${formatMoney(cashProvider.getTotal().floor().toString())}"),
+                            child: Text("${formatMoney(sum.split('.')[0])}"),
                           ),
                         ),
                         flex: 7,

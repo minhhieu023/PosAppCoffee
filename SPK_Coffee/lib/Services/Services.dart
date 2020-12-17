@@ -17,6 +17,7 @@ import 'package:http/http.dart' as http;
 
 class ServiceManager {
   //final _href = 'http://hieuvm.xyz:8000';
+
   final _href = 'http://192.168.0.170:8000';
   // final _href = 'https://caffeeshopbackend.herokuapp.com
 
@@ -56,6 +57,19 @@ class ServiceManager {
     if (response.statusCode == 200) {
       OrderList orderList = OrderList.fromJson(jsonDecode(response.body));
       return orderList;
+    }
+    return null;
+  }
+
+  Future<int> payOrder(String orderId, double tendered, double discount) async {
+    final response = await http.post("$_href/cash/$orderId",
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: jsonEncode(
+            <String, dynamic>{'discount': discount, 'tendered': tendered}));
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body)[0]['pay'];
     }
     return null;
   }

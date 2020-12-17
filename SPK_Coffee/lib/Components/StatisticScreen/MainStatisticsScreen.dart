@@ -30,9 +30,8 @@ class _MainStatisticsScreenState extends State<MainStatisticsScreen>
       // Future<OrderList> closed = ServiceManager()
       setState(() {
         orderList = result;
-        _page = MainCashNav(
-          orderList: orderList,
-        );
+        _page =
+            MainCashNav(orderList: orderList, getReadyOrders: getReadyOrders);
       });
       return orderList;
     });
@@ -71,6 +70,7 @@ class _MainStatisticsScreenState extends State<MainStatisticsScreen>
           _page = Visibility(
               child: MainCashNav(
             orderList: orderList,
+            getReadyOrders: getReadyOrders,
           ));
           break;
         case 1:
