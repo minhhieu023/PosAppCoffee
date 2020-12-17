@@ -6,11 +6,21 @@ class Calculate with ChangeNotifier {
   String _cal = ""; //Calculate
   String _result = "";
   double _finalResult = 0;
+  double _discount = 0;
   bool _isSecond = false;
   RegExp regex = RegExp(r"([.]*0)(?!.*\d)");
 
   String getResult() {
     return _result;
+  }
+
+  void setDiscount(double value) {
+    _discount = value;
+    notifyListeners();
+  }
+
+  double getDiscount() {
+    return _discount;
   }
 
   void setIsSecond(bool value) {
@@ -19,7 +29,7 @@ class Calculate with ChangeNotifier {
   }
 
   bool isGreater() {
-    return _firstNum > _secondNum ? true : false;
+    return (_firstNum * (1 - _discount / 100)) > _secondNum ? true : false;
   }
 
   bool getIsSeccond() {
@@ -86,7 +96,7 @@ class Calculate with ChangeNotifier {
         _result = (_secondNum + _firstNum).toString();
         break;
       case "-":
-        _result = (_secondNum - _firstNum).toString();
+        _result = (_secondNum - (_firstNum * (1 - _discount / 100))).toString();
         break;
       case "X":
         _result = (_firstNum * _secondNum).toString();
