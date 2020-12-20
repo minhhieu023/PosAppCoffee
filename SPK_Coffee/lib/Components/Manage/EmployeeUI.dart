@@ -13,8 +13,8 @@ class Employee extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var employeeList = Provider.of<EmployeeInformationProvider>(context);
-    employeeList.addEmployee(employeeInfo);
+    //var employeeList = Provider.of<EmployeeInformationProvider>(context);
+    //  employeeList.addEmployee(employeeInfo);
     return Card(
       shape: RoundedRectangleBorder(
         side: BorderSide(color: Colors.blueAccent),
@@ -72,7 +72,7 @@ class Employee extends StatelessWidget {
             color: Colors.red,
             icon: Icons.delete,
             onTap: () {
-              employeeList.removeEmployeeInformation(employeeInfo);
+              //  employeeList.removeEmployeeInformation(employeeInfo);
             },
           ),
         ],

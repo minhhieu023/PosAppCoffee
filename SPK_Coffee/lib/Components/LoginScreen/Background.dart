@@ -20,22 +20,36 @@ class _BackgroundState extends State<Background> {
             children: <Widget>[
               Image.asset(
                 'assets/img/logocoffee.jpg',
-                width: MediaQuery.of(context).size.width / 1,
+                width: MediaQuery.of(context).size.width * 0.75,
               ),
-              WavyHeader(),
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  if (constraints.maxWidth < 600)
+                    return WavyHeader();
+                  else //tablet
+                    return Container();
+                },
+              ),
             ],
           ),
           Expanded(
             child: Container(),
           ),
-          Stack(
-            alignment: Alignment.bottomLeft,
-            children: <Widget>[
-              WavyFooter(),
-              CirclePink(),
-              CircleYellow(),
-            ],
-          )
+          LayoutBuilder(
+            builder: (context, constraints) {
+              if (constraints.maxWidth < 600)
+                return Stack(
+                  alignment: Alignment.bottomLeft,
+                  children: <Widget>[
+                    WavyFooter(),
+                    CirclePink(),
+                    CircleYellow(),
+                  ],
+                );
+              else //tablet
+                return Container();
+            },
+          ),
         ],
       ),
     );

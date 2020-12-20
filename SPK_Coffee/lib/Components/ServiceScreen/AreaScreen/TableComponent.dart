@@ -202,11 +202,13 @@ class _TableWigetState extends State<TableWiget> {
                 header: Center(
                   child: Padding(
                       padding: EdgeInsets.all((10)),
-                      child: Text((widget.tableCoffee.areaId.toString()))),
+                      child: Text(
+                          ("Area " + widget.tableCoffee.areaId.toString()))),
                 ),
                 footer: Padding(
                     padding: EdgeInsets.all((10)),
-                    child: Center(child: Text(widget.tableCoffee.name))),
+                    child: Center(
+                        child: Text("Table " + widget.tableCoffee.name))),
                 child: Card(
                     color: selectedToMerge &&
                             widget.isMerge &&
@@ -335,13 +337,14 @@ class _TableWigetState extends State<TableWiget> {
                           header: Center(
                             child: Padding(
                                 padding: EdgeInsets.all((10)),
-                                child: Text(
-                                    (widget.tableCoffee.areaId.toString()))),
+                                child: Text(("Area " +
+                                    widget.tableCoffee.areaId.toString()))),
                           ),
                           footer: Padding(
                               padding: EdgeInsets.all((10)),
-                              child:
-                                  Center(child: Text(widget.tableCoffee.name))),
+                              child: Center(
+                                  child: Text(
+                                      "Table " + widget.tableCoffee.name))),
                           child: Card(
                               color: selectedToMerge &&
                                       widget.isMerge &&

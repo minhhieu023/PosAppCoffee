@@ -16,14 +16,15 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomPadding: false,
-        backgroundColor: Colors.white,
-        body: Stack(
-          children: <Widget>[
-            //  loadingScreen(),
-            Background(),
-            Login(),
-          ],
-        ));
+      resizeToAvoidBottomPadding: false,
+      backgroundColor: Colors.white,
+      body: Stack(
+        children: <Widget>[
+          //  loadingScreen(),
+          Background(),
+          Login(),
+        ],
+      ),
+    );
   }
 }

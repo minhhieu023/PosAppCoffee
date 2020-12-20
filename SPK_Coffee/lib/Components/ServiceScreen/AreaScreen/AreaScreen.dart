@@ -149,7 +149,6 @@ class _MainServiceScreenState extends State<MainServiceScreen>
                           String getString = getOrderOnTableCore[0];
                           result = await _serviceManager.splitTable(getString);
                         }
-
                         print(result);
                         showDialog(
                             context: context,

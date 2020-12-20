@@ -40,6 +40,7 @@ class _OrderScreenState extends State<OrderScreen>
   bool haveOrder = false;
   bool isOpenCart = false;
   bool isSearch = false;
+  List<Products> listProductToSearch = new List<Products>();
   //ListProduct listProductJson;
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   TextEditingController searchProduct = new TextEditingController();
@@ -122,14 +123,17 @@ class _OrderScreenState extends State<OrderScreen>
                     ? TextFormField(
                         controller: searchProduct,
                         onChanged: (searchProduct) {
-                          setState(() {
-                            var product = listProduct
-                                .where((t) => t.productName
-                                    .toLowerCase()
-                                    .contains(searchProduct.toLowerCase()))
-                                .toList();
-                            print(product);
-                          });
+                          print(searchProduct);
+                          listProduct = listProductToSearch.where((element) =>
+                              element.productName.contains(searchProduct));
+
+                          // listProduct = listProductToSearch
+                          //     .where((t) => t.productName
+                          //         .toLowerCase()
+                          //         .contains(searchProduct.toLowerCase()))
+                          //     .toList();
+                          // //  print(listProduct.length);
+                          // print(listProductToSearch.length);
                         },
                       )
                     : Text("${args.table.name}-Order"),
@@ -286,6 +290,10 @@ class _OrderScreenState extends State<OrderScreen>
                           builder: (context, snapshopHaveOrder) {
                             if (snapshopHaveOrder.hasData) {
                               listProduct = snapshopHaveOrder.data.listProduct;
+                              listProduct.forEach((element) {
+                                listProductToSearch.add(element);
+                              });
+                              snapshot.data.data.forEach((element) {});
                               print(listProduct[0].id);
                               return ProductInCartScreen(
                                 table: args.table,
@@ -407,9 +415,10 @@ class _OrderScreenState extends State<OrderScreen>
                                         }
                                       });
                                       print(listCustom.length);
+                                      print("Order ID:" + args.orderId);
                                       await serviceManager
                                           .addMoreProductIntoOrder(
-                                              listCustom, widget.orderId);
+                                              listCustom, args.orderId);
                                       Navigator.pop(context);
                                     } else {
                                       await createOrder(

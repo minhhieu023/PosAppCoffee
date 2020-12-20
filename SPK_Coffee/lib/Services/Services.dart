@@ -18,7 +18,7 @@ import 'package:http/http.dart' as http;
 class ServiceManager {
   //final _href = 'http://hieuvm.xyz:8000';
 
-  final _href = 'http://192.168.0.170:8000';
+  final _href = 'http://192.168.1.106:8000';
   // final _href = 'https://caffeeshopbackend.herokuapp.com
 
   ServiceManager();
@@ -247,6 +247,7 @@ class ServiceManager {
         await prefs.setString('userName', userNameGetRole);
         String role = json['role'];
         await prefs.setString('role', role);
+        return 1;
       }
       return 0;
     }
