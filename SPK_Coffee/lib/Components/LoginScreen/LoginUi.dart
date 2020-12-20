@@ -23,7 +23,7 @@ class _LoginState extends State<Login> {
         children: <Widget>[
           Padding(
             padding:
-                EdgeInsets.only(top: MediaQuery.of(context).size.height / 2.3),
+                EdgeInsets.only(top: MediaQuery.of(context).size.height / 2.5),
           ),
           Column(
             children: <Widget>[
@@ -62,6 +62,7 @@ class _LoginState extends State<Login> {
                   ),
                 ],
               ),
+
               Padding(
                 padding: EdgeInsets.only(bottom: 50),
               ),
