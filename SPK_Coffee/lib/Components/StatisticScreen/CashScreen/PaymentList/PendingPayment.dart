@@ -9,13 +9,15 @@ import 'package:provider/provider.dart';
 
 class PendingListWid extends StatefulWidget {
   final OrderList orderList;
-  PendingListWid({this.orderList});
+  final OrderList historyOrder;
+  PendingListWid({this.orderList, this.historyOrder});
   @override
   _PendingListWidState createState() => _PendingListWidState();
 }
 
 class _PendingListWidState extends State<PendingListWid> {
   int currentTab = 0;
+  OrderList historyList;
   OrderList orderList;
   // Widget displayTab() {
   //   return ;
@@ -30,6 +32,9 @@ class _PendingListWidState extends State<PendingListWid> {
   void getOrderList() {
     if (widget.orderList != null) {
       orderList = widget.orderList;
+    }
+    if (widget.historyOrder != null) {
+      historyList = widget.historyOrder;
     }
   }
 
@@ -69,7 +74,7 @@ class _PendingListWidState extends State<PendingListWid> {
                   type: "pending",
                 )
               : new CashOrdersWid(
-                  orderList: orderList,
+                  orderList: historyList,
                   type: "closed",
                 ),
         ));
@@ -104,6 +109,12 @@ class _CashOrdersWidState extends State<CashOrdersWid> {
         if (orderList.data[i].state == "ready") {
           tempList.add(orderList.data[i]);
           tables.add(orderList.tables[i]);
+        }
+      }
+      if (widget.type == "closed") {
+        if (orderList.data[i].state == "closed") {
+          tempList.add(orderList.data[i]);
+          // tables.add(orderList.tables[i]);
         }
       }
     }
@@ -153,9 +164,11 @@ class _CashOrdersWidState extends State<CashOrdersWid> {
               cashProvider.calulateTotal();
               calculate.setIsSecond(true);
             },
-            title: Text("TABLE ${tables[index].tablename}"),
+            title: widget.type != "closed"
+                ? Text("TABLE ${tables[index].tablename}")
+                : Text("TABLE ${orders[index].tableName}"),
             subtitle: Text(
-                "Order number:${orders[index].id} \n amount of money: ${formatMoney(orders[index].total)} VNĐ"),
+                "Order number:${orders[index].id} \n amount of money: ${formatMoney(orders[index].total.split('.')[0])} VNĐ"),
             isThreeLine: true,
           ),
         );

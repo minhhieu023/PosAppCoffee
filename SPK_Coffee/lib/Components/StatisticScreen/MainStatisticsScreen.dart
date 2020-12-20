@@ -4,6 +4,7 @@ import 'package:SPK_Coffee/Models/Order.dart';
 import 'package:SPK_Coffee/Models/OrderList.dart';
 import 'package:SPK_Coffee/Models/Voucher.dart';
 import 'package:SPK_Coffee/Services/Services.dart';
+import 'package:SPK_Coffee/Utils/FormatString.dart';
 import 'package:floating_action_bubble/floating_action_bubble.dart';
 import 'package:fluid_bottom_nav_bar/fluid_bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
@@ -27,11 +28,15 @@ class _MainStatisticsScreenState extends State<MainStatisticsScreen>
   void getReadyOrders() async {
     await this.performFuture(() async {
       Future<OrderList> result = ServiceManager().getReadyOrders();
-      // Future<OrderList> closed = ServiceManager()
+      Future<OrderList> closed = ServiceManager().getHistoryOrders(getDate());
       setState(() {
         orderList = result;
-        _page =
-            MainCashNav(orderList: orderList, getReadyOrders: getReadyOrders);
+        closedList = closed;
+        _page = MainCashNav(
+          orderList: orderList,
+          getReadyOrders: getReadyOrders,
+          historyList: closedList,
+        );
       });
       return orderList;
     });
@@ -71,6 +76,7 @@ class _MainStatisticsScreenState extends State<MainStatisticsScreen>
               child: MainCashNav(
             orderList: orderList,
             getReadyOrders: getReadyOrders,
+            historyList: closedList,
           ));
           break;
         case 1:
@@ -137,7 +143,7 @@ class _MainStatisticsScreenState extends State<MainStatisticsScreen>
         backGroundColor: Colors.blue,
         items: <Bubble>[
           Bubble(
-            title: "Cashier",
+            title: "Payment",
             iconColor: Colors.white,
             bubbleColor: Colors.blue,
             icon: Icons.attach_money,
