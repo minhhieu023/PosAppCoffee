@@ -13,14 +13,16 @@ import 'package:provider/provider.dart';
 
 class MainCashNav extends StatefulWidget {
   final Future<OrderList> orderList;
+  final Future<OrderList> historyList;
   final Function() getReadyOrders;
-  MainCashNav({this.orderList, this.getReadyOrders});
+  MainCashNav({this.orderList, this.getReadyOrders, this.historyList});
   @override
   _MainCashNavState createState() => _MainCashNavState();
 }
 
 class _MainCashNavState extends State<MainCashNav> {
   Future<OrderList> list;
+  Future<OrderList> historyOrder;
   List<Order> orders = [];
   Screen screen = new Screen();
   @override
@@ -28,12 +30,16 @@ class _MainCashNavState extends State<MainCashNav> {
     // TODO: implement initState
     super.initState();
     list = widget.orderList;
+    historyOrder = widget.historyList;
     // setup();
   }
 
   void setup() {
     if (list != null) {
       list = widget.orderList;
+    }
+    if (widget.historyList != null) {
+      historyOrder = widget.historyList;
     }
   }
 
@@ -47,14 +53,15 @@ class _MainCashNavState extends State<MainCashNav> {
   @override
   Widget build(BuildContext context) {
     setup();
-    return FutureBuilder<OrderList>(
-      future: list,
+    return FutureBuilder<List<OrderList>>(
+      future: Future.wait([list, historyOrder]),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          getOrders(snapshot.data.data);
+          getOrders(snapshot.data[0].data);
           if (MediaQuery.of(context).orientation == Orientation.landscape) {
             return LandScapeCashScreen(
-              orderList: snapshot.data,
+              historyOrder: snapshot.data[1],
+              orderList: snapshot.data[0],
               orders: orders,
               getReadyOrders: widget.getReadyOrders,
             );
@@ -75,17 +82,23 @@ class _MainCashNavState extends State<MainCashNav> {
 
 class LandScapeCashScreen extends StatefulWidget {
   final Future<VoucherList> fVoucher;
+  final OrderList historyOrder;
   final OrderList orderList;
   final List<Order> orders;
   final Function() getReadyOrders;
   LandScapeCashScreen(
-      {this.orderList, this.orders, this.fVoucher, this.getReadyOrders});
+      {this.orderList,
+      this.orders,
+      this.fVoucher,
+      this.getReadyOrders,
+      this.historyOrder});
   @override
   _LandScapeCashScreenState createState() => _LandScapeCashScreenState();
 }
 
 class _LandScapeCashScreenState extends State<LandScapeCashScreen> {
   Future<VoucherList> fvoucher;
+  OrderList historyOrder;
   void getVoucherList() {
     setState(() {
       fvoucher = ServiceManager().getAllVoucher();
@@ -97,6 +110,14 @@ class _LandScapeCashScreenState extends State<LandScapeCashScreen> {
     // TODO: implement initState
     super.initState();
     getVoucherList();
+  }
+
+  getUpdateHistoryOrder() {
+    if (widget.historyOrder != null) {
+      setState(() {
+        historyOrder = widget.historyOrder;
+      });
+    }
   }
 
   @override
@@ -120,6 +141,7 @@ class _LandScapeCashScreenState extends State<LandScapeCashScreen> {
           Expanded(
               child: PendingListWid(
             orderList: widget.orderList,
+            historyOrder: widget.historyOrder,
           )),
         ],
       ),

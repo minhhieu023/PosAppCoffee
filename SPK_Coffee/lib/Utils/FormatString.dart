@@ -25,3 +25,20 @@ String formatMoney(String money) {
   NumberFormat oCcy = new NumberFormat("#,##0", "en_US");
   return oCcy.format(int.parse(money));
 }
+
+String getDate({String date}) {
+  DateTime now = DateTime.now();
+  if (date != null) {
+    now = DateTime.parse(date);
+  }
+  final DateFormat formatter = DateFormat('yyyy-MM-dd');
+  final String formatted = formatter.format(now);
+  return formatted;
+}
+
+String getCustomDate() {
+  final DateTime now = DateTime.now();
+  final DateFormat formatter = DateFormat('yyyy-MM-dd');
+  final String formatted = formatter.format(now);
+  return formatted;
+}

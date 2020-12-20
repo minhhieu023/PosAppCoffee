@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:SPK_Coffee/Models/ImployeeInformation.dart';
 import 'package:SPK_Coffee/Models/Order.dart';
-import 'package:SPK_Coffee/Models/ProviderModels/EmployeeInformationProvider.dart';
+import 'package:SPK_Coffee/Models/Statistic.dart';
 
 import 'package:SPK_Coffee/Models/Voucher.dart';
 
@@ -18,7 +18,7 @@ import 'package:http/http.dart' as http;
 class ServiceManager {
   //final _href = 'http://hieuvm.xyz:8000';
 
-  final _href = 'http://192.168.0.170:8000';
+  final _href = 'http://192.168.68.107:8000';
   // final _href = 'https://caffeeshopbackend.herokuapp.com
 
   ServiceManager();
@@ -180,6 +180,40 @@ class ServiceManager {
         'Content-Type': 'application/json; charset=UTF-8'
       },
       body: jsonEncode(<String, dynamic>{'state': 'ready'}),
+    );
+    if (response.statusCode == 200) {
+      OrderList orderList = OrderList.fromJson(jsonDecode(response.body));
+      orderList.saveJson = jsonDecode(response.body);
+      return orderList;
+    }
+    return null;
+  }
+
+  Future<OrderList> getHistoryOrders(String date) async {
+//    "date":"2020-12-05"
+    final response = await http.post(
+      "$_href/cash/filter",
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8'
+      },
+      body: jsonEncode(<String, dynamic>{'date': date}),
+    );
+    if (response.statusCode == 200) {
+      OrderList orderList = OrderList.fromJson(jsonDecode(response.body));
+      orderList.saveJson = jsonDecode(response.body);
+      return orderList;
+    }
+    return null;
+  }
+
+  Future<OrderList> getHistoryOrdersDayArrange(String date) async {
+//    "date":"2020-12-05"
+    final response = await http.post(
+      "$_href/cash/filter",
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8'
+      },
+      body: jsonEncode(<String, dynamic>{'date': date}),
     );
     if (response.statusCode == 200) {
       OrderList orderList = OrderList.fromJson(jsonDecode(response.body));
@@ -424,5 +458,31 @@ class ServiceManager {
           }),
         )
         .catchError((error) => print("fail"));
+  }
+
+  Future<Map<String, dynamic>> getOneDayEarning(String date) async {
+    final response = await http.post("$_href/statistical",
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: jsonEncode(<String, dynamic>{'date': date}));
+    if (response.statusCode == 200) {
+      Map<String, dynamic> json = jsonDecode(response.body);
+      return json;
+    }
+    return null;
+  }
+
+  Future<Statistic> getStatisticMonth(String date) async {
+    final response = await http.post("$_href/statistical/month",
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: jsonEncode(<String, dynamic>{'date': date}));
+    if (response.statusCode == 200) {
+      Statistic statistic = Statistic.fromJson(jsonDecode(response.body));
+      return statistic;
+    }
+    return null;
   }
 }
