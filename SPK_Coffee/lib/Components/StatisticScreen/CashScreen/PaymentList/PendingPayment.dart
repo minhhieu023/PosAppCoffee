@@ -2,6 +2,8 @@ import 'package:SPK_Coffee/Models/Order.dart';
 import 'package:SPK_Coffee/Models/OrderList.dart';
 import 'package:SPK_Coffee/Models/ProviderModels/Calculate.dart';
 import 'package:SPK_Coffee/Models/ProviderModels/CashScreenProvider.dart';
+import 'package:SPK_Coffee/Models/ProviderModels/VoucherProvider.dart';
+import 'package:SPK_Coffee/Services/SocketManager.dart';
 import 'package:SPK_Coffee/Utils/FormatString.dart';
 import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +12,8 @@ import 'package:provider/provider.dart';
 class PendingListWid extends StatefulWidget {
   final OrderList orderList;
   final OrderList historyOrder;
-  PendingListWid({this.orderList, this.historyOrder});
+  final Function() getVoucherList;
+  PendingListWid({this.orderList, this.historyOrder, this.getVoucherList});
   @override
   _PendingListWidState createState() => _PendingListWidState();
 }

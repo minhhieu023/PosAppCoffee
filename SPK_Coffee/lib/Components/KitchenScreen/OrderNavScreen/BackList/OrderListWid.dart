@@ -113,6 +113,9 @@ class _OrderListWidState extends State<OrderListWid>
       return orderList;
     });
     SocketManagement().makeMessage("makeUpdateOrderScreen");
+    if (_currentTab == 1) {
+      SocketManagement().makeMessage("getUpdateAllKitchen");
+    }
   }
 
   updateOrderByState(String orderId, String stateToChange) async {

@@ -18,70 +18,110 @@ class CalculatePadWid extends StatefulWidget {
 class _CalculatePadWidState extends State<CalculatePadWid> {
   @override
   Widget build(BuildContext context) {
-    Calculate calculate = Provider.of<Calculate>(context);
-    return Container(
-        decoration: BoxDecoration(border: Border.all(width: 0.5)),
-        child: Center(
-          child: Column(
-            children: [
-              Expanded(child: LayoutBuilder(
-                builder: (context, constraints) {
-                  return Container(
-                    width: constraints.maxWidth,
-                    height: constraints.maxHeight,
-                    child: DisplayDetailWid(
-                      maxHeight: constraints.maxHeight,
-                      maxWidth: constraints.maxWidth,
-                    ),
-                  );
-                },
-              )),
-              Expanded(
-                  child: Container(
-                child: Row(
-                  children: [
-                    Expanded(
-                        child: Center(
-                      child: PayWid(
-                        getReadyOrders: widget.getReadyOrders,
+    // Calculate calculate = Provider.of<Calculate>(context);
+    if (MediaQuery.of(context).orientation == Orientation.landscape) {
+      return Container(
+          decoration: BoxDecoration(border: Border.all(width: 0.5)),
+          child: Center(
+            child: Column(
+              children: [
+                Expanded(child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    return Container(
+                      width: constraints.maxWidth,
+                      height: constraints.maxHeight,
+                      child: DisplayDetailWid(
+                        maxHeight: constraints.maxHeight,
+                        maxWidth: constraints.maxWidth,
                       ),
+                    );
+                  },
+                )),
+                Expanded(
+                    child: Container(
+                  child: Row(
+                    children: [
+                      Expanded(
+                          child: Center(
+                        child: PayWid(
+                          getReadyOrders: widget.getReadyOrders,
+                        ),
+                      )),
+                      Expanded(
+                          flex: 2,
+                          child: Stack(
+                            overflow: Overflow.clip,
+                            alignment: Alignment.center,
+                            children: [
+                              LayoutBuilder(
+                                builder: (context, constraints) {
+                                  return Container(
+                                    width: constraints.maxWidth * 0.95,
+                                    height: constraints.maxHeight * 0.95,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(width: 0.5),
+                                        borderRadius: BorderRadius.circular(45),
+                                        boxShadow: [
+                                          BoxShadow(
+                                              offset: Offset(1, 2),
+                                              spreadRadius: 0.2,
+                                              color: Colors.black87
+                                                  .withOpacity(0.2),
+                                              blurRadius: 0.8)
+                                        ]),
+                                  );
+                                },
+                              ),
+                              Container(
+                                child: NumPadWid(),
+                              )
+                            ],
+                          ))
+                    ],
+                  ),
+                ))
+              ],
+            ),
+          ));
+    } else {
+      //portrails
+      return Container(
+          decoration: BoxDecoration(border: Border.all(width: 0.5)),
+          child: Center(
+            child: Column(
+              children: [
+                Expanded(
+                    flex: 8,
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        return Container(
+                          width: constraints.maxWidth,
+                          height: constraints.maxHeight,
+                          child: DisplayDetailWid(
+                            maxHeight: constraints.maxHeight,
+                            maxWidth: constraints.maxWidth,
+                          ),
+                        );
+                      },
                     )),
-                    Expanded(
-                        flex: 2,
-                        child: Stack(
-                          overflow: Overflow.clip,
-                          alignment: Alignment.center,
-                          children: [
-                            LayoutBuilder(
-                              builder: (context, constraints) {
-                                return Container(
-                                  width: constraints.maxWidth * 0.95,
-                                  height: constraints.maxHeight * 0.95,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(width: 0.5),
-                                      borderRadius: BorderRadius.circular(45),
-                                      boxShadow: [
-                                        BoxShadow(
-                                            offset: Offset(1, 2),
-                                            spreadRadius: 0.2,
-                                            color:
-                                                Colors.black87.withOpacity(0.2),
-                                            blurRadius: 0.8)
-                                      ]),
-                                );
-                              },
+                Expanded(
+                    flex: 2,
+                    child: Container(
+                      child: Row(
+                        children: [
+                          Expanded(
+                              child: Center(
+                            child: PayWid(
+                              getReadyOrders: widget.getReadyOrders,
                             ),
-                            Container(
-                              child: NumPadWid(),
-                            )
-                          ],
-                        ))
-                  ],
-                ),
-              ))
-            ],
-          ),
-        ));
+                          )),
+                        ],
+                      ),
+                    ))
+              ],
+            ),
+          ));
+    }
   }
 }
 
@@ -246,110 +286,228 @@ class _PayWidState extends State<PayWid> {
     Future<VoucherList> fVoucher = vouchers.getFVoucher();
     Calculate calculate = Provider.of<Calculate>(context);
     CashProvider cashProvider = Provider.of<CashProvider>(context);
-    return Container(
-      child: Column(
-        children: [
-          Expanded(
-              child: Container(
-            child: Column(
-              children: [
-                Text("Voucher:"),
-                Expanded(
-                    child: FutureBuilder<VoucherList>(
-                  future: fVoucher,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      List<String> desList = [];
-                      snapshot.data.vouchers.forEach((element) {
-                        desList.add(element.description);
-                      });
-                      desList.add("None");
-                      List<String> idList = [];
-                      snapshot.data.vouchers.forEach((element) {
-                        idList.add(element.id);
-                      });
-                      return Stack(
-                        overflow: Overflow.clip,
-                        alignment: AlignmentDirectional.center,
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(width: 0.5),
+    if (MediaQuery.of(context).orientation == Orientation.landscape) {
+      return Container(
+        child: Column(
+          children: [
+            Expanded(
+                child: Container(
+              child: Column(
+                children: [
+                  Text("Voucher:"),
+                  Expanded(
+                      child: FutureBuilder<VoucherList>(
+                    future: fVoucher,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        List<String> desList = [];
+                        snapshot.data.vouchers.forEach((element) {
+                          desList.add(element.description);
+                        });
+                        desList.add("None");
+                        List<String> idList = [];
+                        snapshot.data.vouchers.forEach((element) {
+                          idList.add(element.id);
+                        });
+                        return Stack(
+                          overflow: Overflow.clip,
+                          alignment: AlignmentDirectional.center,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(width: 0.5),
+                              ),
                             ),
-                          ),
-                          Positioned(
-                              child: DropdownButton<String>(
-                            value: dropDownValue,
-                            icon: Icon(Icons.arrow_downward),
-                            iconSize: 24,
-                            elevation: 16,
-                            style: TextStyle(color: Colors.deepPurple),
-                            underline: Container(
-                              height: 2,
-                              color: Colors.deepPurpleAccent,
-                            ),
-                            onChanged: (String newValue) {
-                              setState(() {
-                                dropDownValue = newValue;
-                              });
-                              if (newValue != "None") {
-                                vouchers.setCurrentVoucher(getCurrentVoucher(
-                                    snapshot.data.vouchers, newValue));
-                                calculate.setDiscount(double.parse(
-                                    getCurrentVoucher(
-                                            snapshot.data.vouchers, newValue)
-                                        .discount));
-                              } else {
-                                vouchers.setCurrentVoucher(null);
-                                calculate.setDiscount(0);
-                              }
-                              print(dropDownValue);
-                              // vouchers.setCurrentVoucher()
-                            },
-                            items: desList
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                          ))
-                        ],
+                            Positioned(
+                                child: DropdownButton<String>(
+                              value: dropDownValue,
+                              icon: Icon(Icons.arrow_downward),
+                              iconSize: 24,
+                              elevation: 16,
+                              style: TextStyle(color: Colors.deepPurple),
+                              underline: Container(
+                                height: 2,
+                                color: Colors.deepPurpleAccent,
+                              ),
+                              onChanged: (String newValue) {
+                                setState(() {
+                                  dropDownValue = newValue;
+                                });
+                                if (newValue != "None") {
+                                  vouchers.setCurrentVoucher(getCurrentVoucher(
+                                      snapshot.data.vouchers, newValue));
+                                  calculate.setDiscount(double.parse(
+                                      getCurrentVoucher(
+                                              snapshot.data.vouchers, newValue)
+                                          .discount));
+                                } else {
+                                  vouchers.setCurrentVoucher(null);
+                                  calculate.setDiscount(0);
+                                }
+                                calculate.calculate();
+                                print(dropDownValue);
+                                // vouchers.setCurrentVoucher()
+                              },
+                              items: desList.map<DropdownMenuItem<String>>(
+                                  (String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            ))
+                          ],
+                        );
+                      }
+                      return CircularProgressIndicator(
+                        backgroundColor: Colors.green,
                       );
-                    }
-                    return CircularProgressIndicator(
-                      backgroundColor: Colors.green,
-                    );
-                  },
-                ))
-              ],
-            ),
-          )),
-          Expanded(
+                    },
+                  ))
+                ],
+              ),
+            )),
+            Expanded(
               child: FlatButton(
-            child: Text("Pay"),
-            onPressed: () async {
-              print("pay");
-              int isSuccess = await ServiceManager().payOrder(
-                  cashProvider.getCurrentOrder().id,
-                  calculate.getSecondNum(),
-                  double.parse(vouchers.getVoucher() == null
-                      ? "0"
-                      : vouchers.getVoucher().discount));
-              if (isSuccess == 1) {
-                Scaffold.of(context).showSnackBar(SnackBar(
-                  content: Text("Payment successfully!"),
-                ));
-                widget.getReadyOrders.call();
-              } else {
-                Scaffold.of(context).showSnackBar(SnackBar(
-                  content: Text("Payment fail!"),
-                ));
-              }
-            },
-          ))
-        ],
-      ),
-    );
+                child: Text("Pay"),
+                onPressed: () async {
+                  print("pay");
+                  int isSuccess = await ServiceManager().payOrder(
+                      cashProvider.getCurrentOrder().id,
+                      calculate.getSecondNum(),
+                      double.parse(vouchers.getVoucher() == null
+                          ? "0"
+                          : vouchers.getVoucher().discount));
+                  if (isSuccess == 1) {
+                    Scaffold.of(context).showSnackBar(SnackBar(
+                      content: Text("Payment successfully!"),
+                    ));
+                    widget.getReadyOrders.call();
+                  } else {
+                    Scaffold.of(context).showSnackBar(SnackBar(
+                      content: Text("Payment fail!"),
+                    ));
+                  }
+                  calculate.resetAll();
+                },
+              ),
+            )
+          ],
+        ),
+      );
+    } else {
+      return Container(
+        child: Row(
+          children: [
+            Expanded(
+                child: Container(
+              child: Column(
+                children: [
+                  Text("Voucher:"),
+                  Expanded(
+                      child: FutureBuilder<VoucherList>(
+                    future: fVoucher,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        List<String> desList = [];
+                        snapshot.data.vouchers.forEach((element) {
+                          desList.add(element.description);
+                        });
+                        desList.add("None");
+                        List<String> idList = [];
+                        snapshot.data.vouchers.forEach((element) {
+                          idList.add(element.id);
+                        });
+                        return Stack(
+                          overflow: Overflow.clip,
+                          alignment: AlignmentDirectional.center,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(width: 0.5),
+                              ),
+                            ),
+                            Positioned(
+                                child: DropdownButton<String>(
+                              value: dropDownValue,
+                              icon: Icon(Icons.arrow_downward),
+                              iconSize: 24,
+                              elevation: 16,
+                              style: TextStyle(color: Colors.deepPurple),
+                              underline: Container(
+                                height: 2,
+                                color: Colors.deepPurpleAccent,
+                              ),
+                              onChanged: (String newValue) {
+                                setState(() {
+                                  dropDownValue = newValue;
+                                });
+                                if (newValue != "None") {
+                                  vouchers.setCurrentVoucher(getCurrentVoucher(
+                                      snapshot.data.vouchers, newValue));
+                                  calculate.setDiscount(double.parse(
+                                      getCurrentVoucher(
+                                              snapshot.data.vouchers, newValue)
+                                          .discount));
+                                } else {
+                                  vouchers.setCurrentVoucher(null);
+                                  calculate.setDiscount(0);
+                                }
+                                calculate.calculate();
+                                print(dropDownValue);
+                                // vouchers.setCurrentVoucher()
+                              },
+                              items: desList.map<DropdownMenuItem<String>>(
+                                  (String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            ))
+                          ],
+                        );
+                      }
+                      return CircularProgressIndicator(
+                        backgroundColor: Colors.green,
+                      );
+                    },
+                  ))
+                ],
+              ),
+            )),
+            Expanded(
+              child: FlatButton(
+                color: Colors.green,
+                shape: RoundedRectangleBorder(
+                    side: BorderSide(width: 1, color: Colors.black),
+                    borderRadius: BorderRadius.all(Radius.circular(30))),
+                child: Text("Pay"),
+                onPressed: () async {
+                  print("pay");
+                  int isSuccess = await ServiceManager().payOrder(
+                      cashProvider.getCurrentOrder().id,
+                      calculate.getSecondNum(),
+                      double.parse(vouchers.getVoucher() == null
+                          ? "0"
+                          : vouchers.getVoucher().discount));
+                  if (isSuccess == 1) {
+                    Scaffold.of(context).showSnackBar(SnackBar(
+                      content: Text("Payment successfully!"),
+                    ));
+                    widget.getReadyOrders.call();
+                  } else {
+                    Scaffold.of(context).showSnackBar(SnackBar(
+                      content: Text("Payment fail!"),
+                    ));
+                  }
+                  calculate.resetAll();
+                },
+              ),
+            )
+          ],
+        ),
+      );
+    }
   }
 }

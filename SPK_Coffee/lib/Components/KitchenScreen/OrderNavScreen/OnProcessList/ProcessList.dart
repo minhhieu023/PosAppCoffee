@@ -1,6 +1,7 @@
 import 'package:SPK_Coffee/Models/Order.dart';
 import 'package:SPK_Coffee/Models/OrderDetail.dart';
 import 'package:SPK_Coffee/Models/OrderList.dart';
+import 'package:SPK_Coffee/Services/SocketManager.dart';
 import 'package:SPK_Coffee/Utils/FormatString.dart';
 import 'package:flutter/material.dart';
 
@@ -117,9 +118,11 @@ class _ProcessListWidState extends State<ProcessListWid> {
                                 Icons.arrow_right_sharp,
                                 size: 50,
                               ),
-                              onPressed: () {
-                                widget.updateOrderState(
+                              onPressed: () async {
+                                await widget.updateOrderState(
                                     orderList[index].id, 'ready');
+                                SocketManagement()
+                                    .makeMessage("getUpdateAllKitchen");
                               }),
                           flex: 1,
                         )

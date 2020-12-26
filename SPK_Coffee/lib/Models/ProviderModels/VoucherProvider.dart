@@ -1,4 +1,5 @@
 import 'package:SPK_Coffee/Models/Voucher.dart';
+import 'package:SPK_Coffee/Services/Services.dart';
 import 'package:flutter/material.dart';
 
 class VoucherProvider with ChangeNotifier {
@@ -16,6 +17,11 @@ class VoucherProvider with ChangeNotifier {
 
   Voucher getVoucher() {
     return _currentVoucher;
+  }
+
+  void revewVoucher() {
+    _fVoucher = ServiceManager().getAllVoucher();
+    notifyListeners();
   }
 
   void setFvoucher(Future<VoucherList> value) {

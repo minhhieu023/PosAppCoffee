@@ -66,8 +66,11 @@ class _MainCashNavState extends State<MainCashNav> {
               getReadyOrders: widget.getReadyOrders,
             );
           } else {
-            return Center(
-              child: Text("We are working on this!"),
+            return PortrailCashScreen(
+              historyOrder: snapshot.data[1],
+              orderList: snapshot.data[0],
+              orders: orders,
+              getReadyOrders: widget.getReadyOrders,
             );
           }
         } else {
@@ -99,8 +102,14 @@ class LandScapeCashScreen extends StatefulWidget {
 class _LandScapeCashScreenState extends State<LandScapeCashScreen> {
   Future<VoucherList> fvoucher;
   OrderList historyOrder;
+  setStateIfMounted(f) {
+    if (mounted) {
+      setState(f);
+    }
+  }
+
   void getVoucherList() {
-    setState(() {
+    setStateIfMounted(() {
       fvoucher = ServiceManager().getAllVoucher();
     });
   }
@@ -142,7 +151,94 @@ class _LandScapeCashScreenState extends State<LandScapeCashScreen> {
               child: PendingListWid(
             orderList: widget.orderList,
             historyOrder: widget.historyOrder,
+            getVoucherList: getVoucherList,
           )),
+        ],
+      ),
+    );
+  }
+}
+
+class PortrailCashScreen extends StatefulWidget {
+  final Future<VoucherList> fVoucher;
+  final OrderList historyOrder;
+  final OrderList orderList;
+  final List<Order> orders;
+  final Function() getReadyOrders;
+  PortrailCashScreen(
+      {this.fVoucher,
+      this.getReadyOrders,
+      this.historyOrder,
+      this.orderList,
+      this.orders});
+  @override
+  _PortrailCashScreenState createState() => _PortrailCashScreenState();
+}
+
+class _PortrailCashScreenState extends State<PortrailCashScreen> {
+  double dynamicPad = 0;
+  Future<VoucherList> fvoucher;
+  OrderList historyOrder;
+  void getVoucherList() {
+    setStateIfMounted(() {
+      fvoucher = ServiceManager().getAllVoucher();
+    });
+  }
+
+  setStateIfMounted(f) {
+    if (mounted) {
+      setState(f);
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getVoucherList();
+  }
+
+  getUpdateHistoryOrder() {
+    if (widget.historyOrder != null) {
+      setState(() {
+        historyOrder = widget.historyOrder;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // getVoucherList();
+
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => Calculate()),
+        ChangeNotifierProvider(create: (context) => CashProvider()),
+        ChangeNotifierProvider(create: (context) {
+          return VoucherProvider(fvoucher);
+        })
+      ],
+      child: Column(
+        children: [
+          Expanded(
+              child: Container(
+            height: MediaQuery.of(context).size.height * 0.45 + dynamicPad,
+            width: MediaQuery.of(context).size.width,
+            child: CalculatePadWid(
+              getReadyOrders: widget.getReadyOrders,
+            ),
+          )),
+          Expanded(
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 0.45 - dynamicPad,
+              child: PendingListWid(
+                getVoucherList: getVoucherList,
+                orderList: widget.orderList,
+                historyOrder: widget.historyOrder,
+              ),
+            ),
+          ),
         ],
       ),
     );
