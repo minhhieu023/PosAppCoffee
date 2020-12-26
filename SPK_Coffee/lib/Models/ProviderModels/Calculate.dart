@@ -63,6 +63,7 @@ class Calculate with ChangeNotifier {
     _secondNum = 0;
     _cal = "";
     _result = "";
+    _discount = 0;
     notifyListeners();
   }
 

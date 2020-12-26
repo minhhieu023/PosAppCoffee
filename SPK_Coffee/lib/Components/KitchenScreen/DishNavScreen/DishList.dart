@@ -27,7 +27,7 @@ class _DishListState extends State<DishList> with ScreenLoader<DishList> {
   void setProcessState() async {}
   void getAllOrder() {
     this.performFuture(() {
-      setState(() {
+      setStateIfMounted(() {
         orderList = ServiceManager().getActiveProducts();
       });
       return orderList;
@@ -51,6 +51,8 @@ class _DishListState extends State<DishList> with ScreenLoader<DishList> {
     if (finalResult) {
       buildSnackBar(content: "Change state success!", second: 2);
       SocketManagement().makeMessage("makeUpdateOrderScreen");
+      SocketManagement().makeMessage("dishScreenUpdatePayment",
+          isHaveData: true, data: {"id": id});
     }
     return finalResult;
   }
@@ -70,7 +72,7 @@ class _DishListState extends State<DishList> with ScreenLoader<DishList> {
   @override
   didChangeDependencies() {
     super.didChangeDependencies();
-    SocketManagement().addListener("updateSort");
+    // SocketManagement().addListener("updateSort", extensionFunc: getAllOrder);
   }
 
   Map<String, String> getProductNameAndDuration(
@@ -214,6 +216,12 @@ class _OrderDtProWidState extends State<OrderDtProWid> {
     processColors = workColor[widget.order.details[widget.index].state];
   }
 
+  setStateIfMounted(f) {
+    if (mounted) {
+      setState(f);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -318,7 +326,9 @@ class _OrderDtProWidState extends State<OrderDtProWid> {
                 bool result = await widget.changeStateOrderDetails(
                     widget.order.details[widget.index].id, "ready");
                 if (result) {
-                  setState(() {
+                  SocketManagement().makeMessage("getUpdateDishKitchen");
+
+                  setStateIfMounted(() {
                     processColors = workColor['ready'];
                   });
                 }
@@ -342,7 +352,9 @@ class _OrderDtProWidState extends State<OrderDtProWid> {
                 bool result = await widget.changeStateOrderDetails(
                     widget.order.details[widget.index].id, "processing");
                 if (result) {
-                  setState(() {
+                  SocketManagement().makeMessage("getUpdateDishKitchen");
+
+                  setStateIfMounted(() {
                     processColors = workColor['processing'];
                   });
                 }

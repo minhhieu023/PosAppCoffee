@@ -4,6 +4,8 @@ import 'package:SPK_Coffee/Models/ProviderModels/CashScreenProvider.dart';
 import 'package:SPK_Coffee/Models/ProviderModels/VoucherProvider.dart';
 import 'package:SPK_Coffee/Utils/FormatString.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:provider/provider.dart';
 
 class DisplayDetailWid extends StatefulWidget {
@@ -85,6 +87,10 @@ class CalResultWid extends StatefulWidget {
 
 class _CalResultWidState extends State<CalResultWid> {
   double fontSize = 15;
+  var translator = {'#': new RegExp('/(\d)(?=(\d{3})+(?!\d))/g')};
+  var controller = new MoneyMaskedTextController(precision: 3);
+
+  TextEditingController textEditingController = TextEditingController();
   String calTotalWithDiscount(double total, double discount) {
     double percentRemain = (1 - discount / 100);
     return (total * percentRemain).toString();
@@ -101,66 +107,26 @@ class _CalResultWidState extends State<CalResultWid> {
           ? 0
           : double.parse(voucherProvider.getVoucher().discount),
     );
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return Row(
-          children: [
-            Expanded(
-                flex: 4,
-                child: Column(
-                  children: [
-                    Expanded(
-                        child: Row(
-                      children: [
-                        Expanded(
-                          child: Center(
-                            child: Text(
-                              "Amount tendered:",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w900,
-                                fontSize: 15,
-                              ),
-                            ),
-                          ),
-                          flex: 4,
-                        ),
-                        Expanded(
-                          child: Container(
-                            height: constraints.maxHeight * 0.25,
-                            decoration: BoxDecoration(
-                              border: Border.all(width: 0.5),
-                            ),
-                            child: Center(
-                              child: Text(
-                                calculate.getSecondNum() == 0.0
-                                    ? "0"
-                                    : formatMoney(calculate
-                                        .getSecondNum()
-                                        .toString()
-                                        .split(".")[0]),
-                                style: TextStyle(
-                                    color: !calculate.isGreater()
-                                        ? Colors.black
-                                        : calculate.getSecondNum() == 0
-                                            ? Colors.black
-                                            : Colors.red),
-                              ),
-                            ),
-                          ),
-                          flex: 6,
-                        )
-                      ],
-                    )),
-                    Expanded(
-                      //discount!
-                      child: Row(
+    if (MediaQuery.of(context).orientation == Orientation.landscape) {
+      return LayoutBuilder(
+        builder: (context, constraints) {
+          return Row(
+            children: [
+              Expanded(
+                  flex: 4,
+                  child: Column(
+                    children: [
+                      Expanded(
+                          child: Row(
                         children: [
                           Expanded(
                             child: Center(
                               child: Text(
-                                "Discount:",
+                                "Amount tendered:",
                                 style: TextStyle(
-                                    fontWeight: FontWeight.w900, fontSize: 15),
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 15,
+                                ),
                               ),
                             ),
                             flex: 4,
@@ -172,82 +138,301 @@ class _CalResultWidState extends State<CalResultWid> {
                                 border: Border.all(width: 0.5),
                               ),
                               child: Center(
-                                child: Text(voucherProvider.getVoucher() == null
-                                    ? "0"
-                                    : "${voucherProvider.getVoucher().discount}%"),
+                                child: Text(
+                                  calculate.getSecondNum() == 0.0
+                                      ? "0"
+                                      : formatMoney(calculate
+                                          .getSecondNum()
+                                          .toString()
+                                          .split(".")[0]),
+                                  style: TextStyle(
+                                      color: !calculate.isGreater()
+                                          ? Colors.black
+                                          : calculate.getSecondNum() == 0
+                                              ? Colors.black
+                                              : Colors.red),
+                                ),
                               ),
                             ),
                             flex: 6,
                           )
                         ],
-                      ),
-                    )
-                  ],
-                )),
-            Expanded(
-              flex: 6,
-              child: Column(
-                children: [
-                  Expanded(
-                      child: Row(
-                    children: [
+                      )),
                       Expanded(
-                        child: Center(
-                          child: Text(
-                            "Total:",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w900, fontSize: 15),
-                          ),
+                        //discount!
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Center(
+                                child: Text(
+                                  "Discount:",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w900,
+                                      fontSize: 15),
+                                ),
+                              ),
+                              flex: 4,
+                            ),
+                            Expanded(
+                              child: Container(
+                                height: constraints.maxHeight * 0.25,
+                                decoration: BoxDecoration(
+                                  border: Border.all(width: 0.5),
+                                ),
+                                child: Center(
+                                  child: Text(voucherProvider.getVoucher() ==
+                                          null
+                                      ? "0"
+                                      : "${voucherProvider.getVoucher().discount}%"),
+                                ),
+                              ),
+                              flex: 6,
+                            )
+                          ],
                         ),
-                        flex: 3,
-                      ),
-                      Expanded(
-                        child: Container(
-                          height: fontSize + 10,
-                          decoration: BoxDecoration(
-                            border: Border.all(width: 0.5),
-                          ),
-                          child: Center(
-                            child: Text("${formatMoney(sum.split('.')[0])}"),
-                          ),
-                        ),
-                        flex: 7,
                       )
                     ],
                   )),
-                  Expanded(
-                      child: Row(
+              Expanded(
+                flex: 6,
+                child: Column(
+                  children: [
+                    Expanded(
+                        child: Row(
+                      children: [
+                        Expanded(
+                          child: Center(
+                            child: Text(
+                              "Total:",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w900, fontSize: 15),
+                            ),
+                          ),
+                          flex: 3,
+                        ),
+                        Expanded(
+                          child: Container(
+                            height: fontSize + 10,
+                            decoration: BoxDecoration(
+                              border: Border.all(width: 0.5),
+                            ),
+                            child: Center(
+                              child: Text("${formatMoney(sum.split('.')[0])}"),
+                            ),
+                          ),
+                          flex: 7,
+                        )
+                      ],
+                    )),
+                    Expanded(
+                        child: Row(
+                      children: [
+                        Expanded(
+                          child: Center(
+                            child: Text(
+                              "Change:",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w900, fontSize: 15),
+                            ),
+                          ),
+                          flex: 3,
+                        ),
+                        Expanded(
+                          child: Container(
+                            height: fontSize + 10,
+                            decoration: BoxDecoration(
+                              border: Border.all(width: 0.5),
+                            ),
+                            child: Center(
+                              child: Text(calculate.getResult()),
+                            ),
+                          ),
+                          flex: 7,
+                        )
+                      ],
+                    ))
+                  ],
+                ),
+              )
+            ],
+          );
+        },
+      );
+    } else {
+      //Portrails
+      return LayoutBuilder(
+        builder: (context, constraints) {
+          return Row(
+            children: [
+              Expanded(
+                  flex: 4,
+                  child: Column(
                     children: [
                       Expanded(
-                        child: Center(
-                          child: Text(
-                            "Change:",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w900, fontSize: 15),
+                          child: Row(
+                        children: [
+                          Expanded(
+                            child: Center(
+                              child: Text(
+                                "Amount tendered:",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ),
+                            flex: 4,
                           ),
-                        ),
-                        flex: 3,
-                      ),
+                          Expanded(
+                            child: Container(
+                              height: constraints.maxHeight * 0.25,
+                              decoration: BoxDecoration(
+                                border: Border.all(width: 0.5),
+                              ),
+                              child: Center(
+                                  child: TextField(
+                                style: TextStyle(
+                                    color: !calculate.isGreater()
+                                        ? Colors.black
+                                        : calculate.getSecondNum() == 0
+                                            ? Colors.black
+                                            : Colors.red),
+                                onChanged: (value) {
+                                  print(value);
+                                  calculate
+                                      .setSecondNumber(double.parse(value));
+                                  calculate.calculate();
+                                },
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
+                                controller: controller,
+                                keyboardType: TextInputType.number,
+                              )),
+                            ),
+                            flex: 6,
+                          )
+                        ],
+                      )),
                       Expanded(
-                        child: Container(
-                          height: fontSize + 10,
-                          decoration: BoxDecoration(
-                            border: Border.all(width: 0.5),
-                          ),
-                          child: Center(
-                            child: Text(calculate.getResult()),
-                          ),
+                        //discount!
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Center(
+                                child: Text(
+                                  "Discount:",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w900,
+                                      fontSize: 15),
+                                ),
+                              ),
+                              flex: 4,
+                            ),
+                            Expanded(
+                              child: Container(
+                                height: constraints.maxHeight * 0.25,
+                                decoration: BoxDecoration(
+                                  border: Border.all(width: 0.5),
+                                ),
+                                child: Center(
+                                  child: Text(voucherProvider.getVoucher() ==
+                                          null
+                                      ? "0"
+                                      : "${voucherProvider.getVoucher().discount}%"),
+                                ),
+                              ),
+                              flex: 6,
+                            )
+                          ],
                         ),
-                        flex: 7,
                       )
                     ],
-                  ))
-                ],
-              ),
-            )
-          ],
-        );
-      },
-    );
+                  )),
+              Expanded(
+                flex: 6,
+                child: Column(
+                  children: [
+                    Expanded(
+                        child: Row(
+                      children: [
+                        Expanded(
+                          child: Center(
+                            child: Text(
+                              "Total:",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w900, fontSize: 15),
+                            ),
+                          ),
+                          flex: 3,
+                        ),
+                        Expanded(
+                          child: Container(
+                            height: fontSize + 10,
+                            decoration: BoxDecoration(
+                              border: Border.all(width: 0.5),
+                            ),
+                            child: Center(
+                              child: Text("${formatMoney(sum.split('.')[0])}"),
+                            ),
+                          ),
+                          flex: 7,
+                        )
+                      ],
+                    )),
+                    Expanded(
+                        child: Row(
+                      children: [
+                        Expanded(
+                          child: Center(
+                            child: Text(
+                              "Change:",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w900, fontSize: 15),
+                            ),
+                          ),
+                          flex: 3,
+                        ),
+                        Expanded(
+                          child: Container(
+                            height: fontSize + 10,
+                            decoration: BoxDecoration(
+                              border: Border.all(width: 0.5),
+                            ),
+                            child: Center(
+                              child: Text(calculate.getResult()),
+                            ),
+                          ),
+                          flex: 7,
+                        )
+                      ],
+                    ))
+                  ],
+                ),
+              )
+            ],
+          );
+        },
+      );
+    }
   }
 }
+
+/***
+ * 
+ 
+ Text(
+                                  calculate.getSecondNum() == 0.0
+                                      ? "0"
+                                      : formatMoney(calculate
+                                          .getSecondNum()
+                                          .toString()
+                                          .split(".")[0]),
+                                  style: TextStyle(
+                                      color: !calculate.isGreater()
+                                          ? Colors.black
+                                          : calculate.getSecondNum() == 0
+                                              ? Colors.black
+                                              : Colors.red),
+                                ),
+ */

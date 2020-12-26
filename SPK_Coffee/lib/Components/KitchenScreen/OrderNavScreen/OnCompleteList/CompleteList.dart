@@ -1,6 +1,7 @@
 import 'package:SPK_Coffee/Models/Order.dart';
 import 'package:SPK_Coffee/Models/OrderDetail.dart';
 import 'package:SPK_Coffee/Models/OrderList.dart';
+import 'package:SPK_Coffee/Services/SocketManager.dart';
 import 'package:SPK_Coffee/Utils/FormatString.dart';
 import 'package:flutter/material.dart';
 
@@ -72,9 +73,10 @@ class _CompleteListWidState extends State<CompleteListWid> {
                     child: IconButton(
                         icon: Icon(Icons.arrow_left),
                         iconSize: 50,
-                        onPressed: () {
-                          widget.updateOrderState(
+                        onPressed: () async {
+                          await widget.updateOrderState(
                               orderList[index].id, 'processing');
+                          SocketManagement().makeMessage("getUpdateAllKitchen");
                         }),
                     flex: 1,
                   ),
@@ -108,8 +110,10 @@ class _CompleteListWidState extends State<CompleteListWid> {
                           Icons.arrow_upward,
                           size: 50,
                         ),
-                        onPressed: () {
-                          widget.updateOrderState(orderList[index].id, 'open');
+                        onPressed: () async {
+                          await widget.updateOrderState(
+                              orderList[index].id, 'open');
+                          SocketManagement().makeMessage("getUpdateAllKitchen");
                         }),
                   )
                 ],

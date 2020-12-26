@@ -4,6 +4,7 @@ import 'package:SPK_Coffee/Models/Order.dart';
 import 'package:SPK_Coffee/Models/OrderList.dart';
 import 'package:SPK_Coffee/Models/Voucher.dart';
 import 'package:SPK_Coffee/Services/Services.dart';
+import 'package:SPK_Coffee/Services/SocketManager.dart';
 import 'package:SPK_Coffee/Utils/FormatString.dart';
 import 'package:floating_action_bubble/floating_action_bubble.dart';
 import 'package:fluid_bottom_nav_bar/fluid_bottom_nav_bar.dart';
@@ -25,13 +26,19 @@ class _MainStatisticsScreenState extends State<MainStatisticsScreen>
   AnimationController _animationController;
   bool isPressed = true;
   Widget _page = MainCashNav();
+  setStateIfMounted(f) {
+    if (mounted) {
+      setState(f);
+    }
+  }
+
   void getReadyOrders() async {
-    await this.performFuture(() async {
-      Future<OrderList> result = ServiceManager().getReadyOrders();
-      Future<OrderList> closed = ServiceManager().getHistoryOrders(getDate());
-      setState(() {
-        orderList = result;
-        closedList = closed;
+    this.performFuture(() {
+      // Future<OrderList> result = ServiceManager().getReadyOrders();
+      // Future<OrderList> closed = ServiceManager().getHistoryOrders(getDate());
+      setStateIfMounted(() {
+        orderList = ServiceManager().getReadyOrders();
+        closedList = ServiceManager().getHistoryOrders(getDate());
         _page = MainCashNav(
           orderList: orderList,
           getReadyOrders: getReadyOrders,
@@ -46,6 +53,14 @@ class _MainStatisticsScreenState extends State<MainStatisticsScreen>
   }
 
   @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    SocketManagement()
+        .addListener('updateKitchen', extensionFunc: getReadyOrders);
+  }
+
+  @override
   loader() {
     return AlertDialog(
       title: Text('Wait.. Loading data..'),
@@ -54,6 +69,8 @@ class _MainStatisticsScreenState extends State<MainStatisticsScreen>
 
   @override
   void initState() {
+    super.initState();
+
     getReadyOrders();
     _animationController = AnimationController(
       vsync: this,
@@ -63,8 +80,6 @@ class _MainStatisticsScreenState extends State<MainStatisticsScreen>
     final curvedAnimation =
         CurvedAnimation(curve: Curves.easeInOut, parent: _animationController);
     _animation = Tween<double>(begin: 0, end: 1).animate(curvedAnimation);
-
-    super.initState();
   }
 
   void _handleNavigationChange(int index) {
