@@ -458,6 +458,8 @@ class ServiceManager {
             'orderId': orderId,
           }),
         )
+        .then(
+            (value) => SocketManagement().makeMessage("makeUpdateOrderScreen"))
         .catchError((error) => print("fail"));
   }
 

@@ -37,6 +37,7 @@ class _OrderScreenState extends State<OrderScreen>
   // String orderId = '';
   TabController tabController;
   List<Products> listProduct = new List<Products>();
+  List<Products> listProductAfterSearch = new List<Products>();
   bool haveOrder = false;
   bool isOpenCart = false;
   bool isSearch = false;
@@ -117,6 +118,13 @@ class _OrderScreenState extends State<OrderScreen>
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             print(snapshot.data);
+            if (listProductToSearch.isEmpty) {
+              snapshot.data.data.forEach((element) {
+                element.products.forEach((childElement) {
+                  listProductToSearch.add(childElement);
+                });
+              });
+            }
             return Scaffold(
               appBar: AppBar(
                 title: isSearch
@@ -124,16 +132,15 @@ class _OrderScreenState extends State<OrderScreen>
                         controller: searchProduct,
                         onChanged: (searchProduct) {
                           print(searchProduct);
-                          listProduct = listProductToSearch.where((element) =>
-                              element.productName.contains(searchProduct));
-
-                          // listProduct = listProductToSearch
-                          //     .where((t) => t.productName
-                          //         .toLowerCase()
-                          //         .contains(searchProduct.toLowerCase()))
-                          //     .toList();
-                          // //  print(listProduct.length);
-                          // print(listProductToSearch.length);
+                          listProductAfterSearch.clear();
+                          print(listProductAfterSearch.length);
+                          setState(() {
+                            listProductToSearch.forEach((element) {
+                              if (element.productName.contains(searchProduct)) {
+                                listProductAfterSearch.add(element);
+                              }
+                            });
+                          });
                         },
                       )
                     : Text("${args.table.name}-Order"),
@@ -143,6 +150,7 @@ class _OrderScreenState extends State<OrderScreen>
                       onPressed: () {
                         setState(() {
                           isSearch ? isSearch = false : isSearch = true;
+                          listProductAfterSearch.clear();
                         });
                       })
                 ],
@@ -200,6 +208,17 @@ class _OrderScreenState extends State<OrderScreen>
                                     padding: EdgeInsets.all(10),
                                     itemBuilder:
                                         (BuildContext context, int index) {
+                                      if (isSearch == true &&
+                                          listProductAfterSearch.length > 0) {
+                                        return ProductComponent(
+                                          products:
+                                              listProductAfterSearch[index],
+                                          incrementCounter: _incrementCounter,
+                                          decrementCounter: _decrementCounter,
+                                          addProductToCart: addOrderedProduct,
+                                          isUpdateInCart: isUpdateInCart,
+                                        );
+                                      }
                                       return ProductComponent(
                                         products: e.products[index],
                                         incrementCounter: _incrementCounter,

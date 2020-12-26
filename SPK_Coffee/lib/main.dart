@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:screen_loader/screen_loader.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:dcdg/dcdg.dart';
 // import 'Utils/Config.dart';
 import 'Components/ServiceScreen/AreaScreen/AreaScreen.dart';
 import 'Components/ServiceScreen/OrderScreen/OrderScreen.dart';

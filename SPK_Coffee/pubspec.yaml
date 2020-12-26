@@ -46,6 +46,7 @@ dependencies:
   search_widget: ^1.0.2
   fl_chart: ^0.12.1
   dropdownfield: ^1.0.3
+  dcdg: ^2.0.1
   unicons: 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
