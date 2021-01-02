@@ -3,6 +3,7 @@ import 'package:SPK_Coffee/Models/ProviderModels/CashScreenProvider.dart';
 import 'package:SPK_Coffee/Models/ProviderModels/VoucherProvider.dart';
 import 'package:SPK_Coffee/Models/Voucher.dart';
 import 'package:SPK_Coffee/Services/Services.dart';
+import 'package:SPK_Coffee/Services/SocketManager.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -383,6 +384,7 @@ class _PayWidState extends State<PayWid> {
                       content: Text("Payment successfully!"),
                     ));
                     widget.getReadyOrders.call();
+                    SocketManagement().makeMessage("makeUpdateOrderScreen");
                   } else {
                     Scaffold.of(context).showSnackBar(SnackBar(
                       content: Text("Payment fail!"),
@@ -496,6 +498,7 @@ class _PayWidState extends State<PayWid> {
                       content: Text("Payment successfully!"),
                     ));
                     widget.getReadyOrders.call();
+                    SocketManagement().makeMessage("makeUpdateOrderScreen");
                   } else {
                     Scaffold.of(context).showSnackBar(SnackBar(
                       content: Text("Payment fail!"),
