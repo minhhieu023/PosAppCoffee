@@ -18,6 +18,8 @@ import 'Components/ServiceScreen/AreaScreen/AreaScreen.dart';
 import 'Components/ServiceScreen/OrderScreen/OrderScreen.dart';
 import 'Components/ServiceScreen/OrderScreen/ProductInCartScreen.dart';
 
+import 'Components/StatisticScreen/CashScreen/MainCashNav.dart';
+import 'Components/StatisticScreen/Statistic/MainStatisticNav.dart';
 import 'Services/SocketManager.dart';
 
 class MyHttpOverrides extends HttpOverrides {
@@ -144,8 +146,8 @@ class _MyAppState extends State<MyApp> {
         '/Kitchen': (context) => MainKitchenScreen(),
         '/Order': (context) => OrderScreen(),
         '/Cart': (context) => ProductInCartScreen(),
-        '/Statistics': (context) => MainStatisticsScreen(),
-        '/Manage': (context) => ManageUserScreen(),
+        '/Payment': (context) => MainStatisticsScreen(),
+        '/Statistics': (context) => MainStatisticsNav(),
       },
     ));
   }

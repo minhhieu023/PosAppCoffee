@@ -31,7 +31,7 @@ class EmployeeInfo {
   bool sex;
   String role;
   Null online;
-  Null phoneNumber;
+  String phoneNumber;
   Null imgage;
   String createdAt;
   String updatedAt;

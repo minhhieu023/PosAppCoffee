@@ -23,8 +23,8 @@ var featureForAdmin = [
     Colors.blue[100],
   ),
   Feature(
-    "Storage",
-    Icons.storage,
+    "Payment",
+    FontAwesomeIcons.cashRegister,
     Colors.brown[200],
   ),
   Feature("Statistics", Icons.bubble_chart, Colors.green),
