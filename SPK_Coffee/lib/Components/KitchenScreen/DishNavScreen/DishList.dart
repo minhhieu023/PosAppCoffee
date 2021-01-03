@@ -72,7 +72,7 @@ class _DishListState extends State<DishList> with ScreenLoader<DishList> {
   @override
   didChangeDependencies() {
     super.didChangeDependencies();
-    // SocketManagement().addListener("updateSort", extensionFunc: getAllOrder);
+    SocketManagement().addListener("updateSort", extensionFunc: getAllOrder);
   }
 
   Map<String, String> getProductNameAndDuration(

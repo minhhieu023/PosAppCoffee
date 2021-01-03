@@ -322,10 +322,10 @@ class _BottomItemState extends State<BottomItem> {
                   },
                   tabs: [
                     Tab(
-                      icon: Icon(Icons.work),
+                      text: "Processing",
                     ),
                     Tab(
-                      icon: Icon(Icons.done_outline),
+                      text: "Ready",
                     )
                   ],
                 ),

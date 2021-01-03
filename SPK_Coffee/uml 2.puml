@@ -1,0 +1,1386 @@
+@startuml
+set namespaceSeparator ::
+
+class "SPK_Coffee::Components::Hamberger::Hamberger.dart::Hamberger" {
+  +_HambergerState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::Hamberger::Hamberger.dart::Hamberger"
+
+class "SPK_Coffee::Components::Hamberger::Hamberger.dart::_HambergerState" {
+  -Future<SharedPreferences> _prefsaaa
+  +bool isTaking
+  +Future getName()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::Hamberger::Hamberger.dart::_HambergerState"
+
+class "SPK_Coffee::Components::HomeScreen::DashBoard.dart::DashBoard" {
+  +_DashBoardState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::HomeScreen::DashBoard.dart::DashBoard"
+
+class "SPK_Coffee::Components::HomeScreen::DashBoard.dart::_DashBoardState" {
+  +Future getRole()
+  +void initState()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::HomeScreen::DashBoard.dart::_DashBoardState"
+
+class "SPK_Coffee::Components::HomeScreen::MainHomeScreen.dart::MainHomeScreen" {
+  +Function onFloatButtonPressed
+  +Function onAddButtonPressed
+  +_MainHomeScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::HomeScreen::MainHomeScreen.dart::MainHomeScreen"
+
+class "SPK_Coffee::Components::HomeScreen::MainHomeScreen.dart::_MainHomeScreenState" {
+  +double height
+  +void initState()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::HomeScreen::MainHomeScreen.dart::_MainHomeScreenState"
+
+class "SPK_Coffee::Components::KitchenScreen::DishNavScreen::DishList.dart::DishList" {
+  +dynamic Function(Function) getSortScreen
+  +_DishListState createState()
+}
+
+"SPK_Coffee::Components::KitchenScreen::DishNavScreen::DishList.dart::DishList" o-- "SPK_Coffee::Components::KitchenScreen::DishNavScreen::DishList.dart::dynamic Function(Function)"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::KitchenScreen::DishNavScreen::DishList.dart::DishList"
+
+class "SPK_Coffee::Components::KitchenScreen::DishNavScreen::DishList.dart::_DishListState" {
+  +SlidableController slidableController
+  +bool isSort
+  +Future<OrderList> orderList
+  +int popUpValue
+  +OrderList saveInstanceOrderList
+  +List<Widget> title
+  +void setProcessState()
+  +void getAllOrder()
+  +void buildSnackBar()
+  +Future changeStateOrderDetails()
+  +dynamic changeSortScreen()
+  +dynamic setStateIfMounted()
+  +void didChangeDependencies()
+  +Map getProductNameAndDuration()
+  +void initState()
+  +Widget loader()
+  +Widget customPopMenuBtn()
+  +dynamic onSortPressed()
+  +Widget screen()
+}
+
+"SPK_Coffee::Components::KitchenScreen::DishNavScreen::DishList.dart::_DishListState" o-- "flutter_slidable::src::widgets::slidable.dart::SlidableController"
+"SPK_Coffee::Components::KitchenScreen::DishNavScreen::DishList.dart::_DishListState" o-- "SPK_Coffee::Models::OrderList.dart::OrderList"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::KitchenScreen::DishNavScreen::DishList.dart::_DishListState"
+"screen_loader::screen_loader.dart::ScreenLoader<T>" <|-- "SPK_Coffee::Components::KitchenScreen::DishNavScreen::DishList.dart::_DishListState"
+
+class "SPK_Coffee::Components::KitchenScreen::DishNavScreen::DishList.dart::OrderDtProWid" {
+  +SlidableController slidableController
+  +Order order
+  +Map productInfo
+  +int index
+  +dynamic Function(dynamic, dynamic) changeStateOrderDetails
+  +dynamic totalProcessTime
+  +_OrderDtProWidState createState()
+}
+
+"SPK_Coffee::Components::KitchenScreen::DishNavScreen::DishList.dart::OrderDtProWid" o-- "flutter_slidable::src::widgets::slidable.dart::SlidableController"
+"SPK_Coffee::Components::KitchenScreen::DishNavScreen::DishList.dart::OrderDtProWid" o-- "SPK_Coffee::Models::Order.dart::Order"
+"SPK_Coffee::Components::KitchenScreen::DishNavScreen::DishList.dart::OrderDtProWid" o-- "SPK_Coffee::Components::KitchenScreen::DishNavScreen::DishList.dart::dynamic Function(dynamic, dynamic)"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::KitchenScreen::DishNavScreen::DishList.dart::OrderDtProWid"
+
+class "SPK_Coffee::Components::KitchenScreen::DishNavScreen::DishList.dart::_OrderDtProWidState" {
+  +Color processColors
+  +void initState()
+  +Widget build()
+}
+
+"SPK_Coffee::Components::KitchenScreen::DishNavScreen::DishList.dart::_OrderDtProWidState" o-- "dart::ui::Color"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::KitchenScreen::DishNavScreen::DishList.dart::_OrderDtProWidState"
+
+class "SPK_Coffee::Components::KitchenScreen::DishNavScreen::Sorts::SortByDuration.dart::DurationSortWid" {
+  +List<Order> orders
+  +OrderList orderList
+  +dynamic Function(dynamic, dynamic) changeStateOrderDetails
+  +dynamic Function(OrderList, dynamic) getProductNameAndDuration
+  +_DurationSortWidState createState()
+}
+
+"SPK_Coffee::Components::KitchenScreen::DishNavScreen::Sorts::SortByDuration.dart::DurationSortWid" o-- "SPK_Coffee::Models::OrderList.dart::OrderList"
+"SPK_Coffee::Components::KitchenScreen::DishNavScreen::Sorts::SortByDuration.dart::DurationSortWid" o-- "SPK_Coffee::Components::KitchenScreen::DishNavScreen::Sorts::SortByDuration.dart::dynamic Function(dynamic, dynamic)"
+"SPK_Coffee::Components::KitchenScreen::DishNavScreen::Sorts::SortByDuration.dart::DurationSortWid" o-- "SPK_Coffee::Components::KitchenScreen::DishNavScreen::Sorts::SortByDuration.dart::dynamic Function(OrderList, dynamic)"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::KitchenScreen::DishNavScreen::Sorts::SortByDuration.dart::DurationSortWid"
+
+class "SPK_Coffee::Components::KitchenScreen::DishNavScreen::Sorts::SortByDuration.dart::_DurationSortWidState" {
+  +SlidableController slidableController
+  +OrderList orderList
+  +List<Order> orders
+  +List<OrderDetail> details
+  +List<Map> fullOrderInfList
+  +void initState()
+  +void autoSortDuration()
+  +Widget screen()
+}
+
+"SPK_Coffee::Components::KitchenScreen::DishNavScreen::Sorts::SortByDuration.dart::_DurationSortWidState" o-- "flutter_slidable::src::widgets::slidable.dart::SlidableController"
+"SPK_Coffee::Components::KitchenScreen::DishNavScreen::Sorts::SortByDuration.dart::_DurationSortWidState" o-- "SPK_Coffee::Models::OrderList.dart::OrderList"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::KitchenScreen::DishNavScreen::Sorts::SortByDuration.dart::_DurationSortWidState"
+"screen_loader::screen_loader.dart::ScreenLoader<T>" <|-- "SPK_Coffee::Components::KitchenScreen::DishNavScreen::Sorts::SortByDuration.dart::_DurationSortWidState"
+
+class "SPK_Coffee::Components::KitchenScreen::DishNavScreen::Sorts::SortByDuration.dart::OnlyDetailProductWid" {
+  +int index
+  +Map productInfo
+  +OrderDetail detail
+  +SlidableController slidableController
+  +dynamic Function(dynamic, dynamic) changeStateOrderDetails
+  +dynamic totalProcessTime
+  +_OnlyDetailProductWidState createState()
+}
+
+"SPK_Coffee::Components::KitchenScreen::DishNavScreen::Sorts::SortByDuration.dart::OnlyDetailProductWid" o-- "SPK_Coffee::Models::OrderDetail.dart::OrderDetail"
+"SPK_Coffee::Components::KitchenScreen::DishNavScreen::Sorts::SortByDuration.dart::OnlyDetailProductWid" o-- "flutter_slidable::src::widgets::slidable.dart::SlidableController"
+"SPK_Coffee::Components::KitchenScreen::DishNavScreen::Sorts::SortByDuration.dart::OnlyDetailProductWid" o-- "SPK_Coffee::Components::KitchenScreen::DishNavScreen::Sorts::SortByDuration.dart::dynamic Function(dynamic, dynamic)"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::KitchenScreen::DishNavScreen::Sorts::SortByDuration.dart::OnlyDetailProductWid"
+
+class "SPK_Coffee::Components::KitchenScreen::DishNavScreen::Sorts::SortByDuration.dart::_OnlyDetailProductWidState" {
+  +Color processColors
+  +void initState()
+  +Widget build()
+}
+
+"SPK_Coffee::Components::KitchenScreen::DishNavScreen::Sorts::SortByDuration.dart::_OnlyDetailProductWidState" o-- "dart::ui::Color"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::KitchenScreen::DishNavScreen::Sorts::SortByDuration.dart::_OnlyDetailProductWidState"
+
+class "SPK_Coffee::Components::KitchenScreen::MainKitChenScreen.dart::MainKitchenScreen" {
+  +_MainKitchenScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::KitchenScreen::MainKitChenScreen.dart::MainKitchenScreen"
+
+class "SPK_Coffee::Components::KitchenScreen::MainKitChenScreen.dart::_MainKitchenScreenState" {
+  +List titles
+  +bool isSearch
+  +bool sortMode
+  +int currentTitle
+  +int currPage
+  +OrderList orderList
+  -Widget _page
+  +null getSortScreen()
+  +Widget loader()
+  +dynamic getFullOrder()
+  +void initState()
+  +Widget searchBox()
+  -void _handleNavigationChange()
+  +Widget screen()
+}
+
+"SPK_Coffee::Components::KitchenScreen::MainKitChenScreen.dart::_MainKitchenScreenState" o-- "SPK_Coffee::Models::OrderList.dart::OrderList"
+"SPK_Coffee::Components::KitchenScreen::MainKitChenScreen.dart::_MainKitchenScreenState" o-- "flutter::src::widgets::framework.dart::Widget"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::KitchenScreen::MainKitChenScreen.dart::_MainKitchenScreenState"
+"screen_loader::screen_loader.dart::ScreenLoader<T>" <|-- "SPK_Coffee::Components::KitchenScreen::MainKitChenScreen.dart::_MainKitchenScreenState"
+
+class "SPK_Coffee::Components::KitchenScreen::OrderNavScreen::BackList::OrderDetail.dart::OrderDetailWid" {
+  +OrderDetail detail
+  +List<ProductsInfo> productsInfo
+  +dynamic getProductInfo()
+  +Widget build()
+}
+
+"SPK_Coffee::Components::KitchenScreen::OrderNavScreen::BackList::OrderDetail.dart::OrderDetailWid" o-- "SPK_Coffee::Models::OrderDetail.dart::OrderDetail"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "SPK_Coffee::Components::KitchenScreen::OrderNavScreen::BackList::OrderDetail.dart::OrderDetailWid"
+
+class "SPK_Coffee::Components::KitchenScreen::OrderNavScreen::BackList::OrderItem.dart::OrderItem" {
+  +Order details
+  +OrderTable orderTable
+  +List<ProductsInfo> productInfo
+  +dynamic Function(List<OrderDetail>, List<ProductsInfo>) popDetails
+  +dynamic Function(Order) getRemoveItem
+  +_OrderItemState createState()
+}
+
+"SPK_Coffee::Components::KitchenScreen::OrderNavScreen::BackList::OrderItem.dart::OrderItem" o-- "SPK_Coffee::Models::Order.dart::Order"
+"SPK_Coffee::Components::KitchenScreen::OrderNavScreen::BackList::OrderItem.dart::OrderItem" o-- "SPK_Coffee::Models::Order.dart::OrderTable"
+"SPK_Coffee::Components::KitchenScreen::OrderNavScreen::BackList::OrderItem.dart::OrderItem" o-- "SPK_Coffee::Components::KitchenScreen::OrderNavScreen::BackList::OrderItem.dart::dynamic Function(List<OrderDetail>, List<ProductsInfo>)"
+"SPK_Coffee::Components::KitchenScreen::OrderNavScreen::BackList::OrderItem.dart::OrderItem" o-- "SPK_Coffee::Components::KitchenScreen::OrderNavScreen::BackList::OrderItem.dart::dynamic Function(Order)"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::KitchenScreen::OrderNavScreen::BackList::OrderItem.dart::OrderItem"
+
+class "SPK_Coffee::Components::KitchenScreen::OrderNavScreen::BackList::OrderItem.dart::_OrderItemState" {
+  -bool _isHaveTable
+  +void initState()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::KitchenScreen::OrderNavScreen::BackList::OrderItem.dart::_OrderItemState"
+
+class "SPK_Coffee::Components::KitchenScreen::OrderNavScreen::BackList::OrderListWid.dart::OrderListWid" {
+  +_OrderListWidState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::KitchenScreen::OrderNavScreen::BackList::OrderListWid.dart::OrderListWid"
+
+class "SPK_Coffee::Components::KitchenScreen::OrderNavScreen::BackList::OrderListWid.dart::_OrderListWidState" {
+  +Future<OrderList> orderList
+  +List<Order> sub
+  +List<Order> filterSub
+  +Future<OrderList> filterList
+  +Map object
+  -DataBaseManagement _db
+  +bool isSearch
+  -int _currentTab
+  +bool isUpdate
+  +void initState()
+  +Widget loader()
+  +dynamic setStateIfMounted()
+  +dynamic getOrders()
+  +void didChangeDependencies()
+  +void searchOrder()
+  +void resetSearch()
+  +void getTabIndex()
+  +dynamic updateOrder()
+  +dynamic updateOrderByState()
+  +void getRemoveItem()
+  +void onClickOrder()
+  +Widget screen()
+}
+
+"SPK_Coffee::Components::KitchenScreen::OrderNavScreen::BackList::OrderListWid.dart::_OrderListWidState" o-- "SPK_Coffee::Services::DataBaseManagement.dart::DataBaseManagement"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::KitchenScreen::OrderNavScreen::BackList::OrderListWid.dart::_OrderListWidState"
+"screen_loader::screen_loader.dart::ScreenLoader<T>" <|-- "SPK_Coffee::Components::KitchenScreen::OrderNavScreen::BackList::OrderListWid.dart::_OrderListWidState"
+
+class "SPK_Coffee::Components::KitchenScreen::OrderNavScreen::BackList::OrderListWid.dart::TopItems" {
+  +OrderList list
+  +List<Order> orders
+  +dynamic Function(Order) getRemoveItem
+  +dynamic Function(List<OrderDetail>, List<ProductsInfo>) popDetails
+  +_TopItemsState createState()
+}
+
+"SPK_Coffee::Components::KitchenScreen::OrderNavScreen::BackList::OrderListWid.dart::TopItems" o-- "SPK_Coffee::Models::OrderList.dart::OrderList"
+"SPK_Coffee::Components::KitchenScreen::OrderNavScreen::BackList::OrderListWid.dart::TopItems" o-- "SPK_Coffee::Components::KitchenScreen::OrderNavScreen::BackList::OrderListWid.dart::dynamic Function(Order)"
+"SPK_Coffee::Components::KitchenScreen::OrderNavScreen::BackList::OrderListWid.dart::TopItems" o-- "SPK_Coffee::Components::KitchenScreen::OrderNavScreen::BackList::OrderListWid.dart::dynamic Function(List<OrderDetail>, List<ProductsInfo>)"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::KitchenScreen::OrderNavScreen::BackList::OrderListWid.dart::TopItems"
+
+class "SPK_Coffee::Components::KitchenScreen::OrderNavScreen::BackList::OrderListWid.dart::_TopItemsState" {
+  +List<Order> orderList
+  +void initState()
+  +void filterList()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::KitchenScreen::OrderNavScreen::BackList::OrderListWid.dart::_TopItemsState"
+
+class "SPK_Coffee::Components::KitchenScreen::OrderNavScreen::BackList::OrderListWid.dart::BottomItem" {
+  +dynamic Function(int) getTabIndex
+  +OrderList orderList
+  +List<Order> orders
+  +dynamic Function(dynamic, dynamic) updateOrderState
+  +_BottomItemState createState()
+}
+
+"SPK_Coffee::Components::KitchenScreen::OrderNavScreen::BackList::OrderListWid.dart::BottomItem" o-- "SPK_Coffee::Components::KitchenScreen::OrderNavScreen::BackList::OrderListWid.dart::dynamic Function(int)"
+"SPK_Coffee::Components::KitchenScreen::OrderNavScreen::BackList::OrderListWid.dart::BottomItem" o-- "SPK_Coffee::Models::OrderList.dart::OrderList"
+"SPK_Coffee::Components::KitchenScreen::OrderNavScreen::BackList::OrderListWid.dart::BottomItem" o-- "SPK_Coffee::Components::KitchenScreen::OrderNavScreen::BackList::OrderListWid.dart::dynamic Function(dynamic, dynamic)"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::KitchenScreen::OrderNavScreen::BackList::OrderListWid.dart::BottomItem"
+
+class "SPK_Coffee::Components::KitchenScreen::OrderNavScreen::BackList::OrderListWid.dart::_BottomItemState" {
+  +dynamic data
+  +List<Order> orders
+  +void initState()
+  +dynamic updateList()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::KitchenScreen::OrderNavScreen::BackList::OrderListWid.dart::_BottomItemState"
+
+class "SPK_Coffee::Components::KitchenScreen::OrderNavScreen::OnCompleteList::CompleteList.dart::CompleteListWid" {
+  +OrderList list
+  +List<Order> orders
+  +dynamic Function(dynamic, dynamic) updateOrderState
+  +_CompleteListWidState createState()
+}
+
+"SPK_Coffee::Components::KitchenScreen::OrderNavScreen::OnCompleteList::CompleteList.dart::CompleteListWid" o-- "SPK_Coffee::Models::OrderList.dart::OrderList"
+"SPK_Coffee::Components::KitchenScreen::OrderNavScreen::OnCompleteList::CompleteList.dart::CompleteListWid" o-- "SPK_Coffee::Components::KitchenScreen::OrderNavScreen::OnCompleteList::CompleteList.dart::dynamic Function(dynamic, dynamic)"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::KitchenScreen::OrderNavScreen::OnCompleteList::CompleteList.dart::CompleteListWid"
+
+class "SPK_Coffee::Components::KitchenScreen::OrderNavScreen::OnCompleteList::CompleteList.dart::_CompleteListWidState" {
+  +List<Order> orderList
+  +void filterList()
+  +dynamic getTotalTime()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::KitchenScreen::OrderNavScreen::OnCompleteList::CompleteList.dart::_CompleteListWidState"
+
+class "SPK_Coffee::Components::KitchenScreen::OrderNavScreen::OnProcessList::ProcessList.dart::ProcessListWid" {
+  +List<Order> orders
+  +OrderList list
+  +dynamic Function(dynamic, dynamic) updateOrderState
+  +_ProcessListWidState createState()
+}
+
+"SPK_Coffee::Components::KitchenScreen::OrderNavScreen::OnProcessList::ProcessList.dart::ProcessListWid" o-- "SPK_Coffee::Models::OrderList.dart::OrderList"
+"SPK_Coffee::Components::KitchenScreen::OrderNavScreen::OnProcessList::ProcessList.dart::ProcessListWid" o-- "SPK_Coffee::Components::KitchenScreen::OrderNavScreen::OnProcessList::ProcessList.dart::dynamic Function(dynamic, dynamic)"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::KitchenScreen::OrderNavScreen::OnProcessList::ProcessList.dart::ProcessListWid"
+
+class "SPK_Coffee::Components::KitchenScreen::OrderNavScreen::OnProcessList::ProcessList.dart::_ProcessListWidState" {
+  +List<Order> orderList
+  +void filterList()
+  +void initState()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::KitchenScreen::OrderNavScreen::OnProcessList::ProcessList.dart::_ProcessListWidState"
+
+class "SPK_Coffee::Components::LoginScreen::Background.dart::Background" {
+  +_BackgroundState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::LoginScreen::Background.dart::Background"
+
+class "SPK_Coffee::Components::LoginScreen::Background.dart::_BackgroundState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::LoginScreen::Background.dart::_BackgroundState"
+
+class "SPK_Coffee::Components::LoginScreen::Background.dart::WavyHeader" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "SPK_Coffee::Components::LoginScreen::Background.dart::WavyHeader"
+
+class "SPK_Coffee::Components::LoginScreen::Background.dart::WavyFooter" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "SPK_Coffee::Components::LoginScreen::Background.dart::WavyFooter"
+
+class "SPK_Coffee::Components::LoginScreen::Background.dart::CirclePink" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "SPK_Coffee::Components::LoginScreen::Background.dart::CirclePink"
+
+class "SPK_Coffee::Components::LoginScreen::Background.dart::CircleYellow" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "SPK_Coffee::Components::LoginScreen::Background.dart::CircleYellow"
+
+class "SPK_Coffee::Components::LoginScreen::Background.dart::TopWaveClipper" {
+  +Path getClip()
+  +bool shouldReclip()
+}
+
+"flutter::src::rendering::proxy_box.dart::CustomClipper<T>" <|-- "SPK_Coffee::Components::LoginScreen::Background.dart::TopWaveClipper"
+
+class "SPK_Coffee::Components::LoginScreen::Background.dart::FooterWaveClipper" {
+  +Path getClip()
+  +bool shouldReclip()
+}
+
+"flutter::src::rendering::proxy_box.dart::CustomClipper<T>" <|-- "SPK_Coffee::Components::LoginScreen::Background.dart::FooterWaveClipper"
+
+class "SPK_Coffee::Components::LoginScreen::Background.dart::YellowCircleClipper" {
+  +Rect getClip()
+  +bool shouldReclip()
+}
+
+"flutter::src::rendering::proxy_box.dart::CustomClipper<T>" <|-- "SPK_Coffee::Components::LoginScreen::Background.dart::YellowCircleClipper"
+
+class "SPK_Coffee::Components::LoginScreen::LoginScreen.dart::LoginScreen" {
+  +dynamic title
+  +_LoginScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::LoginScreen::LoginScreen.dart::LoginScreen"
+
+class "SPK_Coffee::Components::LoginScreen::LoginScreen.dart::_LoginScreenState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::LoginScreen::LoginScreen.dart::_LoginScreenState"
+
+class "SPK_Coffee::Components::LoginScreen::LoginUi.dart::Login" {
+  +_LoginState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::LoginScreen::LoginUi.dart::Login"
+
+class "SPK_Coffee::Components::LoginScreen::LoginUi.dart::_LoginState" {
+  +TextEditingController userName
+  +TextEditingController passWord
+  +Widget build()
+}
+
+"SPK_Coffee::Components::LoginScreen::LoginUi.dart::_LoginState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::LoginScreen::LoginUi.dart::_LoginState"
+
+class "SPK_Coffee::Components::Manage::EmployeeListView.dart::EmployeeListView" {
+  +_EmployeeListViewState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::Manage::EmployeeListView.dart::EmployeeListView"
+
+class "SPK_Coffee::Components::Manage::EmployeeListView.dart::_EmployeeListViewState" {
+  +Future getAllEmployeeInformation()
+  +void initState()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::Manage::EmployeeListView.dart::_EmployeeListViewState"
+
+class "SPK_Coffee::Components::Manage::EmployeeUI.dart::Employee" {
+  +EmployeeInfo employeeInfo
+  +Widget build()
+}
+
+"SPK_Coffee::Components::Manage::EmployeeUI.dart::Employee" o-- "SPK_Coffee::Models::ImployeeInformation.dart::EmployeeInfo"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "SPK_Coffee::Components::Manage::EmployeeUI.dart::Employee"
+
+class "SPK_Coffee::Components::Manage::ManageUserScreen.dart::ManageUserScreen" {
+  +_ManageUserScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::Manage::ManageUserScreen.dart::ManageUserScreen"
+
+class "SPK_Coffee::Components::Manage::ManageUserScreen.dart::_ManageUserScreenState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::Manage::ManageUserScreen.dart::_ManageUserScreenState"
+
+class "SPK_Coffee::Components::ServiceScreen::AreaScreen::AreaScreen.dart::MainServiceScreen" {
+  +_MainServiceScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::ServiceScreen::AreaScreen::AreaScreen.dart::MainServiceScreen"
+
+class "SPK_Coffee::Components::ServiceScreen::AreaScreen::AreaScreen.dart::_MainServiceScreenState" {
+  -ServiceManager _serviceManager
+  +SeedData seedData
+  -Future<List<CoffeeTable>> _tables
+  -Future<List<Area>> _areas
+  -Future<Order> _order
+  -Animation<double> _animation
+  -AnimationController _animationController
+  +int seleteProductToMerge
+  +bool isClickMenu
+  +bool isMerge
+  +bool isSplit
+  +List<int> listTableToMerge
+  +List getOrderOnTableCore
+  +int tableCounter
+  +bool isChange
+  +int chooseArea
+  +void initState()
+  +Future getTable()
+  +Future updatePropTable()
+  +void setStateWhenHaveOrder()
+  +void setStateArea()
+  +Widget build()
+}
+
+"SPK_Coffee::Components::ServiceScreen::AreaScreen::AreaScreen.dart::_MainServiceScreenState" o-- "SPK_Coffee::Services::Services.dart::ServiceManager"
+"SPK_Coffee::Components::ServiceScreen::AreaScreen::AreaScreen.dart::_MainServiceScreenState" o-- "SPK_Coffee::SeedData::Data.dart::SeedData"
+"SPK_Coffee::Components::ServiceScreen::AreaScreen::AreaScreen.dart::_MainServiceScreenState" o-- "flutter::src::animation::animation.dart::Animation<double>"
+"SPK_Coffee::Components::ServiceScreen::AreaScreen::AreaScreen.dart::_MainServiceScreenState" o-- "flutter::src::animation::animation_controller.dart::AnimationController"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::ServiceScreen::AreaScreen::AreaScreen.dart::_MainServiceScreenState"
+"flutter::src::widgets::ticker_provider.dart::SingleTickerProviderStateMixin<T>" <|-- "SPK_Coffee::Components::ServiceScreen::AreaScreen::AreaScreen.dart::_MainServiceScreenState"
+
+class "SPK_Coffee::Components::ServiceScreen::AreaScreen::TableComponent.dart::TableComponent" {
+  +Future<List<CoffeeTable>> tables
+  +List<int> listTableToMerge
+  +int chooseArea
+  +bool isMerge
+  +Function setStateWhenHaveOrder
+  +List getOrderOnTableCore
+  +int tableCounter
+  +bool isSplit
+  +_TableComponentState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::ServiceScreen::AreaScreen::TableComponent.dart::TableComponent"
+
+class "SPK_Coffee::Components::ServiceScreen::AreaScreen::TableComponent.dart::_TableComponentState" {
+  +void setSateCounter()
+  +Future getOrder()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::ServiceScreen::AreaScreen::TableComponent.dart::_TableComponentState"
+
+class "SPK_Coffee::Components::ServiceScreen::AreaScreen::TableComponent.dart::TableWiget" {
+  +CoffeeTable tableCoffee
+  +int chooseArea
+  +bool isMerge
+  +Function function
+  +int counter
+  +List getOrderOnTableCore
+  +bool isSplit
+  +List<int> listTableToMerge
+  +Function setStateWhenHaveOrder
+  +_TableWigetState createState()
+}
+
+"SPK_Coffee::Components::ServiceScreen::AreaScreen::TableComponent.dart::TableWiget" o-- "SPK_Coffee::Models::CoffeeTable.dart::CoffeeTable"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::ServiceScreen::AreaScreen::TableComponent.dart::TableWiget"
+
+class "SPK_Coffee::Components::ServiceScreen::AreaScreen::TableComponent.dart::_TableWigetState" {
+  -ServiceManager _serviceManager
+  +Future<Order> order
+  +bool selectedToMerge
+  +bool tableMergeCore
+  +bool selecttedSplit
+  +void initState()
+  +Widget build()
+}
+
+"SPK_Coffee::Components::ServiceScreen::AreaScreen::TableComponent.dart::_TableWigetState" o-- "SPK_Coffee::Services::Services.dart::ServiceManager"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::ServiceScreen::AreaScreen::TableComponent.dart::_TableWigetState"
+
+class "SPK_Coffee::Components::ServiceScreen::OrderScreen::OrderScreen.dart::OrderScreen" {
+  +dynamic orderId
+  +CoffeeTable table
+  +Function setStateWhenHaveOrder
+  +_OrderScreenState createState()
+}
+
+"SPK_Coffee::Components::ServiceScreen::OrderScreen::OrderScreen.dart::OrderScreen" o-- "SPK_Coffee::Models::CoffeeTable.dart::CoffeeTable"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::ServiceScreen::OrderScreen::OrderScreen.dart::OrderScreen"
+
+class "SPK_Coffee::Components::ServiceScreen::OrderScreen::OrderScreen.dart::_OrderScreenState" {
+  +bool isUpdateInCart
+  +Future<Category> futureGetCategory
+  +Future<ListProduct> listProductJson
+  +TabController tabController
+  +List<Products> listProduct
+  +bool haveOrder
+  +bool isOpenCart
+  +bool isSearch
+  +List<Products> listProductToSearch
+  -Future<SharedPreferences> _prefs
+  +TextEditingController searchProduct
+  +bool isEmpty
+  +bool isAddMoreProduct
+  +int counter
+  +ServiceManager serviceManager
+  +void addOrderedProduct()
+  -void _incrementCounter()
+  -void _decrementCounter()
+  +void updateAmountProduct()
+  +void initState()
+  +Widget build()
+}
+
+"SPK_Coffee::Components::ServiceScreen::OrderScreen::OrderScreen.dart::_OrderScreenState" o-- "flutter::src::material::tab_controller.dart::TabController"
+"SPK_Coffee::Components::ServiceScreen::OrderScreen::OrderScreen.dart::_OrderScreenState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"SPK_Coffee::Components::ServiceScreen::OrderScreen::OrderScreen.dart::_OrderScreenState" o-- "SPK_Coffee::Services::Services.dart::ServiceManager"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::ServiceScreen::OrderScreen::OrderScreen.dart::_OrderScreenState"
+"flutter::src::widgets::ticker_provider.dart::SingleTickerProviderStateMixin<T>" <|-- "SPK_Coffee::Components::ServiceScreen::OrderScreen::OrderScreen.dart::_OrderScreenState"
+
+class "SPK_Coffee::Components::ServiceScreen::OrderScreen::ProductComponent.dart::ProductComponent" {
+  +Products products
+  +Function incrementCounter
+  +Function decrementCounter
+  +Function addProductToCart
+  +dynamic isUpdateInCart
+  +_ProductComponentState createState()
+}
+
+"SPK_Coffee::Components::ServiceScreen::OrderScreen::ProductComponent.dart::ProductComponent" o-- "SPK_Coffee::Models::Product.dart::Products"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::ServiceScreen::OrderScreen::ProductComponent.dart::ProductComponent"
+
+class "SPK_Coffee::Components::ServiceScreen::OrderScreen::ProductComponent.dart::_ProductComponentState" {
+  +int productCounter
+  +Products product
+  +NumberFormat formatter
+  +Widget build()
+}
+
+"SPK_Coffee::Components::ServiceScreen::OrderScreen::ProductComponent.dart::_ProductComponentState" o-- "SPK_Coffee::Models::Product.dart::Products"
+"SPK_Coffee::Components::ServiceScreen::OrderScreen::ProductComponent.dart::_ProductComponentState" o-- "intl::intl.dart::NumberFormat"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::ServiceScreen::OrderScreen::ProductComponent.dart::_ProductComponentState"
+
+class "SPK_Coffee::Components::ServiceScreen::OrderScreen::ProductInCartScreen.dart::ProductInCartScreen" {
+  +CoffeeTable table
+  +List<Products> listProduct
+  +Function addProductToCart
+  +Function setStateWhenHaveOrder
+  +bool haveOrder
+  +_ProductInCartScreenState createState()
+}
+
+"SPK_Coffee::Components::ServiceScreen::OrderScreen::ProductInCartScreen.dart::ProductInCartScreen" o-- "SPK_Coffee::Models::CoffeeTable.dart::CoffeeTable"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::ServiceScreen::OrderScreen::ProductInCartScreen.dart::ProductInCartScreen"
+
+class "SPK_Coffee::Components::ServiceScreen::OrderScreen::ProductInCartScreen.dart::_ProductInCartScreenState" {
+  +bool isRemoveProduct
+  +void updateListProductWhenRemove()
+  +void setStateCalMoney()
+  +dynamic callMoney()
+  +void initState()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::ServiceScreen::OrderScreen::ProductInCartScreen.dart::_ProductInCartScreenState"
+
+class "SPK_Coffee::Components::ServiceScreen::OrderScreen::ProductInCartScreen.dart::ProductListView" {
+  +Products product
+  +Function updateProductAmount
+  +Function updateListProductWhenRemove
+  +Function updateTotalMoney
+  +bool haveOrder
+  +_ProductListViewState createState()
+}
+
+"SPK_Coffee::Components::ServiceScreen::OrderScreen::ProductInCartScreen.dart::ProductListView" o-- "SPK_Coffee::Models::Product.dart::Products"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::ServiceScreen::OrderScreen::ProductInCartScreen.dart::ProductListView"
+
+class "SPK_Coffee::Components::ServiceScreen::OrderScreen::ProductInCartScreen.dart::_ProductListViewState" {
+  +TextEditingController productAmount
+  +dynamic calMoney()
+  +void initState()
+  +Widget build()
+}
+
+"SPK_Coffee::Components::ServiceScreen::OrderScreen::ProductInCartScreen.dart::_ProductListViewState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::ServiceScreen::OrderScreen::ProductInCartScreen.dart::_ProductListViewState"
+
+class "SPK_Coffee::Components::ServiceScreen::PaymentScreen.dart::PaymentScreen" {
+  +List<Products> listProduct
+  +_PaymentScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::ServiceScreen::PaymentScreen.dart::PaymentScreen"
+
+class "SPK_Coffee::Components::ServiceScreen::PaymentScreen.dart::_PaymentScreenState" {
+  +bool isClick
+  +bool isCash
+  +int total
+  +TextEditingController textEditingController
+  +void chooseOptionPayment()
+  +void initState()
+  +Widget build()
+}
+
+"SPK_Coffee::Components::ServiceScreen::PaymentScreen.dart::_PaymentScreenState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::ServiceScreen::PaymentScreen.dart::_PaymentScreenState"
+
+class "SPK_Coffee::Components::StatisticScreen::CashScreen::CalculatePadWid.dart::CalculatePadWid" {
+  +dynamic Function() getReadyOrders
+  +_CalculatePadWidState createState()
+}
+
+"SPK_Coffee::Components::StatisticScreen::CashScreen::CalculatePadWid.dart::CalculatePadWid" o-- "SPK_Coffee::Components::StatisticScreen::CashScreen::CalculatePadWid.dart::dynamic Function()"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::StatisticScreen::CashScreen::CalculatePadWid.dart::CalculatePadWid"
+
+class "SPK_Coffee::Components::StatisticScreen::CashScreen::CalculatePadWid.dart::_CalculatePadWidState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::StatisticScreen::CashScreen::CalculatePadWid.dart::_CalculatePadWidState"
+
+class "SPK_Coffee::Components::StatisticScreen::CashScreen::CalculatePadWid.dart::NumPadWid" {
+  +_NumPadWidState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::StatisticScreen::CashScreen::CalculatePadWid.dart::NumPadWid"
+
+class "SPK_Coffee::Components::StatisticScreen::CashScreen::CalculatePadWid.dart::_NumPadWidState" {
+  +dynamic inputNum
+  +RegExp regex
+  +List numPad
+  +bool isEquation()
+  +void validateInput()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::StatisticScreen::CashScreen::CalculatePadWid.dart::_NumPadWidState"
+
+class "SPK_Coffee::Components::StatisticScreen::CashScreen::CalculatePadWid.dart::PayWid" {
+  +dynamic Function() getReadyOrders
+  +_PayWidState createState()
+}
+
+"SPK_Coffee::Components::StatisticScreen::CashScreen::CalculatePadWid.dart::PayWid" o-- "SPK_Coffee::Components::StatisticScreen::CashScreen::CalculatePadWid.dart::dynamic Function()"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::StatisticScreen::CashScreen::CalculatePadWid.dart::PayWid"
+
+class "SPK_Coffee::Components::StatisticScreen::CashScreen::CalculatePadWid.dart::_PayWidState" {
+  +dynamic dropDownValue
+  +int currentDrop
+  +void initState()
+  +Voucher getCurrentVoucher()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::StatisticScreen::CashScreen::CalculatePadWid.dart::_PayWidState"
+
+class "SPK_Coffee::Components::StatisticScreen::CashScreen::DisyplayScreen::DisplayDetailWid.dart::DisplayDetailWid" {
+  +double maxWidth
+  +double maxHeight
+  +_DisplayDetailWidState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::StatisticScreen::CashScreen::DisyplayScreen::DisplayDetailWid.dart::DisplayDetailWid"
+
+class "SPK_Coffee::Components::StatisticScreen::CashScreen::DisyplayScreen::DisplayDetailWid.dart::_DisplayDetailWidState" {
+  +List<ProductsInfo> productsInfo
+  +dynamic getProductName()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::StatisticScreen::CashScreen::DisyplayScreen::DisplayDetailWid.dart::_DisplayDetailWidState"
+
+class "SPK_Coffee::Components::StatisticScreen::CashScreen::DisyplayScreen::DisplayDetailWid.dart::CalResultWid" {
+  +_CalResultWidState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::StatisticScreen::CashScreen::DisyplayScreen::DisplayDetailWid.dart::CalResultWid"
+
+class "SPK_Coffee::Components::StatisticScreen::CashScreen::DisyplayScreen::DisplayDetailWid.dart::_CalResultWidState" {
+  +double fontSize
+  +dynamic calTotalWithDiscount()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::StatisticScreen::CashScreen::DisyplayScreen::DisplayDetailWid.dart::_CalResultWidState"
+
+class "SPK_Coffee::Components::StatisticScreen::CashScreen::MainCashNav.dart::MainCashNav" {
+  +Future<OrderList> orderList
+  +Future<OrderList> historyList
+  +dynamic Function() getReadyOrders
+  +_MainCashNavState createState()
+}
+
+"SPK_Coffee::Components::StatisticScreen::CashScreen::MainCashNav.dart::MainCashNav" o-- "SPK_Coffee::Components::StatisticScreen::CashScreen::MainCashNav.dart::dynamic Function()"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::StatisticScreen::CashScreen::MainCashNav.dart::MainCashNav"
+
+class "SPK_Coffee::Components::StatisticScreen::CashScreen::MainCashNav.dart::_MainCashNavState" {
+  +Future<OrderList> list
+  +Future<OrderList> historyOrder
+  +List<Order> orders
+  +Screen screen
+  +void initState()
+  +void setup()
+  +void getOrders()
+  +Widget build()
+}
+
+"SPK_Coffee::Components::StatisticScreen::CashScreen::MainCashNav.dart::_MainCashNavState" o-- "SPK_Coffee::Utils::UtilitiesFunc.dart::Screen"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::StatisticScreen::CashScreen::MainCashNav.dart::_MainCashNavState"
+
+class "SPK_Coffee::Components::StatisticScreen::CashScreen::MainCashNav.dart::LandScapeCashScreen" {
+  +Future<VoucherList> fVoucher
+  +OrderList historyOrder
+  +OrderList orderList
+  +List<Order> orders
+  +dynamic Function() getReadyOrders
+  +_LandScapeCashScreenState createState()
+}
+
+"SPK_Coffee::Components::StatisticScreen::CashScreen::MainCashNav.dart::LandScapeCashScreen" o-- "SPK_Coffee::Models::OrderList.dart::OrderList"
+"SPK_Coffee::Components::StatisticScreen::CashScreen::MainCashNav.dart::LandScapeCashScreen" o-- "SPK_Coffee::Components::StatisticScreen::CashScreen::MainCashNav.dart::dynamic Function()"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::StatisticScreen::CashScreen::MainCashNav.dart::LandScapeCashScreen"
+
+class "SPK_Coffee::Components::StatisticScreen::CashScreen::MainCashNav.dart::_LandScapeCashScreenState" {
+  +Future<VoucherList> fvoucher
+  +OrderList historyOrder
+  +void getVoucherList()
+  +void initState()
+  +dynamic getUpdateHistoryOrder()
+  +Widget build()
+}
+
+"SPK_Coffee::Components::StatisticScreen::CashScreen::MainCashNav.dart::_LandScapeCashScreenState" o-- "SPK_Coffee::Models::OrderList.dart::OrderList"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::StatisticScreen::CashScreen::MainCashNav.dart::_LandScapeCashScreenState"
+
+class "SPK_Coffee::Components::StatisticScreen::CashScreen::PaymentList::PendingPayment.dart::PendingListWid" {
+  +OrderList orderList
+  +OrderList historyOrder
+  +_PendingListWidState createState()
+}
+
+"SPK_Coffee::Components::StatisticScreen::CashScreen::PaymentList::PendingPayment.dart::PendingListWid" o-- "SPK_Coffee::Models::OrderList.dart::OrderList"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::StatisticScreen::CashScreen::PaymentList::PendingPayment.dart::PendingListWid"
+
+class "SPK_Coffee::Components::StatisticScreen::CashScreen::PaymentList::PendingPayment.dart::_PendingListWidState" {
+  +int currentTab
+  +OrderList historyList
+  +OrderList orderList
+  +void initState()
+  +void getOrderList()
+  +Widget build()
+}
+
+"SPK_Coffee::Components::StatisticScreen::CashScreen::PaymentList::PendingPayment.dart::_PendingListWidState" o-- "SPK_Coffee::Models::OrderList.dart::OrderList"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::StatisticScreen::CashScreen::PaymentList::PendingPayment.dart::_PendingListWidState"
+
+class "SPK_Coffee::Components::StatisticScreen::CashScreen::PaymentList::PendingPayment.dart::CashOrdersWid" {
+  +OrderList orderList
+  +dynamic type
+  +_CashOrdersWidState createState()
+}
+
+"SPK_Coffee::Components::StatisticScreen::CashScreen::PaymentList::PendingPayment.dart::CashOrdersWid" o-- "SPK_Coffee::Models::OrderList.dart::OrderList"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::StatisticScreen::CashScreen::PaymentList::PendingPayment.dart::CashOrdersWid"
+
+class "SPK_Coffee::Components::StatisticScreen::CashScreen::PaymentList::PendingPayment.dart::_CashOrdersWidState" {
+  +OrderList orderList
+  +List<Order> filterList
+  +List<OrderTable> orderTable
+  +List<ProductsInfo> productsInfo
+  +void initState()
+  +List filterOrders()
+  +void getOrder()
+  +Widget build()
+}
+
+"SPK_Coffee::Components::StatisticScreen::CashScreen::PaymentList::PendingPayment.dart::_CashOrdersWidState" o-- "SPK_Coffee::Models::OrderList.dart::OrderList"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::StatisticScreen::CashScreen::PaymentList::PendingPayment.dart::_CashOrdersWidState"
+
+class "SPK_Coffee::Components::StatisticScreen::MainStatisticsScreen.dart::MainStatisticsScreen" {
+  +_MainStatisticsScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::StatisticScreen::MainStatisticsScreen.dart::MainStatisticsScreen"
+
+class "SPK_Coffee::Components::StatisticScreen::MainStatisticsScreen.dart::_MainStatisticsScreenState" {
+  +bool initFloattingBtn
+  +int currentTitle
+  +Future<OrderList> orderList
+  +Future<OrderList> closedList
+  -Animation<double> _animation
+  -AnimationController _animationController
+  +bool isPressed
+  -Widget _page
+  +void getReadyOrders()
+  +Widget loader()
+  +void initState()
+  -void _handleNavigationChange()
+  +void navTapped()
+  +Widget screen()
+}
+
+"SPK_Coffee::Components::StatisticScreen::MainStatisticsScreen.dart::_MainStatisticsScreenState" o-- "flutter::src::animation::animation.dart::Animation<double>"
+"SPK_Coffee::Components::StatisticScreen::MainStatisticsScreen.dart::_MainStatisticsScreenState" o-- "flutter::src::animation::animation_controller.dart::AnimationController"
+"SPK_Coffee::Components::StatisticScreen::MainStatisticsScreen.dart::_MainStatisticsScreenState" o-- "flutter::src::widgets::framework.dart::Widget"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::StatisticScreen::MainStatisticsScreen.dart::_MainStatisticsScreenState"
+"flutter::src::widgets::ticker_provider.dart::SingleTickerProviderStateMixin<T>" <|-- "SPK_Coffee::Components::StatisticScreen::MainStatisticsScreen.dart::_MainStatisticsScreenState"
+"screen_loader::screen_loader.dart::ScreenLoader<T>" <|-- "SPK_Coffee::Components::StatisticScreen::MainStatisticsScreen.dart::_MainStatisticsScreenState"
+
+class "SPK_Coffee::Components::StatisticScreen::Statistic::MainStatisticNav.dart::MainStatisticsNav" {
+  +_MainStatisticsNavState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::StatisticScreen::Statistic::MainStatisticNav.dart::MainStatisticsNav"
+
+class "SPK_Coffee::Components::StatisticScreen::Statistic::MainStatisticNav.dart::_MainStatisticsNavState" {
+  +Future<Map> list
+  +Future<Statistic> statisticMonth
+  +List pageTitle
+  +int currentSelectedTitle
+  +PageController pageController
+  +DateTime currentValue
+  +dynamic customDate
+  +void initState()
+  +void getTodayEarn()
+  +void getCustomStatisticMonth()
+  +Widget build()
+}
+
+"SPK_Coffee::Components::StatisticScreen::Statistic::MainStatisticNav.dart::_MainStatisticsNavState" o-- "flutter::src::widgets::page_view.dart::PageController"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::StatisticScreen::Statistic::MainStatisticNav.dart::_MainStatisticsNavState"
+
+class "SPK_Coffee::Components::StatisticScreen::Statistic::MonthChart.dart::MonthChartWid" {
+  +Future<Statistic> statisticMonth
+  +dynamic Function({date: dynamic}) getFutureStatic
+  +dynamic Function({date: dynamic}) getSelectedDate
+  +_MonthChartWidState createState()
+}
+
+"SPK_Coffee::Components::StatisticScreen::Statistic::MonthChart.dart::MonthChartWid" o-- "SPK_Coffee::Components::StatisticScreen::Statistic::MonthChart.dart::dynamic Function({date: dynamic})"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::StatisticScreen::Statistic::MonthChart.dart::MonthChartWid"
+
+class "SPK_Coffee::Components::StatisticScreen::Statistic::MonthChart.dart::_MonthChartWidState" {
+  +Future<Statistic> statistic
+  +double point
+  +DateTime currentValue
+  +TextEditingController textController
+  +int setOffset
+  +List<Offset> offsetList
+  +List<Color> gradientColors
+  +void initState()
+  +double getAVGIncome()
+  +double findMax()
+  +dynamic getStatisticFromParent()
+  +Widget build()
+}
+
+"SPK_Coffee::Components::StatisticScreen::Statistic::MonthChart.dart::_MonthChartWidState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::StatisticScreen::Statistic::MonthChart.dart::_MonthChartWidState"
+
+class "SPK_Coffee::Components::StatisticScreen::Statistic::SingleDayChart.dart::SingleDayChartWid" {
+  +Map drawInfo
+  +dynamic Function({date: dynamic}) getSelectedDate
+  +_SingleDayChartWidState createState()
+}
+
+"SPK_Coffee::Components::StatisticScreen::Statistic::SingleDayChart.dart::SingleDayChartWid" o-- "SPK_Coffee::Components::StatisticScreen::Statistic::SingleDayChart.dart::dynamic Function({date: dynamic})"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::Components::StatisticScreen::Statistic::SingleDayChart.dart::SingleDayChartWid"
+
+class "SPK_Coffee::Components::StatisticScreen::Statistic::SingleDayChart.dart::_SingleDayChartWidState" {
+  +int touchedIndex
+  +Map drawInfo
+  +DateTime currentValue
+  +TextEditingController textController
+  +List showingGroups()
+  +void initState()
+  +dynamic getDrawInfo()
+  +Widget build()
+}
+
+"SPK_Coffee::Components::StatisticScreen::Statistic::SingleDayChart.dart::_SingleDayChartWidState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::Components::StatisticScreen::Statistic::SingleDayChart.dart::_SingleDayChartWidState"
+
+class "SPK_Coffee::main.dart::MyHttpOverrides" {
+  +HttpClient createHttpClient()
+}
+
+"dart::_http::HttpOverrides" <|-- "SPK_Coffee::main.dart::MyHttpOverrides"
+
+class "SPK_Coffee::main.dart::MyApp" {
+  +_MyAppState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "SPK_Coffee::main.dart::MyApp"
+
+class "SPK_Coffee::main.dart::_MyAppState" {
+  -DataBaseManagement _db
+  +bool ischoose
+  -SocketManagement _socketManagement
+  +void initState()
+  +dynamic testReference()
+  +void onFloatButtonPressed()
+  +void onAddButtonPressed()
+  +Future loadFromFuture()
+  +Widget build()
+}
+
+"SPK_Coffee::main.dart::_MyAppState" o-- "SPK_Coffee::Services::DataBaseManagement.dart::DataBaseManagement"
+"SPK_Coffee::main.dart::_MyAppState" o-- "SPK_Coffee::Services::SocketManager.dart::SocketManagement"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "SPK_Coffee::main.dart::_MyAppState"
+
+class "SPK_Coffee::Models::Area.dart::Area" {
+  +int id
+  +String name
+  +String waiter1
+  +String waiter2
+  +int amountOfTable
+  +Map toJson()
+}
+
+class "SPK_Coffee::Models::Category.dart::Category" {
+  +String status
+  +List<Data> data
+  +Map toJson()
+}
+
+class "SPK_Coffee::Models::Category.dart::Data" {
+  +String id
+  +String name
+  +String createdAt
+  +String updatedAt
+  +List<Products> products
+  +Map toJson()
+}
+
+class "SPK_Coffee::Models::CoffeeTable.dart::CoffeeTable" {
+  +int id
+  +String name
+  +bool isEmpty
+  +int areaId
+  +Map toJson()
+}
+
+class "SPK_Coffee::Models::Image.dart::Images" {
+  +String id
+  +String productImage
+  +String createdAt
+  +String updatedAt
+  +String productId
+  +Map toJson()
+}
+
+class "SPK_Coffee::Models::ImployeeInformation.dart::EmployeeInformation" {
+  +String status
+  +List<EmployeeInfo> data
+  +Map toJson()
+}
+
+class "SPK_Coffee::Models::ImployeeInformation.dart::EmployeeInfo" {
+  +String id
+  +String name
+  +int age
+  +bool sex
+  +String role
+  +Null online
+  +Null phoneNumber
+  +Null imgage
+  +String createdAt
+  +String updatedAt
+  +String infor
+  +Null employeeAccountId
+  +Map toJson()
+}
+
+class "SPK_Coffee::Models::Order.dart::Order" {
+  +dynamic id
+  +dynamic employeeId
+  +dynamic date
+  +dynamic state
+  +dynamic total
+  +dynamic discount
+  +dynamic voucherId
+  +dynamic note
+  +dynamic tableName
+  +List<OrderDetail> details
+  +List<ProductsInfo> productsInfo
+  +Map toJson()
+}
+
+class "SPK_Coffee::Models::Order.dart::OrderTable" {
+  +dynamic tableid
+  +dynamic tablename
+  +Map toJson()
+}
+
+class "SPK_Coffee::Models::Order.dart::ProductsInfo" {
+  +dynamic id
+  +dynamic productName
+  +dynamic processDuration
+  +dynamic mainImage
+  +Map toJson()
+}
+
+class "SPK_Coffee::Models::OrderDetail.dart::OrderDetail" {
+  +String id
+  +String productId
+  +int amount
+  +String price
+  +String createdAt
+  +String updatedAt
+  +String orderId
+  +String state
+  +String note
+  +Map toJson()
+}
+
+class "SPK_Coffee::Models::OrderList.dart::OrderList" {
+  +List<Order> data
+  +List<OrderTable> tables
+  +List<ProductsInfo> productsInfo
+  +Map<String, dynamic> saveJson
+  +Map toJson()
+}
+
+class "SPK_Coffee::Models::Product.dart::ListProduct" {
+  +List<Products> listProduct
+  +Map toJson()
+}
+
+class "SPK_Coffee::Models::Product.dart::Products" {
+  +String id
+  +String productName
+  +String productDescription
+  +String price
+  +String hot
+  +int amount
+  +String state
+  +bool popular
+  +String processDuration
+  +String mainImage
+  +String createdAt
+  +String updatedAt
+  +String categoryId
+  +List<Sizes> sizes
+  +List<Images> images
+  +String productId
+  +Map toJson()
+}
+
+class "SPK_Coffee::Models::ProviderModels::Calculate.dart::Calculate" {
+  -double _firstNum
+  -double _secondNum
+  -dynamic _cal
+  -dynamic _result
+  -double _finalResult
+  -double _discount
+  -bool _isSecond
+  +RegExp regex
+  +dynamic getResult()
+  +void setDiscount()
+  +double getDiscount()
+  +void setIsSecond()
+  +bool isGreater()
+  +bool getIsSeccond()
+  +void addSecond()
+  +void removeSecond()
+  +void resetAll()
+  +dynamic getCal()
+  +void setCal()
+  +void resetCal()
+  +void calculate()
+  +void setFirstNumber()
+  +void setSecondNumber()
+  +double getFirstNum()
+  +double getSecondNum()
+  +double getFinalResult()
+  +void setFinalResult()
+  +void addResult()
+  +void setResult()
+  +void clearResult()
+  +bool validate()
+}
+
+"flutter::src::foundation::change_notifier.dart::ChangeNotifier" <|-- "SPK_Coffee::Models::ProviderModels::Calculate.dart::Calculate"
+
+class "SPK_Coffee::Models::ProviderModels::CashScreenProvider.dart::CashProvider" {
+  -Order _order
+  -List<ProductsInfo> _productsInfo
+  -double _total
+  +void setTotal()
+  +double getTotal()
+  +void calulateTotal()
+  +void setCurrentOrder()
+  +void setProductsInfo()
+  +Order getCurrentOrder()
+  +List getCurrentProductsInfo()
+}
+
+"SPK_Coffee::Models::ProviderModels::CashScreenProvider.dart::CashProvider" o-- "SPK_Coffee::Models::Order.dart::Order"
+"flutter::src::foundation::change_notifier.dart::ChangeNotifier" <|-- "SPK_Coffee::Models::ProviderModels::CashScreenProvider.dart::CashProvider"
+
+class "SPK_Coffee::Models::ProviderModels::DishPage.dart::DishStore" {
+  -bool _isSort
+  +void toggleState()
+  +bool getIsSort()
+  +void setIsSort()
+}
+
+"flutter::src::foundation::change_notifier.dart::ChangeNotifier" <|-- "SPK_Coffee::Models::ProviderModels::DishPage.dart::DishStore"
+
+class "SPK_Coffee::Models::ProviderModels::EmployeeInformationProvider.dart::EmployeeInformationProvider" {
+  +dynamic status
+  +List<EmployeeInfo> data
+  +int count
+  +Map toJson()
+  +void removeEmployeeInformation()
+  +void addEmployee()
+  +void getEmployee()
+}
+
+"flutter::src::foundation::change_notifier.dart::ChangeNotifier" <|-- "SPK_Coffee::Models::ProviderModels::EmployeeInformationProvider.dart::EmployeeInformationProvider"
+
+class "SPK_Coffee::Models::ProviderModels::UpdateOrderProvider.dart::UpdateOrderProvider" {
+  -Future<OrderList> _currentOrder
+  +Future getCurrentOrder()
+  +void resetCurrentOrder()
+}
+
+"flutter::src::foundation::change_notifier.dart::ChangeNotifier" <|-- "SPK_Coffee::Models::ProviderModels::UpdateOrderProvider.dart::UpdateOrderProvider"
+
+class "SPK_Coffee::Models::ProviderModels::UserProvider.dart::UserProvider" {
+}
+
+"flutter::src::foundation::change_notifier.dart::ChangeNotifier" <|-- "SPK_Coffee::Models::ProviderModels::UserProvider.dart::UserProvider"
+
+class "SPK_Coffee::Models::ProviderModels::VoucherProvider.dart::VoucherProvider" {
+  -Future<VoucherList> _fVoucher
+  -Voucher _currentVoucher
+  +Future getFVoucher()
+  +void setCurrentVoucher()
+  +Voucher getVoucher()
+  +void setFvoucher()
+}
+
+"SPK_Coffee::Models::ProviderModels::VoucherProvider.dart::VoucherProvider" o-- "SPK_Coffee::Models::Voucher.dart::Voucher"
+"flutter::src::foundation::change_notifier.dart::ChangeNotifier" <|-- "SPK_Coffee::Models::ProviderModels::VoucherProvider.dart::VoucherProvider"
+
+class "SPK_Coffee::Models::Sizes.dart::Sizes" {
+  +String id
+  +String productSize
+  +String price
+  +String createdAt
+  +String updatedAt
+  +String productId
+  +Map toJson()
+}
+
+class "SPK_Coffee::Models::Statistic.dart::Statistic" {
+  +List<StatisticTotal> statisticTotal
+  +List<StatisticProducts> statisticProducts
+  +Map toJson()
+}
+
+class "SPK_Coffee::Models::Statistic.dart::StatisticTotal" {
+  +String total
+  +String date
+  +Map toJson()
+}
+
+class "SPK_Coffee::Models::Statistic.dart::StatisticProducts" {
+  +String id
+  +String productname
+  +String total
+  +String productdescription
+  +String totalprice
+  +Map toJson()
+}
+
+class "SPK_Coffee::Models::User.dart::User" {
+  +String status
+  +String userName
+  +String name
+  +String role
+  +Map toJson()
+}
+
+class "SPK_Coffee::Models::Voucher.dart::VoucherList" {
+  +List<Voucher> vouchers
+  +Map toJson()
+}
+
+class "SPK_Coffee::Models::Voucher.dart::Voucher" {
+  +String id
+  +String description
+  +String discount
+  +String title
+  +String stateDate
+  +String endDate
+  +String createdAt
+  +String updatedAt
+  +Map toJson()
+}
+
+class "SPK_Coffee::SeedData::Data.dart::SeedData" {
+  +List<Area> listArea
+  +List<CoffeeTable> listTables
+}
+
+class "SPK_Coffee::Services::DataBaseManagement.dart::DataBaseManagement" {
+  +Database database
+  +Future initDB()
+  +Future dropTableIfExists()
+  +Future deleteRecord()
+  +Future insertDB()
+  +Future getTable()
+  +Future updateRecord()
+  +void saveOrderTables()
+  +Future getOrderList()
+  +Future closeDB()
+}
+
+"SPK_Coffee::Services::DataBaseManagement.dart::DataBaseManagement" o-- "sqflite_common::sqlite_api.dart::Database"
+
+class "SPK_Coffee::Services::PlatformHandler.dart::PlatformHandler" {
+  {static} +MethodChannel platfom
+  +void makeNotification()
+}
+
+"SPK_Coffee::Services::PlatformHandler.dart::PlatformHandler" o-- "flutter::src::services::platform_channel.dart::MethodChannel"
+
+class "SPK_Coffee::Services::Services.dart::ServiceManager" {
+  -String _href
+  +Future getProduct()
+  +Future getProductWithCategory()
+  +Future getActiveProducts()
+  +Future payOrder()
+  +Future getArea()
+  +Future getTable()
+  +Future updateOrderDetailsState()
+  +Future getAllOrders()
+  +Future updateOrder()
+  +Future createOrder()
+  +Future getReadyOrders()
+  +Future getHistoryOrders()
+  +Future getHistoryOrdersDayArrange()
+  +Future getClosedOrders()
+  +Future getReadyAndClosedOrders()
+  +Future getAllVoucher()
+  +Future loginEmployee()
+  +Future mergeOrder()
+  +Future payment()
+  +Future getOrderByTableId()
+  +Future getOrderBasedTableId()
+  +Future splitTable()
+  +Future takeAnAttendance()
+  +Future getAllEmployeeInformation()
+  +Future createEmployee()
+  +Future addMoreProductIntoOrder()
+  +Future getOneDayEarning()
+  +Future getStatisticMonth()
+}
+
+class "SPK_Coffee::Services::SocketManager.dart::SocketManagement" {
+  -String _href
+  +Socket socket
+  -PlatformHandler _platformHandler
+  +dynamic createSocketConnection()
+  +dynamic makeMessage()
+  +dynamic addListener()
+}
+
+"SPK_Coffee::Services::SocketManager.dart::SocketManagement" o-- "socket_io_client::src::socket.dart::Socket"
+"SPK_Coffee::Services::SocketManager.dart::SocketManagement" o-- "SPK_Coffee::Services::PlatformHandler.dart::PlatformHandler"
+
+class "SPK_Coffee::Utils::ChartHelper.dart::BasicDateField" {
+  +DateFormat format
+  +Widget build()
+}
+
+"SPK_Coffee::Utils::ChartHelper.dart::BasicDateField" o-- "intl::intl.dart::DateFormat"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "SPK_Coffee::Utils::ChartHelper.dart::BasicDateField"
+
+class "SPK_Coffee::Utils::Config.dart::MyHttpOverrides" {
+  +HttpClient createHttpClient()
+}
+
+"dart::_http::HttpOverrides" <|-- "SPK_Coffee::Utils::Config.dart::MyHttpOverrides"
+
+class "SPK_Coffee::Utils::Feature.dart::Feature" {
+  +IconData icon
+  +dynamic title
+  +Color color
+}
+
+"SPK_Coffee::Utils::Feature.dart::Feature" o-- "flutter::src::widgets::icon_data.dart::IconData"
+"SPK_Coffee::Utils::Feature.dart::Feature" o-- "dart::ui::Color"
+
+class "SPK_Coffee::Utils::StaticValue.dart::StaticValue" {
+  {static} +dynamic path
+}
+
+class "SPK_Coffee::Utils::UtilitiesFunc.dart::Screen" {
+  {static} -double _ppi
+  {static} +bool isLandscape()
+  {static} +Size size()
+  {static} +double width()
+  {static} +double height()
+  {static} +double diagonal()
+  {static} +Size inches()
+  {static} +double widthInches()
+  {static} +double heightInches()
+  {static} +double diagonalInches()
+}
+
+
+@enduml

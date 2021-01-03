@@ -384,6 +384,7 @@ class _PayWidState extends State<PayWid> {
                       content: Text("Payment successfully!"),
                     ));
                     widget.getReadyOrders.call();
+                    SocketManagement().makeMessage("getUpdateDishKitchen");
                     SocketManagement().makeMessage("makeUpdateOrderScreen");
                   } else {
                     Scaffold.of(context).showSnackBar(SnackBar(
@@ -498,6 +499,7 @@ class _PayWidState extends State<PayWid> {
                       content: Text("Payment successfully!"),
                     ));
                     widget.getReadyOrders.call();
+                    SocketManagement().makeMessage("getUpdateDishKitchen");
                     SocketManagement().makeMessage("makeUpdateOrderScreen");
                   } else {
                     Scaffold.of(context).showSnackBar(SnackBar(
