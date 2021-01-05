@@ -132,7 +132,7 @@ class NumPadWid extends StatefulWidget {
 }
 
 class _NumPadWidState extends State<NumPadWid> {
-  String inputNum = "";
+  String inputNum = ""; //reset this var
   RegExp regex = RegExp(r"([.]*0)(?!.*\d)");
   bool isEquation(String eq) {
     if (eq == "+" || eq == "-" || eq == "X" || eq == "/") {
@@ -211,6 +211,10 @@ class _NumPadWidState extends State<NumPadWid> {
                         child: FlatButton(
                             color: Colors.grey.withGreen(210).withOpacity(0.8),
                             onPressed: () {
+                              if (calculate.getIsPay() == true) {
+                                inputNum = "";
+                                calculate.setIsPay(false);
+                              }
                               print(item);
                               if (isEquation(item)) {
                                 calculate.setCal(item);
@@ -391,6 +395,7 @@ class _PayWidState extends State<PayWid> {
                       content: Text("Payment fail!"),
                     ));
                   }
+                  calculate.setIsPay(true);
                   calculate.resetAll();
                 },
               ),
