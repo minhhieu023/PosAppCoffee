@@ -156,21 +156,22 @@ class ServiceManager {
 
     final response = await http
         .post(
-          "$_href/order",
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8'
-          },
-          body: jsonEncode(<String, dynamic>{
-            'employeeId': employeeId,
-            'state': state,
-            'discount': discount,
-            'tableId': tableId,
-            'orderProducts': listOrderDetailJson.toList(),
-          }),
-        )
-        .then(
-            (value) => SocketManagement().makeMessage("makeUpdateOrderScreen"))
-        .catchError((error) => print("fail"));
+      "$_href/order",
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8'
+      },
+      body: jsonEncode(<String, dynamic>{
+        'employeeId': employeeId,
+        'state': state,
+        'discount': discount,
+        'tableId': tableId,
+        'orderProducts': listOrderDetailJson.toList(),
+      }),
+    )
+        .then((value) async {
+      await SocketManagement().makeMessage("makeUpdateOrderScreen");
+      await SocketManagement().makeMessage("getUpdateDishKitchen");
+    }).catchError((error) => print("fail"));
   }
 
   Future<OrderList> getReadyOrders() async {
@@ -449,18 +450,19 @@ class ServiceManager {
     });
     final response = await http
         .post(
-          "$_href/order/update",
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8'
-          },
-          body: jsonEncode(<String, dynamic>{
-            'orderProducts': listOrderDetailJson.toList(),
-            'orderId': orderId,
-          }),
-        )
-        .then(
-            (value) => SocketManagement().makeMessage("makeUpdateOrderScreen"))
-        .catchError((error) => print("fail"));
+      "$_href/order/update",
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8'
+      },
+      body: jsonEncode(<String, dynamic>{
+        'orderProducts': listOrderDetailJson.toList(),
+        'orderId': orderId,
+      }),
+    )
+        .then((value) async {
+      await SocketManagement().makeMessage("makeUpdateOrderScreen");
+      await SocketManagement().makeMessage("getUpdateDishKitchen");
+    }).catchError((error) => print("fail"));
   }
 
   Future<Map<String, dynamic>> getOneDayEarning(String date) async {
