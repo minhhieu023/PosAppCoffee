@@ -18,7 +18,7 @@ import 'package:http/http.dart' as http;
 class ServiceManager {
   //final _href = 'http://hieuvm.xyz:8000';
 
-  final _href = 'http://192.168.0.167:8000';
+  final _href = 'http://hieuit.tech:8000';
   // final _href = 'https://caffeeshopbackend.herokuapp.com
 
   ServiceManager();
