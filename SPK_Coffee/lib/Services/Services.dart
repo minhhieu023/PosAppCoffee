@@ -304,6 +304,8 @@ class ServiceManager {
         .catchError((error) => print("fail"));
     if (response.statusCode == 200) {
       Map<String, dynamic> json = new Map<String, dynamic>();
+      SocketManagement().makeMessage("getUpdateDishKitchen");
+      SocketManagement().makeMessage("makeUpdateOrderScreen");
       json = jsonDecode(response.body);
       print(json);
       return "Merge has been successful";
@@ -374,6 +376,9 @@ class ServiceManager {
         )
         .catchError((error) => print(error));
     if (response.statusCode == 200) {
+      SocketManagement().makeMessage("getUpdateDishKitchen");
+      SocketManagement().makeMessage("makeUpdateOrderScreen");
+
       Map<String, dynamic> json = new Map<String, dynamic>();
       json = jsonDecode(response.body);
       print(json);
