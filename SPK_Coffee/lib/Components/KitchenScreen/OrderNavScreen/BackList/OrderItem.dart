@@ -32,10 +32,10 @@ class _OrderItemState extends State<OrderItem> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onLongPress: () {
-        widget.getRemoveItem(widget.details);
+        widget.popDetails(widget.details.details, widget.productInfo);
       },
       onTap: () {
-        widget.popDetails(widget.details.details, widget.productInfo);
+        widget.getRemoveItem(widget.details);
       },
       child: Container(
         key: Key('${widget.details.id}'),

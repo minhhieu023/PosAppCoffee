@@ -1,3 +1,4 @@
+import 'package:SPK_Coffee/Components/KitchenScreen/OrderNavScreen/BackList/OrderDetail.dart';
 import 'package:SPK_Coffee/Models/Order.dart';
 import 'package:SPK_Coffee/Models/OrderDetail.dart';
 import 'package:SPK_Coffee/Models/OrderList.dart';
@@ -35,6 +36,44 @@ String getTotalTime(
 class _ProcessListWidState extends State<ProcessListWid> {
   List<Order> orderList = [];
 
+  void onClickOrder(
+      List<OrderDetail> orderDetail, List<ProductsInfo> productsInfo) {
+    //pass list for each order
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topLeft: const Radius.circular(45),
+                  topRight: const Radius.circular(45))),
+          height: MediaQuery.of(context).size.height * 0.5,
+          child: Column(
+            children: [
+              Title(
+                color: Colors.green,
+                child: Text(
+                  "Order number: ${orderDetail[0].orderId}",
+                  style: TextStyle(fontSize: 30),
+                ),
+              ),
+              Expanded(
+                  child: ListView.builder(
+                itemCount: orderDetail.length,
+                itemBuilder: (context, index) {
+                  return OrderDetailWid(
+                    detail: orderDetail[index],
+                    productsInfo: productsInfo,
+                  );
+                },
+              ))
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   void filterList() {
     orderList.clear();
     if (widget.orders == null) {
@@ -71,7 +110,8 @@ class _ProcessListWidState extends State<ProcessListWid> {
                   child: InkWell(
                     splashColor: Colors.green,
                     onTap: () {
-                      print("tapped");
+                      onClickOrder(
+                          orderList[index].details, widget.list.productsInfo);
                     },
                     child: Row(
                       // mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -106,7 +146,7 @@ class _ProcessListWidState extends State<ProcessListWid> {
                                     flex: 2,
                                     fit: FlexFit.tight,
                                     child: Text(
-                                        "Order time: ${formatDateToString(orderList[index].date)} \nTime to make: ${getTotalTime(orderList[index].details, widget.list.productsInfo)}",
+                                        "Order time: ${formatDateToString(orderList[index].date)} || Table: ${widget.list.tables[index].tablename} \nTime to make: ${getTotalTime(orderList[index].details, widget.list.productsInfo)}",
                                         style:
                                             TextStyle(color: Colors.black45)))
                               ],
