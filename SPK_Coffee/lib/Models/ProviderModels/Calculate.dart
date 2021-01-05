@@ -8,7 +8,17 @@ class Calculate with ChangeNotifier {
   double _finalResult = 0;
   double _discount = 0;
   bool _isSecond = false;
+  bool _isPay = false;
   RegExp regex = RegExp(r"([.]*0)(?!.*\d)");
+
+  bool getIsPay() {
+    return _isPay;
+  }
+
+  void setIsPay(bool value) {
+    _isPay = value;
+    notifyListeners();
+  }
 
   String getResult() {
     return _result;
