@@ -111,6 +111,8 @@ class _OrderListWidState extends State<OrderListWid>
         isUpdate = true;
       });
       return orderList;
+    }).then((value) {
+      SocketManagement().makeMessage("getUpdateDishKitchen");
     });
     SocketManagement().makeMessage("makeUpdateOrderScreen");
     if (_currentTab == 1) {
@@ -126,6 +128,8 @@ class _OrderListWidState extends State<OrderListWid>
         isUpdate = true;
       });
       return orderList;
+    }).then((value) {
+      SocketManagement().makeMessage("getUpdateDishKitchen");
     });
     SocketManagement().makeMessage("makeUpdateOrderScreen");
   }

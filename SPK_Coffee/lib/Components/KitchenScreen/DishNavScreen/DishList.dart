@@ -224,6 +224,7 @@ class _OrderDtProWidState extends State<OrderDtProWid> {
 
   @override
   Widget build(BuildContext context) {
+    processColors = workColor[widget.order.details[widget.index].state];
     return Material(
       child: Slidable(
         actionExtentRatio: 0.2,
