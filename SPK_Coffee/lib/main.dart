@@ -112,9 +112,9 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return ScreenLoaderApp(
         app: MaterialApp(
-      color: Colors.blueAccent,
+      color: Colors.blue[900],
       theme: new ThemeData(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.blue[900],
         shadowColor: Colors.black12,
         brightness: Brightness.light,
         // primaryColor: Colors.white,

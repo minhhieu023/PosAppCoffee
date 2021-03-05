@@ -39,22 +39,18 @@ class _ProductComponentState extends State<ProductComponent> {
 
     return Builder(
       builder: (context) {
-        return Card(
-          color: Colors.white70,
-          shadowColor: Colors.black,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
+        return Container(
+          color: Colors.white,
           child: Stack(
             children: [
               GridTile(
-                header: Center(
-                  child: Text(
-                    widget.products.productName,
-                    style: TextStyle(
-                        fontSize: MediaQuery.of(context).size.height * 0.024),
-                  ),
-                ),
+                // header: Center(
+                //   child: Text(
+                //     widget.products.productName,
+                //     style: TextStyle(
+                //         fontSize: MediaQuery.of(context).size.height * 0.024),
+                //   ),
+                // ),
                 footer: Container(
                   child: Stack(
                     //mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -64,64 +60,79 @@ class _ProductComponentState extends State<ProductComponent> {
                               height: 50,
                               width: 50,
                               child: Card(
-                                shadowColor: Colors.blue,
+                                shadowColor: Colors.black,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
                                 color: Colors.white,
                                 child: IconButton(
-                                    iconSize: 20,
-                                    padding: EdgeInsets.all(0.0),
-                                    color: Colors.red,
-                                    icon: FaIcon(FontAwesomeIcons.minus),
-                                    onPressed: () {
-                                      print('OK');
-                                      widget.decrementCounter();
-                                      setState(
-                                        () {
-                                          productCounter--;
-                                          widget.products.amount =
-                                              productCounter;
-                                          widget.addProductToCart(
-                                              widget.products);
-                                        }, //Decrement product
-                                      );
-                                    }),
+                                  iconSize: 20,
+                                  padding: EdgeInsets.all(0.0),
+                                  color: Colors.red,
+                                  icon: FaIcon(FontAwesomeIcons.minus),
+                                  onPressed: () {
+                                    print('OK');
+                                    widget.decrementCounter();
+                                    setState(
+                                      () {
+                                        productCounter--;
+                                        widget.products.amount = productCounter;
+                                        widget
+                                            .addProductToCart(widget.products);
+                                      }, //Decrement product
+                                    );
+                                  },
+                                ),
                               ),
                             )
                           : Container(),
-                      // Padding(
-                      //   padding: EdgeInsets.all(10),
-                      //   child: Text(
-                      //     formatter
-                      //         .format(int.parse(widget.products.price)),
-                      //     style: TextStyle(
-                      //         fontSize:
-                      //             MediaQuery.of(context).size.height *
-                      //                 0.026),
-                      //   ),
-                      // ),
-                      // SizedBox(
-                      //     width: MediaQuery.of(context).size.width / 15)
                       Padding(
                         child: Center(
-                          child: Text(
-                            formatter.format(int.parse(widget.products.price)),
-                            style: TextStyle(
-                                fontSize:
-                                    MediaQuery.of(context).size.height * 0.026),
+                          child: Column(
+                            children: [
+                              Text(
+                                widget.products.productName,
+                                style: TextStyle(
+                                    fontSize:
+                                        MediaQuery.of(context).size.height *
+                                            0.022),
+                              ),
+                              Text(
+                                formatter
+                                    .format(int.parse(widget.products.price)),
+                                style: TextStyle(
+                                    fontSize:
+                                        MediaQuery.of(context).size.height *
+                                            0.022),
+                              ),
+                            ],
                           ),
                         ),
-                        padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
+                        padding: EdgeInsets.fromLTRB(0, 45, 0, 0),
                       )
                     ],
                   ),
                 ),
                 child: Padding(
-                  padding: EdgeInsets.fromLTRB(10, 20, 10, 20),
+                  padding: EdgeInsets.fromLTRB(10, 5, 10, 45),
                   child: InkWell(
-                    child: Card(
-                      shadowColor: Colors.black,
-                      child: Image.network(
-                          StaticValue.path + '${widget.products.mainImage}',
-                          fit: BoxFit.fill),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.2),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: Offset(0, 3), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10.0),
+                        child: Image.network(
+                            StaticValue.path + '${widget.products.mainImage}',
+                            fit: BoxFit.fill),
+                      ),
                     ),
                     onTap: () {
                       widget.incrementCounter(); //tăng số trong floating

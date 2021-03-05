@@ -1,10 +1,8 @@
 import 'package:SPK_Coffee/Components/Manage/EmployeeUI.dart';
 import 'package:SPK_Coffee/Models/ImployeeInformation.dart';
-import 'package:SPK_Coffee/Models/ProviderModels/EmployeeInformationProvider.dart';
 import 'package:SPK_Coffee/Services/Services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:provider/provider.dart';
 
 class EmployeeListView extends StatefulWidget {
   EmployeeListView({Key key}) : super(key: key);

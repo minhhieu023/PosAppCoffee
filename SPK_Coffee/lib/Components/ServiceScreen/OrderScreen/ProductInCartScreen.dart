@@ -170,15 +170,13 @@ class _ProductListViewState extends State<ProductListView> {
       child: Stack(
         children: [
           ListTile(
-            leading: Icon(FontAwesomeIcons.productHunt),
+            leading: Icon(FontAwesomeIcons.rProject),
             title: Text(
-              widget.product.productName +
-                  "   x" +
-                  widget.product.amount.toString(),
-              style: TextStyle(fontSize: 18),
+              widget.product.productName,
+              style: TextStyle(fontSize: 15),
             ),
             subtitle: Text(
-              "Product's total: " + (widget.product.price),
+              "Size: M",
             ),
             trailing: Text(widget.product.state != null
                 ? widget.product.state.toString()
@@ -192,48 +190,48 @@ class _ProductListViewState extends State<ProductListView> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      IconButton(
-                        onPressed: () {
-                          widget.product.amount--;
-                          productAmount.text = widget.product.amount.toString();
-                          print(widget.product.amount.toString());
-                          widget.updateProductAmount.call();
-                          widget.updateTotalMoney.call();
-                          widget.updateListProductWhenRemove.call();
-                        },
-                        color: Colors.red,
-                        icon: FaIcon(FontAwesomeIcons.minus),
-                      ),
-                      SizedBox(
-                        height: 30,
-                        width: 30,
-                        child: TextFormField(
-                          controller: productAmount,
-                          keyboardType: TextInputType.number,
-                          //  / initialValue: widget.product.amount.toString(),
-                          textAlign: TextAlign.center,
-                          onEditingComplete: () => {
-                            setState(() {
-                              widget.product.amount =
-                                  int.parse(productAmount.text);
-                            })
-                          },
-                        ),
-                      ),
-                      IconButton(
-                        color: Colors.green,
-                        icon: FaIcon(FontAwesomeIcons.plus),
-                        onPressed: () {
-                          setState(() {
-                            widget.product.amount++;
-                            productAmount.text =
-                                widget.product.amount.toString();
-                            print(widget.product.amount.toString());
-                            widget.updateTotalMoney.call();
-                            widget.updateProductAmount.call();
-                          });
-                        },
-                      ),
+                      // IconButton(
+                      //   onPressed: () {
+                      //     widget.product.amount--;
+                      //     productAmount.text = widget.product.amount.toString();
+                      //     print(widget.product.amount.toString());
+                      //     widget.updateProductAmount.call();
+                      //     widget.updateTotalMoney.call();
+                      //     widget.updateListProductWhenRemove.call();
+                      //   },
+                      //   color: Colors.red,
+                      //   icon: FaIcon(FontAwesomeIcons.minus),
+                      // ),
+                      // SizedBox(
+                      //   height: 30,
+                      //   width: 30,
+                      //   child: TextFormField(
+                      //     controller: productAmount,
+                      //     keyboardType: TextInputType.number,
+                      //     //  / initialValue: widget.product.amount.toString(),
+                      //     textAlign: TextAlign.center,
+                      //     onEditingComplete: () => {
+                      //       setState(() {
+                      //         widget.product.amount =
+                      //             int.parse(productAmount.text);
+                      //       })
+                      //     },
+                      //   ),
+                      // ),
+                      // IconButton(
+                      //   color: Colors.green,
+                      //   icon: FaIcon(FontAwesomeIcons.plus),
+                      //   onPressed: () {
+                      //     setState(() {
+                      //       widget.product.amount++;
+                      //       productAmount.text =
+                      //           widget.product.amount.toString();
+                      //       print(widget.product.amount.toString());
+                      //       widget.updateTotalMoney.call();
+                      //       widget.updateProductAmount.call();
+                      //     });
+                      //   },
+                      // ),
                     ],
                   ),
                 ),

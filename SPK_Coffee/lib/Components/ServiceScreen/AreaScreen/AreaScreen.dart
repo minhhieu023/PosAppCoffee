@@ -237,7 +237,6 @@ class _MainServiceScreenState extends State<MainServiceScreen>
                   },
                 ),
               ],
-
               // animation controller
               animation: _animation,
 

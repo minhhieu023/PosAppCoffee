@@ -191,12 +191,13 @@ class _TableWigetState extends State<TableWiget> {
                 });
               }
             },
-            child: Card(
+            child: Container(
               color: widget.isMerge == true &&
                       !widget.tableCoffee.isEmpty &&
                       widget.counter < 2
                   ? Colors.amber
                   : null,
+
               //shadowColor: Colors.black,
               child: new GridTile(
                 header: Center(
@@ -210,16 +211,17 @@ class _TableWigetState extends State<TableWiget> {
                     child: Center(
                         child: Text("Table " + widget.tableCoffee.name))),
                 child: Card(
+                    shadowColor: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    elevation: 2,
+                    // shadowColor: Colors.white,
                     color: selectedToMerge &&
                             widget.isMerge &&
                             !widget.tableCoffee.isEmpty
                         ? Colors.amber
                         : Colors.white,
-                    shadowColor: Colors.blueAccent,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                    elevation: 2,
                     child: widget.tableCoffee.isEmpty
                         ? Image.asset("assets/img/inactive-table.png")
                         : Image.asset("assets/img/active-table.png")),

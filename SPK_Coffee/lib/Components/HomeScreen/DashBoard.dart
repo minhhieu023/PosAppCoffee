@@ -122,6 +122,11 @@ Widget childFeature(Feature feature) {
   return Builder(builder: (context) {
     return Card(
       // margin: EdgeInsets.all(10),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0),
+      ),
+      shadowColor: Colors.black,
+
       color: feature.color,
       child: InkWell(
         onTap: () async {

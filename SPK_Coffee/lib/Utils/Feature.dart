@@ -5,9 +5,9 @@ class Feature {
   final IconData icon;
   final String title;
   final Color color;
-
+  final int size;
   // final String routing;
-  Feature(this.title, this.icon, this.color);
+  Feature(this.title, this.icon, this.color, {this.size});
   // Feature (this.title, this.icon, this.color, )
 }
 
@@ -22,11 +22,7 @@ var featureForAdmin = [
     Icons.kitchen,
     Colors.blue[100],
   ),
-  Feature(
-    "Payment",
-    FontAwesomeIcons.cashRegister,
-    Colors.brown[200],
-  ),
+  Feature("Payment", FontAwesomeIcons.receipt, Colors.brown[200], size: 14),
   Feature("Statistics", Icons.bubble_chart, Colors.green),
   Feature("Manage", FontAwesomeIcons.user, Colors.deepOrange[300]),
   Feature(
