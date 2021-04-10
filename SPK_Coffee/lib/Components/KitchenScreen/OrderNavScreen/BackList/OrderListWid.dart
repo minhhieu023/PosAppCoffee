@@ -185,48 +185,43 @@ class _OrderListWidState extends State<OrderListWid>
   Widget screen(BuildContext context) {
     // TODO: implement screen
 
-    return FutureBuilder<OrderList>(
-      future: orderList,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          // object = snapshot.data.saveJson;
-          sub = snapshot.data.data;
-          filterSub = !isSearch ? sub : filterSub;
-          return Scrollbar(
-              thickness: 15,
-              child: Column(
-                children: [
-                  Container(
-                    padding: EdgeInsets.only(top: 5),
-                    // decoration: BoxDecoration(
-                    //     border: Border.all(width: 0.5, color: Colors.black)),
-                    //put orderlist to list
-                    child: TopItems(
-                      snapshot.data,
-                      popDetails: onClickOrder,
-                      getRemoveItem: getRemoveItem,
-                      orders: filterSub,
+    return SingleChildScrollView(
+      child: FutureBuilder<OrderList>(
+        future: orderList,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            // object = snapshot.data.saveJson;
+            sub = snapshot.data.data;
+            filterSub = !isSearch ? sub : filterSub;
+            return Scrollbar(
+                thickness: 15,
+                child: Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(top: 5),
+                      // decoration: BoxDecoration(
+                      //     border: Border.all(width: 0.5, color: Colors.black)),
+                      //put orderlist to list
+                      child: TopItems(
+                        snapshot.data,
+                        popDetails: onClickOrder,
+                        getRemoveItem: getRemoveItem,
+                        orders: filterSub,
+                        updateOrderByState: updateOrderByState,
+                      ),
+                      height: (MediaQuery.of(context).size.height) -
+                          kToolbarHeight -
+                          80,
+                      width: (MediaQuery.of(context).size.width) - 0.5,
                     ),
-                    height: (MediaQuery.of(context).size.height * 0.4) - 56,
-                    width: (MediaQuery.of(context).size.width * 0.8) - 0.5,
-                  ),
-                  Expanded(
-                      child: Container(
-                    width: MediaQuery.of(context).size.width - 0.5,
-                    child: BottomItem(
-                      getTabIndex: getTabIndex,
-                      orderList: snapshot.data,
-                      updateOrderState: updateOrderByState,
-                      orders: filterSub,
-                    ),
-                  ))
-                ],
-              ));
-        }
-        return SpinKitCircle(
-          color: Colors.green,
-        );
-      },
+                  ],
+                ));
+          }
+          return SpinKitCircle(
+            color: Colors.green,
+          );
+        },
+      ),
     );
   }
 }
@@ -236,7 +231,12 @@ class TopItems extends StatefulWidget {
   final List<Order> orders;
   final Function(Order) getRemoveItem;
   final Function(List<OrderDetail>, List<ProductsInfo>) popDetails;
-  TopItems(this.list, {this.popDetails, this.getRemoveItem, this.orders});
+  final Function(String, String) updateOrderByState;
+  TopItems(this.list,
+      {this.popDetails,
+      this.getRemoveItem,
+      this.orders,
+      this.updateOrderByState});
   @override
   _TopItemsState createState() => _TopItemsState();
 }
@@ -251,9 +251,10 @@ class _TopItemsState extends State<TopItems> {
   void filterList() {
     orderList.clear();
     widget.orders.forEach((item) {
-      if (item.state == "open") {
-        orderList.add(item);
-      }
+      // if (item.state == "open") {
+      print(item.productsInfo);
+      orderList.add(item);
+      // }
     });
   }
 
@@ -261,15 +262,11 @@ class _TopItemsState extends State<TopItems> {
   Widget build(BuildContext context) {
     //filter list  get all order with state = "open".
     filterList();
-    return GridView.builder(
+    return ListView.builder(
       itemCount: orderList.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-      ),
       itemBuilder: (context, index) {
         return OrderItem(
+          updateOrderByState: widget.updateOrderByState,
           details: orderList[index],
           orderTable: widget.list.tables.length >= index
               ? widget.list.tables[index]

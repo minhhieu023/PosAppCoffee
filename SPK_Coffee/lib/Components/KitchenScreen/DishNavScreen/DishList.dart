@@ -231,11 +231,29 @@ class _OrderDtProWidState extends State<OrderDtProWid> {
         controller: widget.slidableController,
         key: new Key(widget.order.id),
         child: Container(
-          margin: EdgeInsets.only(top: 5, bottom: 5),
+          margin: EdgeInsets.only(bottom: 5),
+          // margin: EdgeInsets.only(top: 5),
+          // padding: EdgeInsets.all(5),
+          height: MediaQuery.of(context).orientation == Orientation.portrait
+              ? MediaQuery.of(context).size.height * 0.12
+              : MediaQuery.of(context).size.height * 0.18,
           decoration: BoxDecoration(
-            border: Border.all(width: 1, color: Colors.black),
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(0)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                spreadRadius: 5,
+                blurRadius: 7,
+                offset: Offset(0, 3),
+                // changes position of shadow
+              ),
+            ],
           ),
-          height: MediaQuery.of(context).size.height * 0.15,
+          // decoration: BoxDecoration(
+          //   border: Border.all(width: 1, color: Colors.black),
+          // ),
+          // height: MediaQuery.of(context).size.height * 0.15,
           child: Stack(
             children: [
               Container(
@@ -285,7 +303,7 @@ class _OrderDtProWidState extends State<OrderDtProWid> {
                                   Text(
                                       "Process duration: ${widget.totalProcessTime}"),
                                   Text(
-                                      "Order time: ${formatDateToString(widget.order.details[widget.index].createdAt)}")
+                                      "${formatDateToString(widget.order.details[widget.index].createdAt)}")
                                 ])
                               ],
                             ),
@@ -313,12 +331,25 @@ class _OrderDtProWidState extends State<OrderDtProWid> {
         ),
         actions: [
           Container(
-            height: MediaQuery.of(context).size.height * 0.15,
+            margin: EdgeInsets.only(bottom: 5, right: 2),
+            // margin: EdgeInsets.only(top: 5),
+            // padding: EdgeInsets.all(5),
+            height: MediaQuery.of(context).orientation == Orientation.portrait
+                ? MediaQuery.of(context).size.height * 0.12
+                : MediaQuery.of(context).size.height * 0.18,
             decoration: BoxDecoration(
-                border: Border(
-                    top: BorderSide(width: 1),
-                    left: BorderSide(width: 1),
-                    bottom: BorderSide(width: 1))),
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(0)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: Offset(0, 3),
+                  // changes position of shadow
+                ),
+              ],
+            ),
             child: IconSlideAction(
               caption: "Ready",
               color: Colors.greenAccent,
@@ -339,12 +370,25 @@ class _OrderDtProWidState extends State<OrderDtProWid> {
         ],
         secondaryActions: [
           Container(
+            margin: EdgeInsets.only(bottom: 5, left: 2),
+            // margin: EdgeInsets.only(top: 5),
+            // padding: EdgeInsets.all(5),
+            height: MediaQuery.of(context).orientation == Orientation.portrait
+                ? MediaQuery.of(context).size.height * 0.12
+                : MediaQuery.of(context).size.height * 0.18,
             decoration: BoxDecoration(
-                border: Border(
-                    top: BorderSide(width: 1),
-                    right: BorderSide(width: 1),
-                    bottom: BorderSide(width: 1))),
-            height: MediaQuery.of(context).size.height * 0.15,
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(0)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: Offset(0, 3),
+                  // changes position of shadow
+                ),
+              ],
+            ),
             child: IconSlideAction(
               color: Colors.cyan,
               caption: "Process",
