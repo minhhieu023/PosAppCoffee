@@ -79,11 +79,13 @@ class _MyAppState extends State<MyApp> {
     Category futureGetCategory =
         await ServiceManager().getProductWithCategory();
     List<Products> productList = [];
-    futureGetCategory.data.forEach((element) {
-      element.products.forEach((e) {
-        productList.add(e);
+    if (futureGetCategory.data != null) {
+      futureGetCategory.data.forEach((element) {
+        element.products.forEach((e) {
+          productList.add(e);
+        });
       });
-    });
+    }
 
     productList.forEach((element) async {
       await _db.insertDB(

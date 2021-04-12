@@ -39,7 +39,7 @@ class OrderDetailWid extends StatelessWidget {
             children: [
               Text(
                   "Time to make: ${getProductInfo(detail.productId, 'duration')}"),
-              Text("Số lượng: ${detail.amount}")
+              Text("Amount: ${detail.amount}")
             ],
           ),
         );
