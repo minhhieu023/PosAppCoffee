@@ -32,7 +32,7 @@ class Products {
   String hot;
   int amount;
   String state;
-  bool popular;
+  String popular;
   String processDuration;
   String mainImage;
   String createdAt;

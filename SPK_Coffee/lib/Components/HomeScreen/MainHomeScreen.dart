@@ -41,15 +41,31 @@ Widget mainPage({
   return Builder(builder: (context) {
     return Scaffold(
       appBar: appBar(),
-      body: DashBoard(),
+
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              height:
+                  (MediaQuery.of(context).size.height - kToolbarHeight) * 0.2,
+              child: Text("Wellcome back!"),
+            ),
+            Container(
+              height:
+                  (MediaQuery.of(context).size.height - kToolbarHeight) * 0.8,
+              child: DashBoard(),
+            )
+          ],
+        ),
+      ),
       // drawerScrimColor: Colors.blueAccent,
       drawer: Hamberger(),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.info),
-        onPressed: () {
-          onFloatButtonPressed();
-        },
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   child: Icon(Icons.info),
+      //   onPressed: () {
+      //     onFloatButtonPressed();
+      //   },
+      // ),
     );
   });
 }
