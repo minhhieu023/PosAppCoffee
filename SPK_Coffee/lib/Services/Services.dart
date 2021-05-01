@@ -18,8 +18,8 @@ import 'package:http/http.dart' as http;
 class ServiceManager {
   //final _href = 'http://hieuvm.xyz:8000';
 
-  final _href = 'http://10.11.210.15:8000/api';
-  final _href = 'http://192.168.1.34:8000/api';
+  final _href = 'http://192.168.68.121:8000/api';
+  // final _href = 'http://192.168.1.34:8000/api';
   // final _href = 'https://caffeeshopbackend.herokuapp.com
 
   ServiceManager();
@@ -273,6 +273,7 @@ class ServiceManager {
         )
         .catchError((error) => print("fail"));
     if (response.statusCode == 200) {
+      print(response.body);
       Map<String, dynamic> json = new Map<String, dynamic>();
       json = jsonDecode(response.body);
       if (json['status'] == 'Success') {
@@ -281,8 +282,10 @@ class ServiceManager {
         String userNameGetRole = json['userName'];
         print(userNameGetRole);
         await prefs.setString('userName', userNameGetRole);
-        String role = json['role'];
+        String role = json['role'].toString().toLowerCase();
         await prefs.setString('role', role);
+        String storeId = json["storeId"];
+        await prefs.setString('storeId', storeId);
         return 1;
       }
       return 0;

@@ -67,7 +67,7 @@ class Products {
 
     price = json['price'];
     hot = json['hot'];
-    popular = json['popular'] == 'true' ? true : false;
+    popular = json['popular'] == 'true' ? 'true' : 'false';
     processDuration = json['processDuration'];
     amount = json['amount'];
     mainImage = json['mainImage'];
