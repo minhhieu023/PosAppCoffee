@@ -10,15 +10,15 @@ class DataBaseManagement {
         onCreate: (Database db, int version) async {
       // When creating the db, create the table
       await db.execute(
-          'CREATE TABLE IF NOT EXISTS Products (id INTEGER PRIMARY KEY, productName TEXT, productDescription TEXT, price TEXT,hot text,popular text,processDuration text, mainImage text, categoryId INTEGER)');
+          'CREATE TABLE IF NOT EXISTS Products (id INTEGER PRIMARY KEY, productName TEXT, productDescription TEXT, price TEXT,hot text,popular text,processDuration text, mainImage text, categoryId INTEGER, storeId INTEGER)');
       await db.execute(
-          'create table IF NOT EXISTS Categories (id INTEGER PRIMARY KEY, name text)');
+          'create table IF NOT EXISTS Categories (id INTEGER PRIMARY KEY, name text, storeId INTEGER)');
       await db.execute(
-          'create table IF NOT EXISTS Areas (Id INTEGER PRIMARY KEY, name text,waiter1 text, waiter2 text, amountOfTable INTEGER )');
+          'create table IF NOT EXISTS Areas (Id INTEGER PRIMARY KEY, name text,waiter1 text, waiter2 text, amountOfTable INTEGER,storeId INTEGER )');
       await db.execute(
           'create table IF NOT EXISTS Tables (Id INTEGER PRIMARY KEY, name text,isEmpty text, AreaId INTEGER )');
       await db.execute(
-          'create table IF NOT EXISTS Orders (id INTEGER PRIMARY KEY,employeeId text, date text, state text, total text, discount text, voucherId text, note text )');
+          'create table IF NOT EXISTS Orders (id INTEGER PRIMARY KEY,employeeId text, date text, state text, total text, discount text, voucherId text, note text,endUserId INTEGER,isShipper INTEGER,storeId INTEGER )');
       await db.execute(
           'create table IF NOT EXISTS OrderDetails (id INTEGER PRIMARY KEY,productId integer, amount integer,price text, orderId integer )');
     });
@@ -33,13 +33,17 @@ class DataBaseManagement {
   }
 
   Future<void> insertDB(String table, String keys, List<String> values) async {
-    String record = values.map((e) => "?").toString();
-    if (database.isOpen) {
-      await database.transaction((txn) async {
-        var result = await txn.rawInsert(
-            'INSERT INTO $table $keys VALUES $record', values);
-        print(result);
-      });
+    try {
+      String record = values.map((e) => "?").toString();
+      if (database.isOpen) {
+        await database.transaction((txn) async {
+          var result = await txn.rawInsert(
+              'INSERT INTO $table $keys VALUES $record', values);
+          print(result);
+        });
+      }
+    } catch (e) {
+      print(e);
     }
   }
 
