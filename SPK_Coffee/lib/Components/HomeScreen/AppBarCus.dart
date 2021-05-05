@@ -1,16 +1,17 @@
+import 'package:SPK_Coffee/Utils/StaticValue.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 Widget appBar() {
   return AppBar(
-    backgroundColor: Colors.white12,
-    shadowColor: Colors.black12,
+    backgroundColor: mPrimaryColor,
+
     title: Text(
       "SPK Coffee",
-      style: TextStyle(color: Colors.blue),
+      style: TextStyle(color: Colors.white),
     ),
     centerTitle: true,
-    iconTheme: new IconThemeData(color: Colors.blueAccent),
+
     // centerTitle: true,
   );
 }
