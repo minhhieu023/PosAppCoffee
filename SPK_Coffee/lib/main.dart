@@ -8,6 +8,7 @@ import 'package:SPK_Coffee/Models/Category.dart';
 import 'package:SPK_Coffee/Models/Product.dart';
 import 'package:SPK_Coffee/Services/DataBaseManagement.dart';
 import 'package:SPK_Coffee/Services/Services.dart';
+import 'package:SPK_Coffee/Utils/StaticValue.dart';
 import 'package:flutter/material.dart';
 import 'package:screen_loader/screen_loader.dart';
 import 'package:splashscreen/splashscreen.dart';
@@ -114,9 +115,10 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return ScreenLoaderApp(
         app: MaterialApp(
-      color: Color(0xFF76A635),
+      color: mPrimaryColor,
       theme: new ThemeData(
-        backgroundColor: Colors.blue[900],
+        primaryColor: mPrimaryColor,
+        backgroundColor: mPrimaryColor,
         shadowColor: Colors.black12,
         brightness: Brightness.light,
         // primaryColor: Colors.white,
