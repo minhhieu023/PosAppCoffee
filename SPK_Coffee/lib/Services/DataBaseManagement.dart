@@ -1,11 +1,13 @@
 import 'package:SPK_Coffee/Models/Order.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart' as p;
 
 class DataBaseManagement {
   Database database;
   Future<void> initDB() async {
     var databasesPath = await getDatabasesPath();
-    String path = databasesPath + 'demo.db';
+
+    String path = p.join(databasesPath, 'demo.db');
     database = await openDatabase(path, version: 1,
         onCreate: (Database db, int version) async {
       // When creating the db, create the table

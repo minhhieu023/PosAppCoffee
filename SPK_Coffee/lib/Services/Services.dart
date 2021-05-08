@@ -18,7 +18,7 @@ import 'package:http/http.dart' as http;
 class ServiceManager {
   //final _href = 'http://hieuvm.xyz:8000';
 
-  final _href = 'http://192.168.68.121:8000/api';
+  final _href = 'http://hieuit.tech:8000/api';
   // final _href = 'http://192.168.1.34:8000/api';
   // final _href = 'https://caffeeshopbackend.herokuapp.com
 
@@ -39,7 +39,15 @@ class ServiceManager {
   }
 
   Future<Category> getProductWithCategory() async {
-    final response = await http.get('$_href/category/all');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    final response = await http.post('$_href/category/all',
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: jsonEncode(<String, dynamic>{
+          "storeId": prefs.getString("storeId") ?? "null"
+        }));
 
     if (response.statusCode == 200) {
       // print(response.body);
