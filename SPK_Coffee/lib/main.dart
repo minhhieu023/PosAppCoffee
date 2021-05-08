@@ -74,38 +74,38 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<Widget> loadFromFuture() async {
-    await _db.initDB();
-    // <fetch data from server. ex. login>
-    await _db.dropTableIfExists("Products");
-    Category futureGetCategory =
-        await ServiceManager().getProductWithCategory();
-    List<Products> productList = [];
-    if (futureGetCategory.data != null) {
-      futureGetCategory.data.forEach((element) {
-        element.products.forEach((e) {
-          productList.add(e);
-        });
-      });
-    }
+    // await _db.initDB();
+    // // <fetch data from server. ex. login>
+    // await _db.dropTableIfExists("Products");
+    // Category futureGetCategory =
+    //     await ServiceManager().getProductWithCategory();
+    // List<Products> productList = [];
+    // if (futureGetCategory.data != null) {
+    //   futureGetCategory.data.forEach((element) {
+    //     element.products.forEach((e) {
+    //       productList.add(e);
+    //     });
+    //   });
+    // }
 
-    productList.forEach((element) async {
-      await _db.insertDB(
-          "Products",
-          '(id,productName,productDescription,price,hot,popular,processDuration,mainImage,categoryId)',
-          [
-            element.id,
-            "'${element.productName}'",
-            "'${element.productDescription}'",
-            "'${element.price}'",
-            "'${element.hot}'",
-            "'${element.popular.toString()}'",
-            "'${element.processDuration}'",
-            "'${element.mainImage}'",
-            element.categoryId
-          ]);
-    });
+    // productList.forEach((element) async {
+    //   await _db.insertDB(
+    //       "Products",
+    //       '(id,productName,productDescription,price,hot,popular,processDuration,mainImage,categoryId)',
+    //       [
+    //         element.id,
+    //         "'${element.productName}'",
+    //         "'${element.productDescription}'",
+    //         "'${element.price}'",
+    //         "'${element.hot}'",
+    //         "'${element.popular.toString()}'",
+    //         "'${element.processDuration}'",
+    //         "'${element.mainImage}'",
+    //         element.categoryId
+    //       ]);
+    // });
 
-    await _db.getTable("Products");
+    // await _db.getTable("Products");
     return Future.value(
       LoginScreen(),
     );
