@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class StaticValue {
   static String path =
       'https://storage.googleapis.com/my-coffee-shop-55613.appspot.com';
-  static String svPath = 'http://hieuit.tech:8000/uploads/';
+  static String svPath = 'http://192.168.68.121:8000/uploads/';
 }
 
 Map workColor = {
