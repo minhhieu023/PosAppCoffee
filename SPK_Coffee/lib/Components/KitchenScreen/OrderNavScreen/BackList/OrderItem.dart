@@ -85,7 +85,8 @@ class _OrderItemState extends State<OrderItem> {
                             "Table: ${widget.orderTable.tablename}",
                             style: TextStyle(color: Colors.grey, fontSize: 15),
                           )
-                        : Text(""),
+                        : Text("Online Order",
+                            style: TextStyle(color: Colors.grey, fontSize: 15)),
                     Text(formatDateToString(widget.details.date))
                   ],
                 ),

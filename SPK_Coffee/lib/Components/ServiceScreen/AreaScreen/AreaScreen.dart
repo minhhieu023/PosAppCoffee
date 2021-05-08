@@ -267,6 +267,14 @@ Widget areaWidget(Future<List<Area>> areas, int chooseArea,
     future: areas,
     builder: (context, snapshot) {
       if (snapshot.hasData) {
+        print("Data snapshot!");
+        print(snapshot.data);
+        if (snapshot.data == 'empty') {
+          return Center(
+            child: Text(
+                "No Area has been set. Please visit http://hieuit.tech:3000 to set area for your store!."),
+          );
+        }
         List<Area> list = snapshot.data;
         return SingleChildScrollView(
             scrollDirection: Axis.horizontal,

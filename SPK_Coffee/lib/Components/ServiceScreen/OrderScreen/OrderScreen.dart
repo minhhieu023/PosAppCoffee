@@ -101,7 +101,10 @@ class _OrderScreenState extends State<OrderScreen>
     serviceManager = ServiceManager();
     futureGetCategory = serviceManager.getProductWithCategory();
     isAddMoreProduct = false;
-    tabController = new TabController(vsync: this, length: 2, );
+    tabController = new TabController(
+      vsync: this,
+      length: 2,
+    );
     print(futureGetCategory.toString());
   }
 
@@ -160,7 +163,6 @@ class _OrderScreenState extends State<OrderScreen>
                       children: [
                         Container(
                           child: TabBar(
-
                             key: Key("Drink"),
                             controller: tabController,
                             tabs: snapshot.data.data.map((e) {
@@ -263,9 +265,8 @@ class _OrderScreenState extends State<OrderScreen>
                                 isScrollable: true,
                                 indicatorSize: TabBarIndicatorSize.tab,
                                 indicator: new BubbleTabIndicator(
-
                                   indicatorHeight: 30.0,
-                                 // indicatorColor: mPrimaryColor,
+                                  // indicatorColor: mPrimaryColor,
                                   tabBarIndicatorSize: TabBarIndicatorSize.tab,
                                 ),
                               ),

@@ -19,7 +19,11 @@ class OrderList {
     if (json['tables'] != null) {
       tables = new List<OrderTable>();
       json['tables'].forEach((v) {
-        tables.add(new OrderTable.fromJson(v));
+        if (v == null) {
+          tables.add(null);
+        } else {
+          tables.add(new OrderTable.fromJson(v));
+        }
       });
     }
     if (json['productsInfo'] != null) {

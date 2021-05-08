@@ -130,7 +130,7 @@ class _ProductComponentState extends State<ProductComponent> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10.0),
                         child: Image.network(
-                            StaticValue.path + '${widget.products.mainImage}',
+                            StaticValue.svPath + '${widget.products.mainImage}',
                             fit: BoxFit.fill),
                       ),
                     ),

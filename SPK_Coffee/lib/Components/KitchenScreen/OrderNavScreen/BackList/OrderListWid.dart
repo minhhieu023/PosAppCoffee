@@ -269,7 +269,7 @@ class _TopItemsState extends State<TopItems> {
           updateOrderByState: widget.updateOrderByState,
           details: orderList[index],
           orderTable: widget.list.tables.length >= index
-              ? widget.list.tables[index]
+              ? (widget.list.tables[index])
               : null,
           popDetails: widget.popDetails,
           productInfo: widget.list.productsInfo,

@@ -16,13 +16,18 @@ import 'package:SPK_Coffee/Services/SocketManager.dart';
 import 'package:http/http.dart' as http;
 
 class ServiceManager {
-  final _href = 'http://hieuit.tech:8000/api';
+  final _href = 'http://192.168.68.121:8000/api';
 
   //final _href = 'http://10.11.210.15:8000/api';
   //final _href = 'http://192.168.1.34:8000/api';
   // final _href = 'https://caffeeshopbackend.herokuapp.com
 
   ServiceManager();
+  Future<String> getStoreId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString("storeId") ?? "null";
+  }
+
   Future<ListProduct> getProduct() async {
     final response = await http.get(_href + '/products/all');
 
@@ -84,29 +89,53 @@ class ServiceManager {
   }
 
   Future<List<Area>> getArea() async {
+    String storeId = await getStoreId();
     print('$_href/area');
-    final response = await http.get('$_href/area');
-    print(response);
+    final response = await http.post('$_href/area/web',
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: jsonEncode({'storeId': storeId}));
     if (response.statusCode == 200) {
-      List<Area> areas = [];
-      jsonDecode(response.body)['data'].forEach((item) {
-        areas.add(new Area.fromJson(item));
-      });
-      print(areas.toList());
-      return areas;
+      if (jsonDecode(response.body)['status'] == 'OK' ||
+          jsonDecode(response.body)['status'] == 'success') {
+        if (jsonDecode(response.body)['data'] == 'empty') {
+          return [];
+        } else {
+          List<Area> areas = [];
+          jsonDecode(response.body)['data'].forEach((item) {
+            areas.add(new Area.fromJson(item));
+          });
+          // print(areas.toList());
+          return areas;
+        }
+      } else {
+        return null;
+      }
     } else {
       return null;
     }
   }
 
   Future<List<CoffeeTable>> getTable() async {
-    final response = await http.get('$_href/table');
+    String storeId = await getStoreId();
+    final response = await http.get('$_href/table?storeId=$storeId');
     if (response.statusCode == 200) {
-      List<CoffeeTable> tables = [];
-      jsonDecode(response.body)['data'].forEach((item) {
-        tables.add(new CoffeeTable.fromJson(item));
-      });
-      return tables;
+      print(response.body);
+      if (jsonDecode(response.body)['status'] == 'OK' ||
+          jsonDecode(response.body)['status'] == 'success') {
+        var data = jsonDecode(response.body);
+        if (data['data'] == 'empty') {
+          return [];
+        }
+        List<CoffeeTable> tables = [];
+        jsonDecode(response.body)['data'].forEach((item) {
+          tables.add(new CoffeeTable.fromJson(item));
+        });
+        return tables;
+      } else {
+        return null;
+      }
     } else {
       return null;
     }
@@ -136,7 +165,8 @@ class ServiceManager {
   }
 
   Future<OrderList> updateOrder(String id, String state) async {
-    final res = await http.post("$_href/kitchen",
+    String storeId = await getStoreId();
+    final res = await http.post("$_href/kitchen?storeId=$storeId",
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8'
         },
@@ -151,6 +181,8 @@ class ServiceManager {
   //Add a order with action: Open or Closed or Somethingelse
   Future<dynamic> createOrder(List<Products> listOrderDetail, String employeeId,
       String state, String tableId, String discount) async {
+    String storeId = await getStoreId();
+
     //Map<String, dynamic> orderDetails = new Map<String, dynamic>();
     // Map<String, dynamic> listOrderDetailJson = new Map<String, dynamic>();
     List<Map<String, dynamic>> listOrderDetailJson =
@@ -175,6 +207,7 @@ class ServiceManager {
         'discount': discount,
         'tableId': tableId,
         'orderProducts': listOrderDetailJson.toList(),
+        'storeId': storeId
       }),
     )
         .then((value) async {

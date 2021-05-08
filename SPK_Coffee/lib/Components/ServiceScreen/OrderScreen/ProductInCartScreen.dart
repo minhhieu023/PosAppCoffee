@@ -2,6 +2,7 @@ import 'package:SPK_Coffee/Components/ServiceScreen/PaymentScreen.dart';
 import 'package:SPK_Coffee/Models/CoffeeTable.dart';
 import 'package:SPK_Coffee/Models/Product.dart';
 import 'package:SPK_Coffee/Services/SocketManager.dart';
+import 'package:SPK_Coffee/Utils/StaticValue.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -90,6 +91,7 @@ class _ProductInCartScreenState extends State<ProductInCartScreen> {
                         return ProductListView(
                             product: widget.listProduct[index],
                             updateProductAmount: widget.addProductToCart,
+                            productImage: widget.listProduct[index].mainImage,
                             updateListProductWhenRemove:
                                 updateListProductWhenRemove,
                             updateTotalMoney: setStateCalMoney,
@@ -126,6 +128,7 @@ class _ProductInCartScreenState extends State<ProductInCartScreen> {
 }
 
 class ProductListView extends StatefulWidget {
+  final String productImage;
   final Products product;
   final Function updateProductAmount;
   final Function updateListProductWhenRemove;
@@ -133,6 +136,7 @@ class ProductListView extends StatefulWidget {
   bool haveOrder;
   ProductListView(
       {this.product,
+      this.productImage,
       this.updateProductAmount,
       this.updateListProductWhenRemove,
       this.updateTotalMoney,
@@ -170,7 +174,10 @@ class _ProductListViewState extends State<ProductListView> {
       child: Stack(
         children: [
           ListTile(
-            leading: Icon(FontAwesomeIcons.rProject),
+            leading: widget.productImage != null
+                ? Image.network(StaticValue.svPath + '${widget.productImage}',
+                    fit: BoxFit.fill)
+                : Icon(FontAwesomeIcons.rProject),
             title: Text(
               widget.product.productName,
               style: TextStyle(fontSize: 15),
