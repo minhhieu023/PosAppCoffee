@@ -492,6 +492,7 @@ Future<void> createOrder(List<Products> listProduct, String employeeId,
   //       price: (int.parse(element.price) * element.amount).toString());
   //   listOrderdetail.add(orderDetail);
   // });
+  print("change");
   listProduct.forEach((element) {
     element.productId = element.id;
     element.price = (int.parse(element.price) * element.amount).toString();
