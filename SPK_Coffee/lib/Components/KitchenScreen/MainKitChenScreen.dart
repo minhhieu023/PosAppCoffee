@@ -2,7 +2,6 @@ import 'package:SPK_Coffee/Components/KitchenScreen/DishNavScreen/DishList.dart'
 import 'package:SPK_Coffee/Components/KitchenScreen/DishNavScreen/Sorts/SortByDuration.dart';
 import 'package:SPK_Coffee/Models/OrderList.dart';
 import 'package:SPK_Coffee/Services/Services.dart';
-import 'package:SPK_Coffee/Utils/StaticValue.dart';
 import 'package:flutter/material.dart';
 import 'package:fluid_bottom_nav_bar/fluid_bottom_nav_bar.dart';
 import 'package:screen_loader/screen_loader.dart';
@@ -132,9 +131,11 @@ class _MainKitchenScreenState extends State<MainKitchenScreen>
               )
             : null,
         floatingActionButton: null,
-        bottomNavigationBar: FluidNavBar(
+        bottomNavigationBar: SizedBox(
+          height: 56,
+          child: FluidNavBar(
             animationFactor: 0.3,
-            style: FluidNavBarStyle(barBackgroundColor: mPrimaryColor ),
+            style: FluidNavBarStyle(barBackgroundColor: Colors.pink),
             icons: [
               FluidNavBarIcon(
                   iconPath: "assets/img/receipt.svg",
@@ -147,7 +148,7 @@ class _MainKitchenScreenState extends State<MainKitchenScreen>
             ],
             onChange: _handleNavigationChange,
           ),
-
+        ),
         body: _page);
   }
 }

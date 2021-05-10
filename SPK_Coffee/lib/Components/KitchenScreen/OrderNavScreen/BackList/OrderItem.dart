@@ -53,7 +53,7 @@ class _OrderItemState extends State<OrderItem> {
               : MediaQuery.of(context).size.height * 0.18,
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(0)),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
             boxShadow: [
               BoxShadow(
                 color: Colors.grey.withOpacity(0.2),

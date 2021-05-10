@@ -104,6 +104,7 @@ Widget roundedRectButton(
                     userName.text, passWord.text);
                 if (isTrue == 1) {
                   SharedPreferences prefs = await _prefs;
+                  prefs.setString('employeeId', userName.text);
                   if (prefs.getString("role") == "admin") {
                     Navigator.pushReplacementNamed(mContext, "/Dashboard");
                   } else if (prefs.getString("role") == "waiter") {

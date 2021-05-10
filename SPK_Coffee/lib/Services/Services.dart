@@ -67,7 +67,8 @@ class ServiceManager {
   }
 
   Future<OrderList> getActiveProducts() async {
-    final response = await http.get('$_href/kitchen');
+    String storeId = await getStoreId();
+    final response = await http.get('$_href/kitchen?storeId=$storeId');
     if (response.statusCode == 200) {
       OrderList orderList = OrderList.fromJson(jsonDecode(response.body));
       return orderList;
@@ -154,7 +155,9 @@ class ServiceManager {
   }
 
   Future<OrderList> getAllOrders() async {
-    final response = await http.get('$_href/kitchen');
+    String storeId = await getStoreId();
+    print("Store Id: " + storeId);
+    final response = await http.get('$_href/kitchen?storeId=$storeId');
     // print(response.body);
     if (response.statusCode == 200) {
       OrderList orderList = OrderList.fromJson(jsonDecode(response.body));
@@ -191,7 +194,7 @@ class ServiceManager {
       Map<String, dynamic> orderDetails = new Map<String, dynamic>();
       orderDetails['productId'] = element.id;
       orderDetails['amount'] = element.amount;
-      orderDetails['price'] = element.price;
+      orderDetails['price'] = double.parse(element.price);
       listOrderDetailJson.add(orderDetails);
     });
 
@@ -204,7 +207,7 @@ class ServiceManager {
       body: jsonEncode(<String, dynamic>{
         'employeeId': employeeId,
         'state': state,
-        'discount': discount,
+        'discount': double.parse(discount),
         'tableId': tableId,
         'orderProducts': listOrderDetailJson.toList(),
         'storeId': storeId
@@ -489,6 +492,7 @@ class ServiceManager {
 
   Future addMoreProductIntoOrder(
       List<Products> listProduct, String orderId) async {
+    print("add more product");
     List<Map<String, dynamic>> listOrderDetailJson =
         new List<Map<String, dynamic>>();
     listProduct.forEach((element) {

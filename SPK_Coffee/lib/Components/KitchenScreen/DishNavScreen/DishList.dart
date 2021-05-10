@@ -275,7 +275,7 @@ class _OrderDtProWidState extends State<OrderDtProWid> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(300),
                             child: Image.network(
-                              "${StaticValue.path}${widget.productInfo['image']}",
+                              "${StaticValue.svPath}${widget.productInfo['image']}",
                               fit: BoxFit.fill,
                             ),
                           ),

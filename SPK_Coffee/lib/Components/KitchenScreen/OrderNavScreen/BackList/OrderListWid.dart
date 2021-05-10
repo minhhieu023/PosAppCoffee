@@ -142,9 +142,13 @@ class _OrderListWidState extends State<OrderListWid>
       List<OrderDetail> orderDetail, List<ProductsInfo> productsInfo) {
     //pass list for each order
     showModalBottomSheet(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(45), topRight: Radius.circular(45))),
       context: context,
       builder: (context) {
         return Container(
+          padding: EdgeInsets.only(top: 10),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
                   topLeft: const Radius.circular(45),
@@ -152,6 +156,11 @@ class _OrderListWidState extends State<OrderListWid>
           height: MediaQuery.of(context).size.height * 0.5,
           child: Column(
             children: [
+              Divider(
+                indent: MediaQuery.of(context).size.width * 0.47,
+                endIndent: MediaQuery.of(context).size.width * 0.47,
+                thickness: 3,
+              ),
               Title(
                 color: Colors.green,
                 child: Text(
