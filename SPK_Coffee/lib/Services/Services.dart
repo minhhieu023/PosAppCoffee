@@ -220,12 +220,13 @@ class ServiceManager {
   }
 
   Future<OrderList> getReadyOrders() async {
+    String storeId = await getStoreId();
     final response = await http.post(
       "$_href/cash",
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8'
       },
-      body: jsonEncode(<String, dynamic>{'state': 'ready'}),
+      body: jsonEncode(<String, dynamic>{'state': 'ready', 'storeId': storeId}),
     );
     if (response.statusCode == 200) {
       OrderList orderList = OrderList.fromJson(jsonDecode(response.body));
@@ -236,13 +237,14 @@ class ServiceManager {
   }
 
   Future<OrderList> getHistoryOrders(String date) async {
+    String storeId = await getStoreId();
 //    "date":"2020-12-05"
     final response = await http.post(
       "$_href/cash/filter",
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8'
       },
-      body: jsonEncode(<String, dynamic>{'date': date}),
+      body: jsonEncode(<String, dynamic>{'date': date, 'storeId': storeId}),
     );
     if (response.statusCode == 200) {
       OrderList orderList = OrderList.fromJson(jsonDecode(response.body));
@@ -296,7 +298,8 @@ class ServiceManager {
   }
 
   Future<VoucherList> getAllVoucher() async {
-    final response = await http.get("$_href/voucher");
+    String storeId = await getStoreId();
+    final response = await http.get("$_href/voucher?storeId=$storeId");
     if (response.statusCode == 200) {
       VoucherList voucherList = VoucherList.fromJson(jsonDecode(response.body));
       return voucherList;
@@ -520,11 +523,12 @@ class ServiceManager {
   }
 
   Future<Map<String, dynamic>> getOneDayEarning(String date) async {
+    String storeId = await getStoreId();
     final response = await http.post("$_href/statistical",
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8'
         },
-        body: jsonEncode(<String, dynamic>{'date': date}));
+        body: jsonEncode(<String, dynamic>{'date': date, 'storeId': storeId}));
     if (response.statusCode == 200) {
       Map<String, dynamic> json = jsonDecode(response.body);
       return json;
@@ -533,11 +537,12 @@ class ServiceManager {
   }
 
   Future<Statistic> getStatisticMonth(String date) async {
+    String storeId = await getStoreId();
     final response = await http.post("$_href/statistical/month",
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8'
         },
-        body: jsonEncode(<String, dynamic>{'date': date}));
+        body: jsonEncode(<String, dynamic>{'date': date, 'storeId': storeId}));
     if (response.statusCode == 200) {
       Statistic statistic = Statistic.fromJson(jsonDecode(response.body));
       return statistic;

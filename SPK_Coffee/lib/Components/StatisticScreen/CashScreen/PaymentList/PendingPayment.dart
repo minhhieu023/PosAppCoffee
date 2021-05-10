@@ -168,7 +168,9 @@ class _CashOrdersWidState extends State<CashOrdersWid> {
               calculate.setIsSecond(true);
             },
             title: widget.type != "closed"
-                ? Text("TABLE ${tables[index].tablename}")
+                ? (tables[index].tablename != null
+                    ? Text("TABLE ${tables[index].tablename}")
+                    : Text("Remote Order"))
                 : Text("TABLE ${orders[index].tableName}"),
             subtitle: Text(
                 "Order number:${orders[index].id} \n amount of money: ${formatMoney(orders[index].total.split('.')[0])} VNĐ"),
