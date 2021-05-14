@@ -47,28 +47,42 @@ class _PendingListWidState extends State<PendingListWid> {
     return DefaultTabController(
         length: 2,
         child: Scaffold(
-          appBar: AppBar(
-            automaticallyImplyLeading: false,
-            title: TabBar(
-              onTap: (value) {
-                setState(() {
-                  currentTab = value;
-                });
-              },
-              indicatorSize: TabBarIndicatorSize.tab,
-              indicator: new BubbleTabIndicator(
-                indicatorHeight: 25,
-                indicatorColor: Colors.blueAccent,
-                tabBarIndicatorSize: TabBarIndicatorSize.tab,
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(kToolbarHeight),
+            child: Container(
+              height: kToolbarHeight,
+              child: Column(
+                children: [
+                  TabBar(
+                    overlayColor:
+                        MaterialStateProperty.all<Color>(Colors.green),
+                    labelColor: Colors.black,
+                    onTap: (value) {
+                      setState(() {
+                        currentTab = value;
+                      });
+                    },
+                    indicatorSize: TabBarIndicatorSize.tab,
+                    indicator: new BubbleTabIndicator(
+                      indicatorHeight: 25,
+                      indicatorColor: Colors.blueAccent,
+                      tabBarIndicatorSize: TabBarIndicatorSize.tab,
+                    ),
+                    tabs: [
+                      Tab(
+                        text: "Pending",
+                      ),
+                      Tab(
+                        text: "Paid",
+                      )
+                    ],
+                  ),
+                  Divider(
+                    height: 1,
+                    thickness: 1,
+                  )
+                ],
               ),
-              tabs: [
-                Tab(
-                  text: "Pending",
-                ),
-                Tab(
-                  text: "Paid",
-                )
-              ],
             ),
           ),
           body: currentTab == 0
@@ -167,11 +181,13 @@ class _CashOrdersWidState extends State<CashOrdersWid> {
               cashProvider.calulateTotal();
               calculate.setIsSecond(true);
             },
-            title: widget.type != "closed"
-                ? (tables[index].tablename != null
-                    ? Text("TABLE ${tables[index].tablename}")
-                    : Text("Remote Order"))
-                : Text("TABLE ${orders[index].tableName}"),
+            title: tables[index] != null
+                ? (widget.type != "closed"
+                    ? (tables[index].tablename != null
+                        ? Text("TABLE ${tables[index].tablename}")
+                        : Text("Remote Order"))
+                    : Text("TABLE ${orders[index].tableName}"))
+                : Text("Remote Order"),
             subtitle: Text(
                 "Order number:${orders[index].id} \n amount of money: ${formatMoney(orders[index].total.split('.')[0])} VNĐ"),
             isThreeLine: true,

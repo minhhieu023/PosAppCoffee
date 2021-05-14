@@ -41,38 +41,52 @@ class _DisplayDetailWidState extends State<DisplayDetailWid> {
               width: widget.maxWidth,
               height: widget.maxHeight,
               decoration: BoxDecoration(
-                  border: Border.all(width: 0.5, color: Colors.black38)),
+                border: Border.all(width: 0.5, color: Colors.black38),
+              ),
               child: cashProvider.getCurrentOrder() != null
                   ? (ListView.builder(
                       itemCount: order.details.length,
                       itemBuilder: (context, index) {
-                        return Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(width: 0.5),
-                            ),
-                            margin: EdgeInsets.all(5),
-                            child: Table(
-                              defaultVerticalAlignment:
-                                  TableCellVerticalAlignment.middle,
-                              children: [
-                                TableRow(children: [
-                                  Text(
-                                    "${getProductName(order.details[index].productId, productInfo)} x${order.details[index].amount}",
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                  Container(
-                                    alignment: Alignment.centerRight,
-                                    child: Text(
-                                      "${formatMoney(order.details[index].price)} VNĐ",
-                                      style: TextStyle(fontSize: 20),
-                                    ),
-                                  )
-                                ])
-                              ],
-                            ));
+                        return Material(
+                          elevation: 16,
+                          child: Container(
+                              decoration: BoxDecoration(
+                                border: Border(bottom: BorderSide(width: 0.5)),
+                              ),
+                              margin: EdgeInsets.all(5),
+                              child: Table(
+                                defaultVerticalAlignment:
+                                    TableCellVerticalAlignment.middle,
+                                children: [
+                                  TableRow(children: [
+                                    RichText(
+                                        text: TextSpan(children: [
+                                      TextSpan(
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.black),
+                                          text:
+                                              "${getProductName(order.details[index].productId, productInfo)} "),
+                                      TextSpan(
+                                          text:
+                                              "x${order.details[index].amount}",
+                                          style: TextStyle(
+                                              color: Colors.red, fontSize: 20))
+                                    ])),
+                                    Container(
+                                      alignment: Alignment.centerRight,
+                                      child: Text(
+                                        "${formatMoney(order.details[index].price)} VNĐ",
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                    )
+                                  ])
+                                ],
+                              )),
+                        );
                       },
                     ))
-                  : Text("Choose"),
+                  : Text(""),
             )),
         Expanded(flex: 3, child: CalResultWid())
       ],
@@ -417,22 +431,3 @@ class _CalResultWidState extends State<CalResultWid> {
     }
   }
 }
-
-/***
- * 
- 
- Text(
-                                  calculate.getSecondNum() == 0.0
-                                      ? "0"
-                                      : formatMoney(calculate
-                                          .getSecondNum()
-                                          .toString()
-                                          .split(".")[0]),
-                                  style: TextStyle(
-                                      color: !calculate.isGreater()
-                                          ? Colors.black
-                                          : calculate.getSecondNum() == 0
-                                              ? Colors.black
-                                              : Colors.red),
-                                ),
- */

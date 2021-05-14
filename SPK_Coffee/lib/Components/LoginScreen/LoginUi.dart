@@ -15,7 +15,6 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   TextEditingController userName = new TextEditingController();
   TextEditingController passWord = new TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -88,6 +87,7 @@ Widget roundedRectButton(
     TextEditingController userName,
     TextEditingController passWord,
     bool isEndIconVisible) {
+  SocketManagement _socketManagement = new SocketManagement();
   ServiceManager serviceManager = new ServiceManager();
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   return Builder(builder: (BuildContext mContext) {
@@ -111,8 +111,13 @@ Widget roundedRectButton(
                     Navigator.pushReplacementNamed(mContext, "/Services");
                   } else if (prefs.getString('role') == 'bartender')
                     Navigator.pushReplacementNamed(mContext, "/Kitchen");
+                  _socketManagement.createSocketConnection();
                   SocketManagement().makeMessage("login",
-                      data: {"id": userName.text}, isHaveData: true);
+                      data: {
+                        "id": userName.text,
+                        'storeId': prefs.getString('storeId')
+                      },
+                      isHaveData: true);
                 } else {
                   showDialog(
                       context: mContext,

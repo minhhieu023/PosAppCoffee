@@ -299,7 +299,8 @@ class _PayWidState extends State<PayWid> {
                 child: Container(
               child: Column(
                 children: [
-                  Text("Voucher:"),
+                  Text("Voucher:",
+                      style: TextStyle(fontWeight: FontWeight.bold)),
                   Expanded(
                       child: FutureBuilder<VoucherList>(
                     future: fVoucher,
@@ -404,93 +405,100 @@ class _PayWidState extends State<PayWid> {
         ),
       );
     } else {
+      // PORTRAIL
       return Container(
         child: Row(
           children: [
             Expanded(
                 child: Container(
-              child: Column(
-                children: [
-                  Text("Voucher:"),
-                  Expanded(
-                      child: FutureBuilder<VoucherList>(
-                    future: fVoucher,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        List<String> desList = [];
-                        snapshot.data.vouchers.forEach((element) {
-                          desList.add(element.description);
-                        });
-                        desList.add("None");
-                        List<String> idList = [];
-                        snapshot.data.vouchers.forEach((element) {
-                          idList.add(element.id);
-                        });
-                        return Stack(
-                          overflow: Overflow.clip,
-                          alignment: AlignmentDirectional.center,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(width: 0.5),
-                              ),
-                            ),
-                            Positioned(
-                                child: DropdownButton<String>(
-                              value: dropDownValue,
-                              icon: Icon(Icons.arrow_downward),
-                              iconSize: 24,
-                              elevation: 16,
-                              style: TextStyle(color: Colors.deepPurple),
-                              underline: Container(
-                                height: 2,
-                                color: Colors.deepPurpleAccent,
-                              ),
-                              onChanged: (String newValue) {
-                                setState(() {
-                                  dropDownValue = newValue;
-                                });
-                                if (newValue != "None") {
-                                  vouchers.setCurrentVoucher(getCurrentVoucher(
-                                      snapshot.data.vouchers, newValue));
-                                  calculate.setDiscount(double.parse(
-                                      getCurrentVoucher(
-                                              snapshot.data.vouchers, newValue)
-                                          .discount));
-                                } else {
-                                  vouchers.setCurrentVoucher(null);
-                                  calculate.setDiscount(0);
-                                }
-                                calculate.calculate();
-                                print(dropDownValue);
-                                // vouchers.setCurrentVoucher()
-                              },
-                              items: desList.map<DropdownMenuItem<String>>(
-                                  (String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
-                            ))
-                          ],
-                        );
-                      }
-                      return CircularProgressIndicator(
-                        backgroundColor: Colors.green,
-                      );
-                    },
-                  ))
-                ],
-              ),
-            )),
+                  child: Column(
+                    children: [
+                      Text("Voucher:",
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      Expanded(
+                          child: FutureBuilder<VoucherList>(
+                        future: fVoucher,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            List<String> desList = [];
+                            snapshot.data.vouchers.forEach((element) {
+                              desList.add(element.description);
+                            });
+                            desList.add("None");
+                            List<String> idList = [];
+                            snapshot.data.vouchers.forEach((element) {
+                              idList.add(element.id);
+                            });
+                            return Stack(
+                              alignment: AlignmentDirectional.center,
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(width: 0.5),
+                                  ),
+                                ),
+                                Positioned(
+                                    child: DropdownButton<String>(
+                                  value: dropDownValue,
+                                  icon: Icon(Icons.arrow_downward),
+                                  iconSize: 24,
+                                  elevation: 16,
+                                  style: TextStyle(color: Colors.deepPurple),
+                                  underline: Container(
+                                    height: 2,
+                                    color: Colors.deepPurpleAccent,
+                                  ),
+                                  onChanged: (String newValue) {
+                                    setState(() {
+                                      dropDownValue = newValue;
+                                    });
+                                    if (newValue != "None") {
+                                      vouchers.setCurrentVoucher(
+                                          getCurrentVoucher(
+                                              snapshot.data.vouchers,
+                                              newValue));
+                                      calculate.setDiscount(double.parse(
+                                          getCurrentVoucher(
+                                                  snapshot.data.vouchers,
+                                                  newValue)
+                                              .discount));
+                                    } else {
+                                      vouchers.setCurrentVoucher(null);
+                                      calculate.setDiscount(0);
+                                    }
+                                    calculate.calculate();
+                                    print(dropDownValue);
+                                    // vouchers.setCurrentVoucher()
+                                  },
+                                  items: desList.map<DropdownMenuItem<String>>(
+                                      (String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                ))
+                              ],
+                            );
+                          }
+                          return CircularProgressIndicator(
+                            backgroundColor: Colors.green,
+                          );
+                        },
+                      ))
+                    ],
+                  ),
+                ),
+                flex: 5),
+            Expanded(child: Text(""), flex: 1),
             Expanded(
-              child: FlatButton(
-                color: Colors.green,
-                shape: RoundedRectangleBorder(
-                    side: BorderSide(width: 1, color: Colors.black),
-                    borderRadius: BorderRadius.all(Radius.circular(30))),
-                child: Text("Pay"),
+              child: ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  shadowColor: Colors.black26,
+                  primary: Colors.green,
+                ),
+                icon: Icon(Icons.attach_money),
+                label: Text("Pay"),
                 onPressed: () async {
                   print("pay");
                   int isSuccess = await ServiceManager().payOrder(
@@ -514,7 +522,9 @@ class _PayWidState extends State<PayWid> {
                   calculate.resetAll();
                 },
               ),
-            )
+              flex: 3,
+            ),
+            Expanded(child: Text(""), flex: 1),
           ],
         ),
       );

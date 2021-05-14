@@ -52,16 +52,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    _socketManagement.createSocketConnection();
-    testReference();
-  }
-
-  testReference() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("key", "đây là chuỗi được lưu");
-    String str = prefs.get("key");
-    // prefs.remove("key");
-    print("reference value là: $str");
+    // _socketManagement.createSocketConnection();
   }
 
   void onFloatButtonPressed() {
