@@ -12,6 +12,7 @@ class Order {
   String note;
   String tableName;
   String endUserId;
+  String isShipper;
   List<OrderDetail> details;
   List<ProductsInfo> productsInfo;
   Order(
@@ -25,7 +26,8 @@ class Order {
       this.voucherId,
       this.note,
       this.tableName,
-      this.endUserId});
+      this.endUserId,
+      this.isShipper});
 
   Order.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -38,6 +40,7 @@ class Order {
     discount = json['discount'];
     tableName = json['tableName'] ?? "";
     endUserId = json['endUserId'] ?? null;
+    isShipper = json['isShipper'] ?? null;
     if (json['details'] != null) {
       details = new List<OrderDetail>();
       json['details'].forEach((v) {
@@ -55,6 +58,7 @@ class Order {
     data['total'] = this.total;
     data['discount'] = this.discount;
     data['endUserId'] = this.endUserId;
+    data['isShipper'] = this.isShipper;
     if (this.details != null) {
       data['details'] = this.details.map((v) => v.toJson()).toList();
     }
