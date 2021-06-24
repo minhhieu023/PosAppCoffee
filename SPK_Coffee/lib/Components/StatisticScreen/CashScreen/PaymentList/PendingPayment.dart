@@ -2,12 +2,18 @@ import 'package:SPK_Coffee/Models/Order.dart';
 import 'package:SPK_Coffee/Models/OrderList.dart';
 import 'package:SPK_Coffee/Models/ProviderModels/Calculate.dart';
 import 'package:SPK_Coffee/Models/ProviderModels/CashScreenProvider.dart';
+import 'package:SPK_Coffee/Models/ProviderModels/UserProvider.dart';
 import 'package:SPK_Coffee/Models/ProviderModels/VoucherProvider.dart';
+import 'package:SPK_Coffee/Models/Shippers.dart';
+import 'package:SPK_Coffee/Services/Services.dart';
 import 'package:SPK_Coffee/Services/SocketManager.dart';
+import 'package:SPK_Coffee/Utils/Dictonary.dart';
 import 'package:SPK_Coffee/Utils/FormatString.dart';
 import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:ndialog/ndialog.dart';
 import 'package:provider/provider.dart';
+import 'package:screen_loader/screen_loader.dart';
 
 class PendingListWid extends StatefulWidget {
   final OrderList orderList;
@@ -106,7 +112,8 @@ class CashOrdersWid extends StatefulWidget {
   _CashOrdersWidState createState() => _CashOrdersWidState();
 }
 
-class _CashOrdersWidState extends State<CashOrdersWid> {
+class _CashOrdersWidState extends State<CashOrdersWid>
+    with ScreenLoader<CashOrdersWid> {
   OrderList orderList;
   List<Order> filterList = [];
   List<OrderTable> orderTable = [];
@@ -148,9 +155,10 @@ class _CashOrdersWidState extends State<CashOrdersWid> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget screen(BuildContext context) {
     Calculate calculate = Provider.of<Calculate>(context);
     CashProvider cashProvider = Provider.of<CashProvider>(context);
+    UserProvider user = Provider.of<UserProvider>(context);
     getOrder();
     List<dynamic> allInfo = filterOrders();
     List<Order> orders = allInfo[0];
@@ -181,19 +189,142 @@ class _CashOrdersWidState extends State<CashOrdersWid> {
               cashProvider.calulateTotal();
               calculate.setIsSecond(true);
             },
-            title: tables[index] != null
-                ? (widget.type != "closed"
-                    ? (tables[index].tablename != null
-                        ? Text("TABLE ${tables[index].tablename}")
-                        : Text("Remote Order"))
-                    : Text("TABLE ${orders[index].tableName}"))
-                : Text("Remote Order"),
+            title: orders[index].tableName.isEmpty
+                ? (Text("Remote Order"))
+                : tables[index] != null
+                    ? (widget.type != "closed"
+                        ? (tables[index].tablename != null
+                            ? Text("TABLE ${tables[index].tablename}")
+                            : Text("Remote Order"))
+                        : Text("TABLE ${orders[index].tableName}"))
+                    : Text("Remote Order ${orders[index].endUserId}"),
             subtitle: Text(
                 "Order number:${orders[index].id} \n amount of money: ${formatMoney(orders[index].total.split('.')[0])} VNĐ"),
             isThreeLine: true,
+            trailing: orders[index].isShipper != null
+                ? IconButton(
+                    icon: Icon(Icons.more),
+                    onPressed: () async {
+                      List<Shippers> shipper;
+                      // fetch shipper info
+                      if (user.shipper == null || user.shipper.length <= 0) {
+                        shipper = await this.performFuture(() async {
+                          return await ServiceManager()
+                              .getShipper(orders[index].isShipper);
+                        });
+                      }
+                      if (shipper != null) {
+                        user.setShipper(shipper);
+                      }
+                      await NDialog(
+                        dialogStyle: DialogStyle(titleDivider: true),
+                        title: Text(
+                          "Shipper Information",
+                          textAlign: TextAlign.center,
+                        ),
+                        content: showShipperInfomation(
+                            context,
+                            user.shipper
+                                .where((item) =>
+                                    item.id == orders[index].isShipper)
+                                .first),
+                        actions: [
+                          TextButton(
+                              style: TextButton.styleFrom(
+                                  backgroundColor: Colors.green),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text("OK",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  )))
+                        ],
+                      ).show(context);
+                    })
+                : null,
           ),
         );
       },
     );
   }
+}
+
+Widget showShipperInfomation(BuildContext context, Shippers shipper) {
+  return Container(
+    width: MediaQuery.of(context).size.width * 0.7,
+    height: MediaQuery.of(context).size.height * 0.6,
+    child: ListView(
+      children: [
+        Container(
+          margin: EdgeInsets.only(bottom: 20),
+          alignment: Alignment.center,
+          child: Image.network(
+            "${staticPath['sock']}/uploads/${shipper.avt}",
+            width: MediaQuery.of(context).size.width * 0.4,
+            height: MediaQuery.of(context).size.width * 0.4,
+            errorBuilder: (context, object, stackTrace) {
+              return Image.asset("assets/img/man.png");
+            },
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.only(bottom: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Name: ",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Text(shipper.name, overflow: TextOverflow.ellipsis)
+            ],
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.only(bottom: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Age: ",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Text(shipper.age, overflow: TextOverflow.ellipsis)
+            ],
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.only(bottom: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Phone number: ",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Text(shipper.phoneNumber, overflow: TextOverflow.ellipsis)
+            ],
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.only(bottom: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Info: ",
+                style: TextStyle(fontWeight: FontWeight.bold),
+                maxLines: 2,
+              ),
+              Text(
+                shipper.shipperInfo,
+                overflow: TextOverflow.ellipsis,
+              )
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
 }

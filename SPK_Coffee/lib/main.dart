@@ -10,6 +10,7 @@ import 'package:SPK_Coffee/Services/DataBaseManagement.dart';
 import 'package:SPK_Coffee/Services/Services.dart';
 import 'package:SPK_Coffee/Utils/StaticValue.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:screen_loader/screen_loader.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,6 +22,7 @@ import 'Components/ServiceScreen/OrderScreen/ProductInCartScreen.dart';
 
 import 'Components/StatisticScreen/CashScreen/MainCashNav.dart';
 import 'Components/StatisticScreen/Statistic/MainStatisticNav.dart';
+import 'Models/ProviderModels/UserProvider.dart';
 import 'Services/SocketManager.dart';
 
 class MyHttpOverrides extends HttpOverrides {
@@ -104,46 +106,53 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenLoaderApp(
-        app: MaterialApp(
-      color: mPrimaryColor,
-      theme: new ThemeData(
-        primaryColor: mPrimaryColor,
-        backgroundColor: mPrimaryColor,
-        shadowColor: Colors.black12,
-        brightness: Brightness.light,
-        // primaryColor: Colors.white,
-        //accentColor: Colors.blueAccent,
-      ),
-      // theme: ThemeData(primaryColor: Colors.blue[100]),
-      initialRoute: '/',
-      routes: {
-        '/Login': (context) => LoginScreen(),
-        '/Dashboard': (context) => MainHomeScreen(
-              onAddButtonPressed: onAddButtonPressed,
-              onFloatButtonPressed: onFloatButtonPressed,
-            ),
-        '/': (context) {
-          return new SplashScreen(
-            photoSize: MediaQuery.of(context).size.width * 0.5,
-            routeName: '/',
-            image: Image.asset(
-              "assets/img/logocoffee.jpg",
-            ),
-            seconds: 2,
-            // navigateAfterSeconds: mainPage(
-            //     onAddButtonPressed: onAddButtonPressed,
-            //     onFloatButtonPressed: onFloatButtonPressed),
-            navigateAfterFuture: loadFromFuture(),
-          );
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => UserProvider(),
+        )
+      ],
+      child: ScreenLoaderApp(
+          app: MaterialApp(
+        color: mPrimaryColor,
+        theme: new ThemeData(
+          primaryColor: mPrimaryColor,
+          backgroundColor: mPrimaryColor,
+          shadowColor: Colors.black12,
+          brightness: Brightness.light,
+          // primaryColor: Colors.white,
+          //accentColor: Colors.blueAccent,
+        ),
+        // theme: ThemeData(primaryColor: Colors.blue[100]),
+        initialRoute: '/',
+        routes: {
+          '/Login': (context) => LoginScreen(),
+          '/Dashboard': (context) => MainHomeScreen(
+                onAddButtonPressed: onAddButtonPressed,
+                onFloatButtonPressed: onFloatButtonPressed,
+              ),
+          '/': (context) {
+            return new SplashScreen(
+              photoSize: MediaQuery.of(context).size.width * 0.5,
+              routeName: '/',
+              image: Image.asset(
+                "assets/img/logocoffee.jpg",
+              ),
+              seconds: 2,
+              // navigateAfterSeconds: mainPage(
+              //     onAddButtonPressed: onAddButtonPressed,
+              //     onFloatButtonPressed: onFloatButtonPressed),
+              navigateAfterFuture: loadFromFuture(),
+            );
+          },
+          '/Services': (context) => MainServiceScreen(),
+          '/Kitchen': (context) => MainKitchenScreen(),
+          '/Order': (context) => OrderScreen(),
+          '/Cart': (context) => ProductInCartScreen(),
+          '/Payment': (context) => MainStatisticsScreen(),
+          '/Statistics': (context) => MainStatisticsNav(),
         },
-        '/Services': (context) => MainServiceScreen(),
-        '/Kitchen': (context) => MainKitchenScreen(),
-        '/Order': (context) => OrderScreen(),
-        '/Cart': (context) => ProductInCartScreen(),
-        '/Payment': (context) => MainStatisticsScreen(),
-        '/Statistics': (context) => MainStatisticsNav(),
-      },
-    ));
+      )),
+    );
   }
 }

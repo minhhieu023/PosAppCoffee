@@ -46,8 +46,41 @@ Widget mainPage({
       body: SingleChildScrollView(
         child: Column(
           children: [
+            Card(
+              child: Container(
+                height:
+                    (MediaQuery.of(context).size.height - kToolbarHeight) * 0.2,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: 20, left: 20),
+                      child:
+                          Text("Wellcome back", style: TextStyle(fontSize: 18)),
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.all(20),
+                          width: MediaQuery.of(context).size.width * 0.15,
+                          height: MediaQuery.of(context).size.width * 0.15,
+                          child: CircleAvatar(
+                            child: Icon(Icons.person, size: 50),
+                          ),
+                        ),
+                        Text("Võ Minh Hiếu",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold)),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
             Container(
-              height: (MediaQuery.of(context).size.height - kToolbarHeight),
+              height:
+                  (MediaQuery.of(context).size.height - kToolbarHeight) * 0.8,
               child: DashBoard(),
             )
           ],

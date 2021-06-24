@@ -276,6 +276,9 @@ class _OrderDtProWidState extends State<OrderDtProWid> {
                             borderRadius: BorderRadius.circular(300),
                             child: Image.network(
                               "${StaticValue.svPath}${widget.productInfo['image']}",
+                              errorBuilder: (context, error, stackTrace) {
+                                return Image.asset("assets/img/juice.png");
+                              },
                               fit: BoxFit.fill,
                             ),
                           ),

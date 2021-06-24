@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:SPK_Coffee/Models/ImployeeInformation.dart';
 import 'package:SPK_Coffee/Models/Order.dart';
+import 'package:SPK_Coffee/Models/Shippers.dart';
 import 'package:SPK_Coffee/Models/Statistic.dart';
 
 import 'package:SPK_Coffee/Models/Voucher.dart';
@@ -81,8 +82,7 @@ class ServiceManager {
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8'
         },
-        body: jsonEncode(
-            <String, dynamic>{'discount': discount, 'tendered': tendered}));
+        body: jsonEncode({'discount': discount, 'tendered': tendered}));
     if (response.statusCode == 200) {
       return jsonDecode(response.body)[0]['pay'];
     }
@@ -546,6 +546,15 @@ class ServiceManager {
     if (response.statusCode == 200) {
       Statistic statistic = Statistic.fromJson(jsonDecode(response.body));
       return statistic;
+    }
+    return null;
+  }
+
+  Future<List<Shippers>> getShipper(String shipperId) async {
+    final response = await http.get("$_href/v2/shipper/$shipperId");
+    if (response.statusCode == 200) {
+      final parsed = jsonDecode(response.body).cast<Map<String, dynamic>>();
+      return parsed.map<Shippers>((json) => Shippers.fromJson(json)).toList();
     }
     return null;
   }
