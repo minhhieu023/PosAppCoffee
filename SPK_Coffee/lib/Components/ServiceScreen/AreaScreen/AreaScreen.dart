@@ -45,7 +45,7 @@ class _MainServiceScreenState extends State<MainServiceScreen>
     final curvedAnimation =
         CurvedAnimation(curve: Curves.easeInOut, parent: _animationController);
     _animation = Tween<double>(begin: 0, end: 1).animate(curvedAnimation);
-    chooseArea = 0;
+    chooseArea = 1;
     // _serviceManager = ServiceManager();
     _areas = _serviceManager.getArea();
     _tables = _serviceManager.getTable();
@@ -108,7 +108,7 @@ class _MainServiceScreenState extends State<MainServiceScreen>
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text("Khu vực"),
+          Text("Area"),
           Padding(
             padding: EdgeInsets.all((10)),
             child: areaWidget(
@@ -280,27 +280,6 @@ Widget areaWidget(Future<List<Area>> areas, int chooseArea,
             scrollDirection: Axis.horizontal,
             child: Row(
               children: [
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.22,
-                  height:
-                      (MediaQuery.of(context).size.height - kToolbarHeight) /
-                          12,
-                  //padding: EdgeInsets.all((10)),
-                  child: InkWell(
-                    splashColor: Colors.amberAccent,
-                    onTap: () => setStateArea(0),
-                    child: Card(
-                      shadowColor: Colors.black,
-                      color:
-                          chooseArea == 0 ? Colors.deepOrangeAccent[100] : null,
-                      child: Center(
-                          child: AutoSizeText(
-                        "All",
-                        maxLines: 1,
-                      )),
-                    ),
-                  ),
-                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: list

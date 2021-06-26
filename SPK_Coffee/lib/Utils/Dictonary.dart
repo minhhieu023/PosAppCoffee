@@ -1,4 +1,4 @@
 const staticPath = {
-  'server': 'https://hieuit.tech:8001/api',
-  'sock': 'https://hieuit.tech:8001'
+  'server': 'http://192.168.1.2:8000/api',
+  'sock': 'http://192.168.1.2:8000'
 };

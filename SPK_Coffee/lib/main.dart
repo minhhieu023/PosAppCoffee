@@ -110,7 +110,7 @@ class _MyAppState extends State<MyApp> {
       providers: [
         ChangeNotifierProvider(
           create: (context) => UserProvider(),
-        )
+        ),
       ],
       child: ScreenLoaderApp(
           app: MaterialApp(

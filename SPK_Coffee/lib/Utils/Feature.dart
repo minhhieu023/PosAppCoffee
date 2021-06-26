@@ -24,7 +24,6 @@ var featureForAdmin = [
   ),
   Feature("Payment", FontAwesomeIcons.receipt, Colors.brown[200], size: 14),
   Feature("Statistics", Icons.bubble_chart, Colors.green),
-  Feature("Manage", FontAwesomeIcons.user, Colors.deepOrange[300]),
   Feature(
     "Setting",
     Icons.settings,

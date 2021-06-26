@@ -231,7 +231,7 @@ class _OrderDtProWidState extends State<OrderDtProWid> {
         controller: widget.slidableController,
         key: new Key(widget.order.id),
         child: Container(
-          margin: EdgeInsets.only(bottom: 5),
+          margin: EdgeInsets.all(5),
           // margin: EdgeInsets.only(top: 5),
           // padding: EdgeInsets.all(5),
           height: MediaQuery.of(context).orientation == Orientation.portrait
@@ -291,12 +291,14 @@ class _OrderDtProWidState extends State<OrderDtProWid> {
                               children: [
                                 Text(
                                   "${widget.productInfo['name']}",
-                                  style: TextStyle(fontSize: 20),
+                                  style: TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 Text(
                                   " X${widget.order.details[widget.index].amount}",
                                   style: TextStyle(
-                                      fontSize: 20, color: Colors.red),
+                                      fontSize: 17, color: Colors.red),
                                 )
                               ],
                             ),
@@ -305,14 +307,13 @@ class _OrderDtProWidState extends State<OrderDtProWid> {
                                 TableRow(children: [
                                   Text(
                                       "Process duration: ${widget.totalProcessTime}"),
-                                  Text(
-                                      "${formatDateToString(widget.order.details[widget.index].createdAt)}")
                                 ])
                               ],
                             ),
                             Text(
-                              "From order: ${widget.order.details[widget.index].orderId}",
-                              style: TextStyle(fontSize: 20),
+                              "Order: ${widget.order.details[widget.index].orderId}",
+                              style: TextStyle(
+                                  fontSize: 17, fontWeight: FontWeight.w500),
                             )
                           ],
                         ))

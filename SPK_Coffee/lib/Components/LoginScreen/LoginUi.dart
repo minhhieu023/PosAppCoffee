@@ -1,6 +1,8 @@
+import 'package:SPK_Coffee/Models/ProviderModels/UserProvider.dart';
 import 'package:SPK_Coffee/Services/Services.dart';
 import 'package:SPK_Coffee/Services/SocketManager.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'InputWidget.dart';
@@ -36,7 +38,7 @@ class _LoginState extends State<Login> {
                         return Padding(
                           padding: EdgeInsets.only(left: 40, bottom: 10),
                           child: Text(
-                            "SPK Coffee! Say hi",
+                            "POS Coffee! Say hi",
                             style: TextStyle(fontSize: 16, color: Colors.black),
                           ),
                         );
@@ -46,7 +48,7 @@ class _LoginState extends State<Login> {
                               left: MediaQuery.of(context).size.width * 0.3,
                               bottom: 10),
                           child: Text(
-                            "SPK Coffee! Say hi",
+                            "POS Coffee! Say hi",
                             style: TextStyle(fontSize: 16, color: Colors.black),
                           ),
                         );
@@ -88,9 +90,9 @@ Widget roundedRectButton(
     TextEditingController passWord,
     bool isEndIconVisible) {
   SocketManagement _socketManagement = new SocketManagement();
-  ServiceManager serviceManager = new ServiceManager();
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   return Builder(builder: (BuildContext mContext) {
+    final userProvider = Provider.of<UserProvider>(mContext, listen: false);
     return Container(
       width: MediaQuery.of(mContext).size.width * 0.40,
       child: Padding(
@@ -100,8 +102,8 @@ Widget roundedRectButton(
           children: <Widget>[
             InkWell(
               onTap: () async {
-                int isTrue = await serviceManager.loginEmployee(
-                    userName.text, passWord.text);
+                int isTrue =
+                    await userProvider.login(userName.text, passWord.text);
                 if (isTrue == 1) {
                   SharedPreferences prefs = await _prefs;
                   prefs.setString('employeeId', userName.text);
