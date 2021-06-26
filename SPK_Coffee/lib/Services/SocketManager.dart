@@ -2,7 +2,7 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'PlatformHandler.dart';
 
 class SocketManagement {
-  String _href = 'https://hieuit.tech:8001:8000';
+  String _href = 'http://192.168.68.119:8000';
   IO.Socket socket;
   PlatformHandler _platformHandler = new PlatformHandler();
   createSocketConnection() {

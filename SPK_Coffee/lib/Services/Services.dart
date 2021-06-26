@@ -17,7 +17,7 @@ import 'package:SPK_Coffee/Services/SocketManager.dart';
 import 'package:http/http.dart' as http;
 
 class ServiceManager {
-  final _href = 'https://hieuit.tech:8001/api';
+  final _href = 'http://192.168.68.119:8000/api';
 
   //final _href = 'http://10.11.210.15:8000/api';
   //final _href = 'http://192.168.1.34:8000/api';

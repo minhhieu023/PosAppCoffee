@@ -20,6 +20,7 @@ import 'Components/ServiceScreen/AreaScreen/AreaScreen.dart';
 import 'Components/ServiceScreen/OrderScreen/OrderScreen.dart';
 import 'Components/ServiceScreen/OrderScreen/ProductInCartScreen.dart';
 
+import 'Components/Settings/Settings.dart';
 import 'Components/StatisticScreen/CashScreen/MainCashNav.dart';
 import 'Components/StatisticScreen/Statistic/MainStatisticNav.dart';
 import 'Models/ProviderModels/UserProvider.dart';
@@ -151,6 +152,7 @@ class _MyAppState extends State<MyApp> {
           '/Cart': (context) => ProductInCartScreen(),
           '/Payment': (context) => MainStatisticsScreen(),
           '/Statistics': (context) => MainStatisticsNav(),
+          '/Setting': (context) => Settings(),
         },
       )),
     );
