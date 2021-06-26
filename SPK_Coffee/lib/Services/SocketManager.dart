@@ -3,6 +3,7 @@ import 'PlatformHandler.dart';
 
 class SocketManagement {
   String _href = 'http://192.168.68.119:8000';
+  // String _href = 'http://192.168.1.6:8000';
   IO.Socket socket;
   PlatformHandler _platformHandler = new PlatformHandler();
   createSocketConnection() {
