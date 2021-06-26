@@ -189,15 +189,17 @@ class _CashOrdersWidState extends State<CashOrdersWid>
               cashProvider.calulateTotal();
               calculate.setIsSecond(true);
             },
-            title: orders[index].tableName.isEmpty
-                ? (Text("Remote Order"))
-                : tables[index] != null
-                    ? (widget.type != "closed"
-                        ? (tables[index].tablename != null
-                            ? Text("TABLE ${tables[index].tablename}")
-                            : Text("Remote Order"))
-                        : Text("TABLE ${orders[index].tableName}"))
-                    : Text("Remote Order ${orders[index].endUserId}"),
+            title: widget.type != "closed"
+                ? (tables[index] == null
+                    ? (Text("Remote Order"))
+                    : tables[index] != null
+                        ? (widget.type != "closed"
+                            ? (tables[index].tablename != null
+                                ? Text("TABLE ${tables[index].tablename}")
+                                : Text("Remote Order"))
+                            : Text("TABLE ${orders[index].tableName}"))
+                        : Text("Remote Order ${orders[index].endUserId}"))
+                : Text("History Order"),
             subtitle: Text(
                 "Order number:${orders[index].id} \n Amount of money: ${formatMoney(orders[index].total.split('.')[0])} VNĐ"),
             isThreeLine: true,
