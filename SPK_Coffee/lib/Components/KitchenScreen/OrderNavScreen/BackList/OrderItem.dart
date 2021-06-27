@@ -46,14 +46,14 @@ class _OrderItemState extends State<OrderItem> {
         key: Key('${widget.details.id}'),
         actionPane: SlidableDrawerActionPane(),
         child: Container(
-          margin: EdgeInsets.only(top: 5),
+          margin: EdgeInsets.all(5),
           padding: EdgeInsets.all(5),
           height: MediaQuery.of(context).orientation == Orientation.portrait
               ? MediaQuery.of(context).size.height * 0.12
               : MediaQuery.of(context).size.height * 0.18,
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderRadius: BorderRadius.all(Radius.circular(0)),
             boxShadow: [
               BoxShadow(
                 color: Colors.grey.withOpacity(0.2),
@@ -67,7 +67,11 @@ class _OrderItemState extends State<OrderItem> {
           child: Row(
             children: [
               Expanded(
-                child: Image.asset("assets/img/juice.png"),
+                child: Icon(
+                  Icons.receipt_long_outlined,
+                  color: Colors.green,
+                  size: 54,
+                ),
                 flex: 2,
               ),
               Expanded(
@@ -107,7 +111,7 @@ class _OrderItemState extends State<OrderItem> {
                                 : (widget.details.state == "processing"
                                     ? Colors.yellow
                                     : Colors.blue),
-                            fontSize: 20),
+                            fontSize: 17),
                       ),
                     )
                   ],

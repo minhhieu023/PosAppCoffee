@@ -5,6 +5,7 @@ import 'package:SPK_Coffee/Models/ImployeeInformation.dart';
 import 'package:SPK_Coffee/Models/Order.dart';
 import 'package:SPK_Coffee/Models/Shippers.dart';
 import 'package:SPK_Coffee/Models/Statistic.dart';
+import 'package:SPK_Coffee/Models/UserModel.dart';
 
 import 'package:SPK_Coffee/Models/Voucher.dart';
 
@@ -18,8 +19,7 @@ import 'package:SPK_Coffee/Services/SocketManager.dart';
 import 'package:http/http.dart' as http;
 
 class ServiceManager {
-  final _href = 'http://192.168.68.119:8000/api';
-  // final _href = 'http://192.168.1.6/api';
+  final _href = 'http://192.168.1.2:8000/api';
 
   //final _href = 'http://10.11.210.15:8000/api';
   //final _href = 'http://192.168.1.34:8000/api';
@@ -309,7 +309,7 @@ class ServiceManager {
     return null;
   }
 
-  Future<int> loginEmployee(String userName, String passWord) async {
+  Future<UserModel> loginEmployee(String userName, String passWord) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final response = await http
         .post(
@@ -335,11 +335,12 @@ class ServiceManager {
         await prefs.setString('role', role);
         String storeId = json["storeId"];
         await prefs.setString('storeId', storeId);
-        return 1;
+        UserModel user = UserModel.fromJson(jsonDecode(response.body));
+        return user;
       }
-      return 0;
+      return UserModel(status: "Failed");
     }
-    return 0;
+    return UserModel(status: "Failed");
   }
 
   Future<String> mergeOrder(List<int> listTableToMerge) async {

@@ -44,18 +44,19 @@ class _TableComponentState extends State<TableComponent> {
   Future<Order> getOrder(int tableID) {}
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
+    return FutureBuilder<List<CoffeeTable>>(
       future: widget.tables,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
+          snapshot.data.forEach((e) {
+            print(e.name);
+          });
           List<CoffeeTable> list = new List<CoffeeTable>();
-          if (widget.chooseArea == 0) {
-            list = snapshot.data;
-          } else {
-            snapshot.data.forEach((element) {
-              if (element.areaId == widget.chooseArea) list.add(element);
-            });
-          }
+
+          snapshot.data.forEach((element) {
+            if (element.areaId == widget.chooseArea) list.add(element);
+          });
+
           final orientation = MediaQuery.of(context).orientation;
           return Flexible(
             child: GridView.builder(
@@ -63,7 +64,7 @@ class _TableComponentState extends State<TableComponent> {
               padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
               gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount:
-                      (orientation == Orientation.portrait) ? 3 : 5),
+                      (orientation == Orientation.portrait) ? 3 : 6),
               // ignore: missing_return
               itemBuilder: (BuildContext context, int index) {
                 return TableWiget(

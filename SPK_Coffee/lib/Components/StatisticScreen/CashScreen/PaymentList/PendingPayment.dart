@@ -201,7 +201,7 @@ class _CashOrdersWidState extends State<CashOrdersWid>
                         : Text("Remote Order ${orders[index].endUserId}"))
                 : Text("History Order"),
             subtitle: Text(
-                "Order number:${orders[index].id} \n amount of money: ${formatMoney(orders[index].total.split('.')[0])} VNĐ"),
+                "Order number:${orders[index].id} \n Amount of money: ${formatMoney(orders[index].total.split('.')[0])} VNĐ"),
             isThreeLine: true,
             trailing: orders[index].isShipper != null
                 ? IconButton(
