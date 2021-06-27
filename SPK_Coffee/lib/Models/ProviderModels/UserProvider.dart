@@ -1,3 +1,4 @@
+import 'package:SPK_Coffee/Models/EmployeeInfo.dart';
 import 'package:SPK_Coffee/Models/Shippers.dart';
 import 'package:SPK_Coffee/Services/Services.dart';
 import 'package:flutter/cupertino.dart';
@@ -5,6 +6,13 @@ import 'package:flutter/cupertino.dart';
 import '../UserModel.dart';
 
 class UserProvider with ChangeNotifier {
+  CurrentUser _currentUser;
+  CurrentUser get currentUser => _currentUser;
+  void setCurrentUser(CurrentUser value) {
+    _currentUser = value;
+    notifyListeners();
+  }
+
   List<Shippers> _shippers;
   UserModel user;
   void setShipper(List<Shippers> value) {

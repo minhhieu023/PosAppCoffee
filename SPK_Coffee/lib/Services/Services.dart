@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:SPK_Coffee/Models/EmployeeInfo.dart';
 import 'package:SPK_Coffee/Models/ImployeeInformation.dart';
 import 'package:SPK_Coffee/Models/Order.dart';
 import 'package:SPK_Coffee/Models/Shippers.dart';
@@ -557,6 +558,33 @@ class ServiceManager {
     if (response.statusCode == 200) {
       final parsed = jsonDecode(response.body).cast<Map<String, dynamic>>();
       return parsed.map<Shippers>((json) => Shippers.fromJson(json)).toList();
+    }
+    return null;
+  }
+
+  Future<CurrentUser> getIndividualEmployee(String id) async {
+    final response = await http.get("$_href/employee/getIndividual/$id");
+    if (response.statusCode == 200) {
+      if (jsonDecode(response.body) != null) {
+        return CurrentUser.fromJson(jsonDecode(response.body));
+      }
+      return null;
+    }
+    return null;
+  }
+
+  Future<bool> updateCurrentUser(CurrentUser user) async {
+    final response = await http.post("$_href/employee/mobileupdate",
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: jsonEncode(user.toJson()));
+    print(response.body);
+    if (response.statusCode == 200) {
+      if (jsonDecode(response.body) == 1) {
+        return true;
+      }
+      return false;
     }
     return null;
   }
