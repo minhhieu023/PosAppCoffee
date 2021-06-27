@@ -254,13 +254,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
-  group_radio_button:
+  google_fonts:
     dependency: "direct main"
     description:
-      name: group_radio_button
+      name: google_fonts
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.0"
+    version: "1.1.2"
   html:
     dependency: transitive
     description:

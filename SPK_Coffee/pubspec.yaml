@@ -48,6 +48,7 @@ dependencies:
   dropdownfield: ^1.0.3
   dcdg: ^2.0.1
   flutter_masked_text: ^0.8.0
+  google_fonts: ^1.1.2
   ndialog: ^4.1.0
   group_radio_button: ^1.1.0
   unicons:
