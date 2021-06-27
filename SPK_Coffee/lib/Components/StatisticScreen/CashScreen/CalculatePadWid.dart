@@ -379,11 +379,7 @@ class _PayWidState extends State<PayWid> {
                 onPressed: () async {
                   print("pay");
                   print("gen PDF");
-                  await cashProvider.createPDF(
-                      calculate.getFirstNum().toString(),
-                      vouchers.getVoucher() == null
-                          ? "0"
-                          : vouchers.getVoucher().discount);
+
                   int isSuccess = await ServiceManager().payOrder(
                       cashProvider.getCurrentOrder().id,
                       calculate.getSecondNum(),
@@ -397,6 +393,11 @@ class _PayWidState extends State<PayWid> {
                     widget.getReadyOrders.call();
                     SocketManagement().makeMessage("getUpdateDishKitchen");
                     SocketManagement().makeMessage("makeUpdateOrderScreen");
+                    await cashProvider.createPDF(
+                        calculate.getFirstNum().toString(),
+                        vouchers.getVoucher() == null
+                            ? "0"
+                            : vouchers.getVoucher().discount);
                   } else {
                     Scaffold.of(context).showSnackBar(SnackBar(
                       content: Text("Payment fail!"),
@@ -515,17 +516,18 @@ class _PayWidState extends State<PayWid> {
                           : vouchers.getVoucher().discount));
                   if (isSuccess == 1) {
                     print("gen PDF");
-                    await cashProvider.createPDF(
-                        calculate.getFirstNum().toString(),
-                        vouchers.getVoucher() == null
-                            ? "0"
-                            : vouchers.getVoucher().discount);
+
                     Scaffold.of(context).showSnackBar(SnackBar(
                       content: Text("Payment successfully!"),
                     ));
                     widget.getReadyOrders.call();
                     SocketManagement().makeMessage("getUpdateDishKitchen");
                     SocketManagement().makeMessage("makeUpdateOrderScreen");
+                    await cashProvider.createPDF(
+                        calculate.getFirstNum().toString(),
+                        vouchers.getVoucher() == null
+                            ? "0"
+                            : vouchers.getVoucher().discount);
                   } else {
                     Scaffold.of(context).showSnackBar(SnackBar(
                       content: Text("Payment fail!"),

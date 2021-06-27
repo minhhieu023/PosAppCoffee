@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:SPK_Coffee/Models/Order.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
@@ -120,17 +121,15 @@ class CashProvider with ChangeNotifier {
     headerRow.cells[4].value = "Total";
 
 // Set header font.
-PdfFont font = new PdfTrueTypeFont(new Font("Arial",12,FontStyle.Regular),true);
-
-    headerRow.style.font =
-        new PdfTrueTypeFont(new Font("Arial", 12, FontStyle.Regular), true);
+    PdfFont font = await getFont(GoogleFonts.roboto());
+    headerRow.style.font = font;
 // Add rows to the grid.
     PdfGridRow row;
 
     int noNumber = 1;
     _order.details.forEach((e) {
       row = grid.rows.add();
-      row.cells[0].value = noNumber;
+      row.cells[0].value = noNumber.toString();
       print(_productsInfo
           .where((element) => element.id == e.productId)
           .first
@@ -140,11 +139,12 @@ PdfFont font = new PdfTrueTypeFont(new Font("Arial",12,FontStyle.Regular),true);
           .first
           .productName;
       row.cells[2].value = e.price;
-      row.cells[3].value = e.amount;
-      row.cells[4].value = e.amount * int.parse(e.price);
+      row.cells[3].value = e.amount.toString();
+      row.cells[4].value = (e.amount * int.parse(e.price)).toString();
       noNumber++;
     });
 // Set grid format.
+    grid.style.font = font;
     grid.style.cellPadding = PdfPaddings(left: 5, top: 5);
 // Draw table in the PDF page.
     grid.draw(
@@ -155,7 +155,9 @@ PdfFont font = new PdfTrueTypeFont(new Font("Arial",12,FontStyle.Regular),true);
     List<int> bytes = document.save();
     document.dispose();
 
-    saveAndLaunchFile(bytes, 'Output.pdf');
+    DateTime date = DateTime.now();
+
+    saveAndLaunchFile(bytes, 'Order-${date.toString()}.pdf');
   }
 
   Future<void> saveAndLaunchFile(List<int> bytes, String fileName) async {
@@ -163,5 +165,24 @@ PdfFont font = new PdfTrueTypeFont(new Font("Arial",12,FontStyle.Regular),true);
     final file = File('$path/$fileName');
     await file.writeAsBytes(bytes, flush: true);
     OpenFile.open('$path/$fileName');
+  }
+
+  Future<PdfFont> getFont(TextStyle style) async {
+    //Get the external storage directory
+    Directory directory = await getApplicationSupportDirectory();
+    //Create an empty file to write the font data
+    File file = File('${directory.path}/${style.fontFamily}.ttf');
+    List<int> fontBytes;
+    //Check if entity with the path exists
+    if (file.existsSync()) {
+      fontBytes = await file.readAsBytes();
+    }
+    if (fontBytes != null && fontBytes.isNotEmpty) {
+      //Return the google font
+      return PdfTrueTypeFont(fontBytes, 12);
+    } else {
+      //Return the default font
+      return PdfStandardFont(PdfFontFamily.helvetica, 12);
+    }
   }
 }
