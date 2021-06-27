@@ -14,7 +14,7 @@ Future<void> showFailDialog(BuildContext context,
     message: Container(
       child: Column(
         children: [
-          Image.asset("assets/62484-error-mark.gif"),
+          Image.asset("assets/img/62484-error-mark.gif"),
           Text(
             message,
             style: TextStyle(fontSize: 20),
@@ -49,7 +49,7 @@ Future<void> showSuccessDialog(BuildContext context,
       child: Column(
         children: [
           Image.asset(
-              imagePath == null ? "assets/61434-success.gif" : imagePath),
+              imagePath == null ? "assets/img/61434-success.gif" : imagePath),
           Text(
             message,
             style: TextStyle(fontSize: 20),
