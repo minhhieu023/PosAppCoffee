@@ -1,3 +1,4 @@
+import 'package:SPK_Coffee/Components/Settings/AccountSetting.dart';
 import 'package:SPK_Coffee/Components/Settings/EditProfile.dart';
 import 'package:flutter/material.dart';
 
@@ -75,7 +76,11 @@ class _SettingsState extends State<Settings> {
               // Account settings
               actionRow(
                   actionName: "Account Settings",
-                  icon: Icons.settings_outlined),
+                  icon: Icons.settings_outlined,
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (BuildContext context) => AccountSetting()));
+                  }),
               actionRow(
                   actionName: "Notifications",
                   icon: Icons.notifications_outlined),

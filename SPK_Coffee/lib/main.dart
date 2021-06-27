@@ -19,12 +19,12 @@ import 'package:dcdg/dcdg.dart';
 import 'Components/ServiceScreen/AreaScreen/AreaScreen.dart';
 import 'Components/ServiceScreen/OrderScreen/OrderScreen.dart';
 import 'Components/ServiceScreen/OrderScreen/ProductInCartScreen.dart';
-
 import 'Components/Settings/Settings.dart';
 import 'Components/StatisticScreen/CashScreen/MainCashNav.dart';
 import 'Components/StatisticScreen/Statistic/MainStatisticNav.dart';
 import 'Models/ProviderModels/UserProvider.dart';
 import 'Services/SocketManager.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 class MyHttpOverrides extends HttpOverrides {
   @override
@@ -37,7 +37,7 @@ class MyHttpOverrides extends HttpOverrides {
 
 void main() {
   HttpOverrides.global = new MyHttpOverrides();
-  runApp(MyApp());
+  runApp(Phoenix(child: MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -51,11 +51,22 @@ class _MyAppState extends State<MyApp> {
   DataBaseManagement _db = new DataBaseManagement();
   final bool ischoose = false;
   SocketManagement _socketManagement = new SocketManagement();
-
+  Color mainColor;
   @override
   void initState() {
     super.initState();
     // _socketManagement.createSocketConnection();
+    getColor();
+  }
+
+  Future<void> getColor() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    print(prefs.getString("appColor"));
+    setState(() {
+      mainColor = prefs.getString("appColor") != null
+          ? Color(int.parse(prefs.getString("appColor")))
+          : mPrimaryColor;
+    });
   }
 
   void onFloatButtonPressed() {
@@ -82,22 +93,22 @@ class _MyAppState extends State<MyApp> {
       });
     }
 
-    productList.forEach((element) async {
-      await _db.insertDB(
-          "Products",
-          '(id,productName,productDescription,price,hot,popular,processDuration,mainImage,categoryId)',
-          [
-            element.id,
-            "'${element.productName}'",
-            "'${element.productDescription}'",
-            "'${element.price}'",
-            "'${element.hot}'",
-            "'${element.popular.toString()}'",
-            "'${element.processDuration}'",
-            "'${element.mainImage}'",
-            element.categoryId
-          ]);
-    });
+    // productList.forEach((element) async {
+    //   await _db.insertDB(
+    //       "Products",
+    //       '(id,productName,productDescription,price,hot,popular,processDuration,mainImage,categoryId)',
+    //       [
+    //         element.id,
+    //         "'${element.productName}'",
+    //         "'${element.productDescription}'",
+    //         "'${element.price}'",
+    //         "'${element.hot}'",
+    //         "'${element.popular.toString()}'",
+    //         "'${element.processDuration}'",
+    //         "'${element.mainImage}'",
+    //         element.categoryId
+    //       ]);
+    // });
 
     await _db.getTable("Products");
     return Future.value(
@@ -115,10 +126,10 @@ class _MyAppState extends State<MyApp> {
       ],
       child: ScreenLoaderApp(
           app: MaterialApp(
-        color: mPrimaryColor,
+        color: mainColor == null ? mPrimaryColor : mainColor,
         theme: new ThemeData(
-          primaryColor: mPrimaryColor,
-          backgroundColor: mPrimaryColor,
+          primaryColor: mainColor == null ? mPrimaryColor : mainColor,
+          backgroundColor: mainColor == null ? mPrimaryColor : mainColor,
           shadowColor: Colors.black12,
           brightness: Brightness.light,
           // primaryColor: Colors.white,

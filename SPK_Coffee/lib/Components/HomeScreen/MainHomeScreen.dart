@@ -34,7 +34,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: mPrimaryColor,
+        // backgroundColor: mPrimaryColor,
         title: Text(
           userProvider.user.storeName,
           style: TextStyle(color: Colors.white),

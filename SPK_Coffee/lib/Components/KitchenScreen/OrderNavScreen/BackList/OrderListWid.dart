@@ -28,7 +28,6 @@ class _OrderListWidState extends State<OrderListWid>
   List<Order> filterSub = [];
   Future<OrderList> filterList;
   Map<String, dynamic> object;
-  DataBaseManagement _db = DataBaseManagement();
   bool isSearch = false;
   int _currentTab = 0;
   bool isUpdate = false;
