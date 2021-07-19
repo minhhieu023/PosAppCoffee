@@ -3,6 +3,7 @@ import 'package:SPK_Coffee/Components/HomeScreen/MainHomeScreen.dart';
 import 'package:SPK_Coffee/Components/KitchenScreen/MainKitChenScreen.dart';
 import 'package:SPK_Coffee/Components/LoginScreen/LoginScreen.dart';
 import 'package:SPK_Coffee/Components/Manage/ManageUserScreen.dart';
+import 'package:SPK_Coffee/Components/Shipment/Shipment.dart';
 import 'package:SPK_Coffee/Components/StatisticScreen/MainStatisticsScreen.dart';
 import 'package:SPK_Coffee/Models/Category.dart';
 import 'package:SPK_Coffee/Models/Product.dart';
@@ -164,6 +165,7 @@ class _MyAppState extends State<MyApp> {
           '/Payment': (context) => MainStatisticsScreen(),
           '/Statistics': (context) => MainStatisticsNav(),
           '/Setting': (context) => Settings(),
+          '/shipment': (context) => Shipment(),
         },
       )),
     );

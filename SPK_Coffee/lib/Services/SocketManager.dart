@@ -1,3 +1,4 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'PlatformHandler.dart';
 
@@ -20,8 +21,11 @@ class SocketManagement {
       print('connect');
     });
     socket.on('event', (data) => print(data));
-    socket.on('notification', (data) {
-      _platformHandler.makeNotification(data['title'], data['content']);
+    socket.on('notification', (data) async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      int priority = prefs.getInt("priority")==null? 4: prefs.getInt("priority");
+      _platformHandler.makeNotification(data['title'], data['content'],
+          priority: priority);
     });
     socket.on('disconnect', (_) => print('disconnect'));
     socket.on('fromServer', (_) => print(_));

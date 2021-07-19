@@ -1,6 +1,9 @@
 import 'package:SPK_Coffee/Components/Settings/AccountSetting.dart';
 import 'package:SPK_Coffee/Components/Settings/EditProfile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_switch/flutter_switch.dart';
+import 'package:screen_loader/screen_loader.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Settings extends StatefulWidget {
   const Settings({Key key}) : super(key: key);
@@ -9,7 +12,8 @@ class Settings extends StatefulWidget {
   _SettingsState createState() => _SettingsState();
 }
 
-class _SettingsState extends State<Settings> {
+class _SettingsState extends State<Settings> with ScreenLoader<Settings> {
+  bool notification = true;
   Widget actionRow(
       {@required String actionName,
       dynamic Function() onTap,
@@ -40,8 +44,70 @@ class _SettingsState extends State<Settings> {
     );
   }
 
+  Widget toggleNotificationRow(
+      {@required String actionName,
+      dynamic Function() onTap,
+      @required IconData icon}) {
+    return Material(
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
+          height: 40,
+          child: Row(
+            children: [
+              Expanded(
+                child: Icon(icon, color: Colors.black),
+                flex: 1,
+              ),
+              Expanded(
+                child: Text(actionName, style: TextStyle(fontSize: 17)),
+                flex: 7,
+              ),
+              Expanded(
+                child: FlutterSwitch(
+                    value: notification,
+                    onToggle: (value) async {
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      prefs.setInt("priority", value == true ? 4 : 1);
+                      setState(() {
+                        notification = value;
+                      });
+                    }),
+                flex: 2,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getLocalStorage();
+  }
+
+  Future<void> getLocalStorage() async {
+    SharedPreferences prefs = await this.performFuture(() async {
+      return await SharedPreferences.getInstance();
+    });
+    if (prefs.getInt("priority") == null) {
+      prefs.setInt("priority", 4);
+      setState(() {
+        notification = true;
+      });
+    } else {
+      setState(() {
+        notification = prefs.getInt("priority") == 4 ? true : false;
+      });
+    }
+  }
+
+  @override
+  Widget screen(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -81,7 +147,7 @@ class _SettingsState extends State<Settings> {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (BuildContext context) => AccountSetting()));
                   }),
-              actionRow(
+              toggleNotificationRow(
                   actionName: "Notifications",
                   icon: Icons.notifications_outlined),
               Divider(

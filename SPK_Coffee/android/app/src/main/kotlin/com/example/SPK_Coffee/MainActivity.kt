@@ -22,7 +22,12 @@ class MainActivity: FlutterActivity() {
             if (call.method.equals("createNotification")) {
                 var title = call.argument<String>("title");
                 var content = call.argument<String>("content");
-                notificationHandler.initNotification(context,CHANNEL_ID,title,content,4,1);
+                var priority = call.argument<Int>("priority");
+                if (priority != null) {
+                    notificationHandler.initNotification(context,CHANNEL_ID,title,content,priority,1)
+                }else {
+                    notificationHandler.initNotification(context,CHANNEL_ID,title,content,4,1)
+                };
                 result.success("OK");
             } else  {
                 result.notImplemented();
